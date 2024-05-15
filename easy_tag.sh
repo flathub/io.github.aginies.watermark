@@ -44,6 +44,7 @@ convert -background None -fill "rgba(64, 64, 64, 0.50)" \
 # not a good idea on some system...
 #sync
 
+# random number around 70
 RANDOM_070=$((RANDOM_011 + 70))
 
 convert -background None -fill "rgba(128, 34, 34, 0.35)" \
