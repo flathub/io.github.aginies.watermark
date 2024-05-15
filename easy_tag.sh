@@ -1,8 +1,13 @@
 #!/bin/bash
 # antoine@ginies.org
 
-WDATE=`date +20%y%m%d`
+# TO CHANGE ! could be a parameter...
 TEXTTOINCLUDE="TAG_TO_INCLUDE"
+# DO NOT CHANGE ANYTHING BELOW THIS LINE IF YOU DONT KNOW WHAT YOU ARE DOING!
+
+# grep the current date
+WDATE=`date +20%y%m%d`
+# replace whitespace with underscore
 TEXTTOINCLUDE=${TEXTTOINCLUDE// /_}
 ORIG=$1
 
@@ -14,10 +19,11 @@ fi
 
 # Need first parameter (image to tag)
 if [ -z "$1" ];then
-	echo "Need the the file to modify!"
+	echo "Need the image to modify!"
 	exit 1
 fi
 
+# will store the image to current path execution
 directory_path=$(dirname "$ORIG")
 file_name=$(basename "$ORIG")
 FF="${directory_path}/${file_name}"
