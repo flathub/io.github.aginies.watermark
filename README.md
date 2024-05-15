@@ -20,6 +20,9 @@ avec TEXTTOINCLUDE="SUBJECT TO TAG"
 test_TAG_TO_INCLUDE_20240515.png
 ```
 
+![image](https://github.com/aginies/easy_tag/blob/202f6f2a8de8fd39f0d14bc8ea4232a029f3b6d9/suse_TAG_TO_INCLUDE_20240515.jpg)
+
+
 # A FAIRE
 
 beaucoup de choses ...
