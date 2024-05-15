@@ -52,7 +52,7 @@ convert -quality 70% readytmp2_${file_name} ready_${file_name}
 filename=$(basename "$ready_${file_name}")
 extension="${filename##*.}"
 basen="${filename%.*}"
-newname="${basen}_${TEXTTOINCLUDE}_${DATE}.${extension}"
+newname="${basen}_${TEXTTOINCLUDE}_${WDATE}.${extension}"
 #
 # rename to a correct name
 mv ready_${file_name} ${newname}
