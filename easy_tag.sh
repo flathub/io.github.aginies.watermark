@@ -18,6 +18,10 @@ if [ -z "$1" ];then
 	exit 1
 fi
 
+directory_path=$(dirname "$ORIG")
+file_name=$(basename "$ORIG")
+FF="${directory_path}/${file_name}"
+
 # Generate a random number between 0 and 11 (inclusive)
 RANDOM_011=$((RANDOM % 12))
 # Add 19 to the random number to get a range between 19 and 30
@@ -27,8 +31,8 @@ convert -background None -fill "rgba(64, 64, 64, 0.50)" \
     -pointsize 32 label:"$TEXTTOINCLUDE" \
     -rotate -${RANDOM_030} \
     +repage +write mpr:TILE \
-    +delete $ORIG -alpha set \( +clone -fill mpr:TILE -draw "color 0,0 reset" \) \
-    -composite readytmp_$ORIG 
+    +delete "$FF" -alpha set \( +clone -fill mpr:TILE -draw "color 0,0 reset" \) \
+    -composite "readytmp_${file_name}"
 
 # not a good idea on some system...
 #sync
@@ -39,19 +43,20 @@ convert -background None -fill "rgba(128, 34, 34, 0.35)" \
     -pointsize 16 label:"$TEXTTOINCLUDE" \
     -rotate -${RANDOM_070} \
     +repage +write mpr:TILE \
-    +delete readytmp_$ORIG -alpha set \( +clone -fill mpr:TILE -draw "color 0,0 reset" \) \
-    -composite readytmp2_${ORIG}
+    +delete "readytmp_${file_name}" -alpha set \( +clone -fill mpr:TILE -draw "color 0,0 reset" \) \
+    -composite "readytmp2_${file_name}"
 
 # Reduce quality to 70%
-convert -quality 70% readytmp2_${ORIG} ready_${ORIG}
+convert -quality 70% readytmp2_${file_name} ready_${file_name}
 
-filename=$(basename "$ready_${ORIG}")
+filename=$(basename "$ready_${file_name}")
 extension="${filename##*.}"
 basen="${filename%.*}"
 newname="${basen}_${TEXTTOINCLUDE}_${DATE}.${extension}"
+#
 # rename to a correct name
-mv ready_${ORIG} ${newname}
+mv ready_${file_name} ${newname}
 # remove tmp file
-rm -f readytmp*_${ORIG}
+rm -f readytmp*_*
 # list the file to use :)
 ls -1 ${newname}
