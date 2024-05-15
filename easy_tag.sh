@@ -49,12 +49,14 @@ convert -background None -fill "rgba(128, 34, 34, 0.35)" \
 # Reduce quality to 70%
 convert -quality 70% readytmp2_${file_name} ready_${file_name}
 
+# catch extension
 filename=$(basename "$ready_${file_name}")
 extension="${filename##*.}"
 basen="${filename%.*}"
 newname="${basen}_${TEXTTOINCLUDE}_${WDATE}.${extension}"
-#
-# rename to a correct name
+
+
+# rename to a correct name TEXTTOINCLUDE_WDATE
 mv ready_${file_name} ${newname}
 # remove tmp file
 rm -f readytmp*_*
