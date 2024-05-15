@@ -13,7 +13,7 @@ chmod +x easy_tag.sh
 
 # Example
 
-avec TEXTTOINCLUDE=SUBJECT_TO_TAG
+avec TEXTTOINCLUDE="SUBJECT TO TAG"
 
 ```
 ./easy_tag.sh ~/Pictures/test.png 
