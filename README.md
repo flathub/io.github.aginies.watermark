@@ -23,13 +23,12 @@ Le fichier **filigrane_app.exe** sera dans le répertoire **dist**
 
 ## easytag.py
 
-Script en Python3 GTK3.
+Script en Python3 GTK. Version initiale mais impossible de le faire fonctionner sous Windows,
+donc j'ai fait une version avec TK.
 ```
 chmod 755 easy_tag.py
 ./easy_tag.py
 ```
-
-##
 
 ## easy_tag.sh
 
