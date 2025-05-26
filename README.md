@@ -6,6 +6,8 @@ Script en python pour ajouter un filigrane à une image.
 
 Script en Python TK. Pour une utilisation sous Windows.
 
+![image](https://github.com/aginies/easy_tag/blob/9d667ab99d971a9f8d7c28b26d0173b775668716/filigrane_app.jpg)
+
 ## Obtenir le .exe
 
 * installer python sous windows https://www.python.org/downloads/?lang=fr
