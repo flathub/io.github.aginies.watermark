@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # antoine@ginies.org
+# GPL2
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -125,7 +126,8 @@ class FiligraneApp:
         about_window.resizable(False, False)
         info_text = (
             "Filigrane App Version 0.1\n"
-            "Cette application ajoute un filigrane à une image.\n\n"
+            "Cette application ajoute un filigrane à une image.\n"
+            "GPL2 \n\n"
             "Project Open Source sur GitHub: "
         )
 
