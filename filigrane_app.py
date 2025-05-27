@@ -17,54 +17,66 @@ class FiligraneApp:
         self.root.resizable(False, False)
         self.output_folder_path = ""
         self.selected_file_path = ""
-        self.file_button = tk.Button(root, text="Browse", command=self.select_file)
         self.compression_rate = 75
-        self.fili_font_size = 16
-        self.fili_density = 11
+        self.fili_font_size = 20
+        self.fili_density = 12
+
+        # Main frame for all widgets
+        main_frame = tk.Frame(root, padx=10, pady=10)
+        main_frame.grid(row=0, column=0, sticky="nsew")
+
+        # Configure row and column weights to make the layout responsive
+        self.root.columnconfigure(0, weight=1)
+        self.root.rowconfigure(0, weight=1)
 
         # Create a menu bar
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
-        # Add an "About" option to the menu
-        about_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_command(label="Quit", command=self.root.quit)
+        about_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="A Propos", menu=about_menu)
         about_menu.add_command(label="A Propos de Filigrane App", command=self.about_dialog)
 
-        # File selection label and button
-        tk.Label(root, text="Sélection Image").grid(row=0, column=0, padx=10, pady=5)
-        self.file_button = tk.Button(root, text="Sélection", command=self.select_file)
-        self.file_button.grid(row=0, column=1, padx=10, pady=5)
+        # File selection frame
+        file_frame = tk.Frame(main_frame)
+        file_frame.grid(row=0, column=0, pady=5, sticky="ew")
+        tk.Label(file_frame, text="Sélection Image").pack(side="left", padx=(0, 10))
+        self.file_button = tk.Button(file_frame, text="Sélection", command=self.select_file)
+        self.file_button.pack(side="right")
 
-        # Filigrane text label and entry
-        tk.Label(root, text="Filigrane Text").grid(row=1, column=0, padx=10, pady=5)
-        self.filigrane_entry = tk.Entry(root)
-        self.filigrane_entry.insert(0, "FILIGRANE A AJOUTER")
-        self.filigrane_entry.grid(row=1, column=1, padx=10, pady=5)
-        tk.Label(root, text="+ DATE / HEURE").grid(row=1, column=2, padx=5, pady=5)
+        # Filigrane text frame
+        filigrane_frame = tk.Frame(main_frame)
+        filigrane_frame.grid(row=1, column=0, pady=5, sticky="ew")
+        tk.Label(filigrane_frame, text="Filigrane Texte").pack(side="left", padx=(0, 10))
+        self.filigrane_entry = tk.Entry(filigrane_frame)
+        self.filigrane_entry.insert(0, "Filigrane à Ajouter")
+        self.filigrane_entry.pack(side="left", expand=True, fill="x", padx=(0, 5))
+        tk.Label(filigrane_frame, text="+ Date_Heure").pack(side="right")
 
-        # Output path selection label and button
-        tk.Label(root, text="Répertoire Sauvegarde").grid(row=2, column=0, padx=10, pady=5)
-        self.output_button = tk.Button(root, text="Sélection", command=self.select_output_folder)
-        self.output_button.grid(row=2, column=1, padx=10, pady=5)
+        # Output path selection frame
+        output_frame = tk.Frame(main_frame)
+        output_frame.grid(row=2, column=0, pady=5, sticky="ew")
+        tk.Label(output_frame, text="Répertoire Sauvegarde").pack(side="left", padx=(0, 10))
+        self.output_button = tk.Button(output_frame, text="Sélection", command=self.select_output_folder)
+        self.output_button.pack(side="right")
 
         # Expert mode toggle
         self.expert_mode_var = tk.BooleanVar(value=False)
-        self.expert_mode_checkbox = tk.Checkbutton(self.root, text="Expert Mode", variable=self.expert_mode_var, command=self.toggle_expert_mode)
-        self.expert_mode_checkbox.grid(row=3, column=0, padx=10, pady=5, sticky='w')
-
-        # Image display area
-        self.generated_file_label = tk.Label(root, text="")
-        self.generated_file_label.grid(row=8, column=0, columnspan=2, padx=10, pady=5)
+        self.expert_mode_checkbox = tk.Checkbutton(main_frame, text="Expert Mode", variable=self.expert_mode_var, command=self.toggle_expert_mode)
+        #self.expert_mode_checkbox.grid(row=3, column=0, pady=(10, 5), sticky='w')
 
         # Add filigrane button
-        self.add_filigrane_button = tk.Button(root, text="Génération Image", command=self.on_add_filigrane_clicked)
-        self.add_filigrane_button.grid(row=7, columnspan=2, pady=10)
+        self.add_filigrane_button = tk.Button(main_frame, text="Génération Image", command=self.on_add_filigrane_clicked)
+        self.add_filigrane_button.grid(row=4, column=0, pady=(10, 5))
+
+        # Generated file label
+        self.generated_file_label = tk.Label(main_frame, text="")
+        self.generated_file_label.grid(row=5, column=0, pady=5)
 
         # Image display label
-        self.image_label = tk.Label(root)
-        self.image_label.grid(row=9, columnspan=2, pady=10)
-
+        self.image_label = tk.Label(main_frame)
+        self.image_label.grid(row=6, column=0, pady=(5, 10))
+        
     def select_file(self):
     # Specify the file types for the dialog
         filetypes = [
@@ -125,9 +137,9 @@ class FiligraneApp:
         about_window.title("About Filigrane App")
         about_window.resizable(False, False)
         info_text = (
-            "Filigrane App Version 0.1\n"
-            "Cette application ajoute un filigrane à une image.\n"
-            "GPL2 \n\n"
+            "Filigrane App Version 1.1\n\n"
+            "Cette application ajoute un filigrane à une image\n"
+            "Licence GPL2 \n\n"
             "Project Open Source sur GitHub: "
         )
 
@@ -241,13 +253,14 @@ class FiligraneApp:
         filigrane_text = self.filigrane_entry.get()
 
         if not filigrane_text:
-            messagebox.showwarning("Input Error", "SVP Entrez un texte filigrane")
+            messagebox.showwarning("Input Error", "SVP Entrez un texte pour le filigrane")
             return
 
         if not self.output_folder_path:
-            messagebox.showwarning("Input Error", "SVP Séléctionnez un répertoire de sauvegarde")
-            return
-
+            default_output_dir = os.path.dirname(self.selected_file_path)
+        else:
+            default_output_dir = self.output_folder_path
+            
         try:
             # Call the function to add filigrane and get output image path
             output_image_path = self.add_filigrane_to_image(self.selected_file_path, filigrane_text)
@@ -282,7 +295,7 @@ class FiligraneApp:
             cest_time = self.get_current_time_ces()
 
             if os.path.exists('/usr/share/fonts/truetype/DejaVuSans.ttf'):
-                font = ImageFont.truetype("DejaVuSans-Bold.ttf", self.fili_font_size)
+                font = ImageFont.truetype("DejaVuSans.ttf", self.fili_font_size)
             else:
                 print("Pas trouvé de Font DejaVuSans....")
                 font = ImageFont.load_default()
@@ -325,7 +338,7 @@ class FiligraneApp:
                         random.randint(0, 255),
                         random.randint(0, 255),
                         random.randint(0, 255),
-                        80
+                        40
                     )
 
                     rotated_text_img = Image.new('RGBA', img.size)
