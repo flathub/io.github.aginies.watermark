@@ -36,7 +36,7 @@ class FiligraneApp:
         self.selected_files_path = []
         self.compression_rate = 75
         self.fili_font_size = 20
-        self.fili_density = 20
+        self.fili_density = 40
         self.all_images = []
         self.current_image_index = 0
         self.image_paths = ""
@@ -99,12 +99,11 @@ class FiligraneApp:
         img = Image.open(image_path)
         img.thumbnail((800, 600), Image.LANCZOS)
         tk_img = ImageTk.PhotoImage(img)
-        for widget in self.root.winfo_children():
-            if isinstance(widget, tk.Label) and hasattr(widget, 'image'):
-                widget.destroy()
-        image_label = tk.Label(self.root, image=tk_img)
-        image_label.image = tk_img
-        image_label.pack()
+        if hasattr(self, 'image_label') and self.image_label is not None:
+            self.image_label.destroy()
+        self.image_label = tk.Label(self.root, image=tk_img)
+        self.image_label.image = tk_img
+        self.image_label.pack()
 
     def display_multiple_images(self, image_paths):
         """ displaying multiple images """
@@ -274,8 +273,10 @@ class FiligraneApp:
 
             if len(self.selected_files_path) == 1:
                 self.display_single_image(self.all_images[0])
+                self.all_images = []
             else:
                 self.display_multiple_images(self.all_images)
+                self.all_images = []
 
         except Exception as err:
             print(f"Error processing the image: {err}")
@@ -328,7 +329,7 @@ class FiligraneApp:
                                 random.randint(0, 255),
                                 random.randint(0, 255),
                                 random.randint(0, 255),
-                                60 # Adjust transparency here
+                                50 # Adjust transparency
                             )
                             rotated_text_img = Image.new('RGBA', img.size)
                             draw_rotated = ImageDraw.Draw(rotated_text_img)
