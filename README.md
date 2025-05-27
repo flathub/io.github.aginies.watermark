@@ -9,6 +9,7 @@ Script en Python TK. Pour une utilisation sous Windows.
 * Redimension de l'image en 1280x
 * Compression en JPEG à 75%
 * Support conversion multiple images
+* Répertoire de sauvegarde par défaut et celui de la première image
 
 ![image](https://github.com/aginies/easy_tag/blob/302f1470e304135e7b839923b476dba12c554439/filigrane_app.jpg)
 
