@@ -11,7 +11,7 @@ Script en Python TK. Pour une utilisation sous Windows.
 * Support conversion multiple images
 * Répertoire de sauvegarde par défaut et celui de la première image
 
-![image](https://github.com/aginies/easy_tag/blob/fba1982e88b5ec557132433941e4f6b3fa5050cf/filigrane_app.jpg)
+![image](https://github.com/aginies/easy_tag/blob/555160b92cffaeda17972068ce4b4d2828de350f/filigrane_app.jpg)
 
 ## Obtenir le .exe (Windows)
 
