@@ -10,7 +10,7 @@ Script en Python TK. Pour une utilisation sous Windows.
 * Compression en JPEG à 75%
 * Support conversion multiple images
 
-![image](https://github.com/aginies/easy_tag/blob/9d667ab99d971a9f8d7c28b26d0173b775668716/filigrane_app.jpg)
+![image](https://github.com/aginies/easy_tag/blob/302f1470e304135e7b839923b476dba12c554439/filigrane_app.jpg)
 
 ## Obtenir le .exe
 
