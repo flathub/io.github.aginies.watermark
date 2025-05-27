@@ -59,6 +59,9 @@ class FiligraneApp:
         self.file_button = tk.Button(file_frame, text="Sélection", command=self.select_file)
         self.file_button.pack(side="right")
 
+        self.files_label = tk.Label(main_frame, text="", wraplength=400, justify="left")
+        self.files_label.pack(expand=True, fill="x")
+
         # Filigrane text frame
         filigrane_frame = tk.Frame(main_frame)
         filigrane_frame.pack(fill="x", pady=5)
@@ -164,10 +167,16 @@ class FiligraneApp:
         files = filedialog.askopenfilenames(title="Sélection de fichier(s)", filetypes=filetypes)
         if files:
             self.selected_files_path = list(files)
+            self.update_file_button_text()
+            self.current_image_index = 0
             print(f"Selected files: {self.selected_files_path}")
 
+    def update_file_button_text(self):
+        selected_files_str = ", ".join(os.path.basename(path) for path in self.selected_files_path)
+        self.files_label.config(text=f"Fichier(s) séléctionné(s):\n {selected_files_str}")
+
     def select_output_folder(self):
-        folder_path = filedialog.askdirectory(title="Select Output Folder")
+        folder_path = filedialog.askdirectory(title="Séléction Répertoire Sauvegarde")
         if folder_path:
             self.output_button.config(text=os.path.basename(folder_path))
             self.output_folder_path = folder_path
@@ -247,6 +256,7 @@ class FiligraneApp:
 
         if not self.output_folder_path:
             default_output_dir = os.path.dirname(self.selected_files_path[0])
+            self.output_button.config(text=default_output_dir)
         else:
             default_output_dir = self.output_folder_path
 
