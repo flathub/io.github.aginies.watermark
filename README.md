@@ -1,10 +1,14 @@
 # Objectif
 
-Script en python pour ajouter un filigrane à une image.
+Divers scripts en python pour ajouter un filigrane à une image.
 
 ## filigrane_app.py
 
 Script en Python TK. Pour une utilisation sous Windows.
+* Ajout du filigrane sur l'image
+* Redimension de l'image en 1280x
+* Compression en JPEG à 75%
+* Support conversion multiple images
 
 ![image](https://github.com/aginies/easy_tag/blob/9d667ab99d971a9f8d7c28b26d0173b775668716/filigrane_app.jpg)
 
