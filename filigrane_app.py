@@ -305,7 +305,7 @@ class FiligraneApp:
                     font = ImageFont.truetype("DejaVuSans.ttf", self.fili_font_size)
                 else:
                     print("Pas trouvé de Font DejaVuSans....")
-                    font = ImageFont.load_default()
+                    font = ImageFont.truetype("arial.ttf", self.fili_font_size)
     
                 timestamp_str_text = time.strftime('%d%m%Y_%H%M%S', cest_time)
                 full_filigrane_text = f"{text} {timestamp_str_text}"
