@@ -11,9 +11,9 @@ Script en Python TK. Pour une utilisation sous Windows.
 * Support conversion multiple images
 * Répertoire de sauvegarde par défaut et celui de la première image
 
-![image](https://github.com/aginies/easy_tag/blob/302f1470e304135e7b839923b476dba12c554439/filigrane_app.jpg)
+![image](https://github.com/aginies/easy_tag/blob/fba1982e88b5ec557132433941e4f6b3fa5050cf/filigrane_app.jpg)
 
-## Obtenir le .exe
+## Obtenir le .exe (Windows)
 
 * installer python sous windows https://www.python.org/downloads/?lang=fr
 * installer PyInstaller
