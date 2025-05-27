@@ -4,11 +4,28 @@
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
-from PIL import Image, ImageDraw, ImageFont, ImageTk
-import os
-import tempfile
 import random
 import time
+import os
+from PIL import Image, ImageDraw, ImageFont, ImageTk
+
+class CustomMessageDialog(tk.Toplevel):
+    def __init__(self, title=None, message="", parent=None):
+        super().__init__(parent)
+        self.title(title)
+        # Create a frame for the dialog content
+        self.frame = tk.Frame(self)
+        self.frame.pack(padx=10, pady=10)
+
+        self.message_label = tk.Label(self.frame, text=message, wraplength=400, justify='left')
+        self.message_label.pack()
+
+        self.ok_button = tk.Button(self.frame, text="OK", command=self.destroy)
+        self.ok_button.pack(pady=10)
+
+        self.transient(parent)
+        if parent is not None:
+            self.wait_window(self)
 
 class FiligraneApp:
     def __init__(self, root):
@@ -16,10 +33,11 @@ class FiligraneApp:
         self.root.title("Filigrane App Image")
         self.root.resizable(False, False)
         self.output_folder_path = ""
-        self.selected_file_path = ""
+        self.selected_files_path = []
         self.compression_rate = 75
         self.fili_font_size = 20
         self.fili_density = 12
+        self.all_images = []
 
         # Main frame for all widgets
         main_frame = tk.Frame(root, padx=10, pady=10)
@@ -40,7 +58,7 @@ class FiligraneApp:
         # File selection frame
         file_frame = tk.Frame(main_frame)
         file_frame.grid(row=0, column=0, pady=5, sticky="ew")
-        tk.Label(file_frame, text="Sélection Image").pack(side="left", padx=(0, 10))
+        tk.Label(file_frame, text="Sélection Images").pack(side="left", padx=(0, 10))
         self.file_button = tk.Button(file_frame, text="Sélection", command=self.select_file)
         self.file_button.pack(side="right")
 
@@ -49,7 +67,7 @@ class FiligraneApp:
         filigrane_frame.grid(row=1, column=0, pady=5, sticky="ew")
         tk.Label(filigrane_frame, text="Filigrane Texte").pack(side="left", padx=(0, 10))
         self.filigrane_entry = tk.Entry(filigrane_frame)
-        self.filigrane_entry.insert(0, "Filigrane à Ajouter")
+        self.filigrane_entry.insert(0, "Data")
         self.filigrane_entry.pack(side="left", expand=True, fill="x", padx=(0, 5))
         tk.Label(filigrane_frame, text="+ Date_Heure").pack(side="right")
 
@@ -75,8 +93,8 @@ class FiligraneApp:
 
         # Image display label
         self.image_label = tk.Label(main_frame)
-        self.image_label.grid(row=6, column=0, pady=(5, 10))
-        
+        self.image_label.grid(row=6, column=0, pady=(5, 5))
+
     def select_file(self):
     # Specify the file types for the dialog
         filetypes = [
@@ -87,10 +105,10 @@ class FiligraneApp:
             ("BMP files", "*.bmp"),
         ]
 
-        file_path = filedialog.askopenfilename(title="Sélection d'un fichier", filetypes=filetypes)
-        if file_path:
-            self.file_button.config(text=os.path.basename(file_path))
-            self.selected_file_path = file_path
+        files = filedialog.askopenfilenames(title="Sélection d'un fichier", filetypes=filetypes)
+        if files:
+            self.selected_files_path = list(files)
+            print(f"Selected files: {self.selected_files_path}")
 
     def select_output_folder(self):
         folder_path = filedialog.askdirectory(title="Select Output Folder")
@@ -161,8 +179,8 @@ class FiligraneApp:
 
     def on_add_filigrane_clicked(self):
         # Check if a file is selected
-        if not self.selected_file_path:
-            messagebox.showwarning("Input Error", "SVP Séléctionnez une image")
+        if not self.selected_files_path:
+            messagebox.showwarning("Input Error", "SVP Séléctionnez des image")
             return
 
         filigrane_text = self.filigrane_entry.get()
@@ -172,21 +190,27 @@ class FiligraneApp:
             return
 
         if not self.output_folder_path:
-            default_output_dir = os.path.dirname(self.selected_file_path)
+            default_output_dir = os.path.dirname(self.selected_files_path[0])
         else:
             default_output_dir = self.output_folder_path
-            
+
         try:
-            # Call the function to add filigrane and get output image path
-            output_image_path = self.add_filigrane_to_image(self.selected_file_path, filigrane_text)
-            if output_image_path:
-            # Load the output image for display in Tkinter
+            for image_path in self.selected_files_path:
+                output_image_path = self.add_filigrane_to_image(image_path, filigrane_text)
+                if output_image_path:
+                    print("Success", f"Generated File: {os.path.basename(output_image_path)}\n")
+                    self.all_images.append(output_image_path)
+
+            if len(self.selected_files_path) == 1:
+                output_image_path = self.add_filigrane_to_image(self.selected_files_path[0], filigrane_text)
                 img = Image.open(output_image_path)
                 img.thumbnail((800, 600), Image.LANCZOS)
                 self.tk_img = ImageTk.PhotoImage(img)
                 self.image_label.config(image=self.tk_img)
                 self.generated_file_label.config(text=f"Generated File: {os.path.basename(output_image_path)}")
-                
+            else:
+                CustomMessageDialog("OK\n", f"Generated Files\n: {self.all_images}")
+
         except Exception as err:
             print(f"Error processing the image: {err}")
             messagebox.showerror("Processing Error", f"Une erreur lors du traitement de l'image: {err}")
@@ -224,7 +248,7 @@ class FiligraneApp:
 
             dpi = self.fili_density
             interval_pixels = int(1 * dpi)
-            
+
             for y in range(interval_pixels, img.height, interval_pixels):
                 if y < text_height:
                     x_positions = [random.randint(max(0, img.width // 2 - text_width), min(img.width // 2 + text_width, img.width))]
@@ -245,7 +269,7 @@ class FiligraneApp:
                             random.randint(max(0, left_x_end), min(img.width // 3, img.width)),
                             random.randint(right_x_start, min(img.width, right_x_start + text_width))
                         ]
-            
+
                 for x in x_positions:
                     angle = random.uniform(-30, 40)
 
@@ -280,13 +304,13 @@ class FiligraneApp:
             output_path = os.path.join(self.output_folder_path, final_filename)
             img.convert("RGB").save(output_path, "JPEG", quality=self.compression_rate)
             return output_path
-            
+
         except Exception as err:
             print(f"Error adding filigrane: {err}")
             messagebox.showerror("Filigrane Error", f"An error occurred while adding the filigrane: {err}")
             return None
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = FiligraneApp(root)
-    root.mainloop()
+    ROOT = tk.Tk()
+    APP = FiligraneApp(ROOT)
+    ROOT.mainloop()
