@@ -36,7 +36,7 @@ class FiligraneApp:
         self.selected_files_path = []
         self.compression_rate = 75
         self.fili_font_size = 20
-        self.fili_density = 90
+        self.fili_density = 120
         self.all_images = []
         self.current_image_index = 0
         self.image_paths = ""
@@ -328,7 +328,7 @@ class FiligraneApp:
                                 random.randint(0, 255),
                                 random.randint(0, 255),
                                 random.randint(0, 255),
-                                40 # Adjust transparency here
+                                60 # Adjust transparency here
                             )
                             rotated_text_img = Image.new('RGBA', img.size)
                             draw_rotated = ImageDraw.Draw(rotated_text_img)
