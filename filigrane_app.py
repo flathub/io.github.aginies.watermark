@@ -323,7 +323,7 @@ class FiligraneApp:
 
                     for x in x_positions:
                         if (x, y) not in used_positions:
-                            angle = random.uniform(-12, 12)
+                            angle = random.uniform(-30, 30)
                             color = (
                                 random.randint(0, 255),
                                 random.randint(0, 255),
