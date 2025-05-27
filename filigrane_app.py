@@ -301,7 +301,7 @@ class FiligraneApp:
                 cest_time = self.get_current_time_ces()
 
                 # Load font
-                if os.path.exists('/usr/share/fonts/truetype/DejaVuSans.ttf'):
+                if os.path.exists('DejaVuSans.ttf'):
                     font = ImageFont.truetype("DejaVuSans.ttf", self.fili_font_size)
                 else:
                     print("Pas trouvé de Font DejaVuSans....")
