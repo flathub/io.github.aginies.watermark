@@ -31,21 +31,18 @@ class FiligraneApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Filigrane App Image")
-        self.root.resizable(False, False)
+        #self.root.resizable(False, False)
         self.output_folder_path = ""
         self.selected_files_path = []
         self.compression_rate = 75
         self.fili_font_size = 20
         self.fili_density = 12
         self.all_images = []
+        self.current_image_index = 0
 
         # Main frame for all widgets
-        main_frame = tk.Frame(root, padx=10, pady=10)
-        main_frame.grid(row=0, column=0, sticky="nsew")
-
-        # Configure row and column weights to make the layout responsive
-        self.root.columnconfigure(0, weight=1)
-        self.root.rowconfigure(0, weight=1)
+        main_frame = tk.Frame(root, padx=10, pady=10) #, width=100, height=100)
+        main_frame.pack(fill="both", expand=True)
 
         # Create a menu bar
         menubar = tk.Menu(self.root)
@@ -57,14 +54,14 @@ class FiligraneApp:
 
         # File selection frame
         file_frame = tk.Frame(main_frame)
-        file_frame.grid(row=0, column=0, pady=5, sticky="ew")
+        file_frame.pack(fill="x", pady=5)
         tk.Label(file_frame, text="Sélection Images").pack(side="left", padx=(0, 10))
         self.file_button = tk.Button(file_frame, text="Sélection", command=self.select_file)
         self.file_button.pack(side="right")
 
         # Filigrane text frame
         filigrane_frame = tk.Frame(main_frame)
-        filigrane_frame.grid(row=1, column=0, pady=5, sticky="ew")
+        filigrane_frame.pack(fill="x", pady=5)
         tk.Label(filigrane_frame, text="Filigrane Texte").pack(side="left", padx=(0, 10))
         self.filigrane_entry = tk.Entry(filigrane_frame)
         self.filigrane_entry.insert(0, "Data")
@@ -73,27 +70,86 @@ class FiligraneApp:
 
         # Output path selection frame
         output_frame = tk.Frame(main_frame)
-        output_frame.grid(row=2, column=0, pady=5, sticky="ew")
+        output_frame.pack(fill="x", pady=5)
         tk.Label(output_frame, text="Répertoire Sauvegarde").pack(side="left", padx=(0, 10))
         self.output_button = tk.Button(output_frame, text="Sélection", command=self.select_output_folder)
         self.output_button.pack(side="right")
 
         # Expert mode toggle
-        self.expert_mode_var = tk.BooleanVar(value=False)
-        self.expert_mode_checkbox = tk.Checkbutton(main_frame, text="Expert Mode", variable=self.expert_mode_var, command=self.toggle_expert_mode)
-        #self.expert_mode_checkbox.grid(row=3, column=0, pady=(10, 5), sticky='w')
+        #self.expert_mode_var = tk.BooleanVar(value=False)
+        #self.expert_mode_checkbox = tk.Checkbutton(main_frame, text="Expert Mode", variable=self.expert_mode_var, command=self.toggle_expert_mode)
 
         # Add filigrane button
         self.add_filigrane_button = tk.Button(main_frame, text="Génération Image", command=self.on_add_filigrane_clicked)
-        self.add_filigrane_button.grid(row=4, column=0, pady=(10, 5))
+        self.add_filigrane_button.pack(pady=(5, 5))
 
         # Generated file label
         self.generated_file_label = tk.Label(main_frame, text="")
-        self.generated_file_label.grid(row=5, column=0, pady=5)
+        self.generated_file_label.pack(pady=5)
 
         # Image display label
         self.image_label = tk.Label(main_frame)
-        self.image_label.grid(row=6, column=0, pady=(5, 5))
+        self.image_label.pack(pady=(5, 5))
+
+    def display_single_image(self, image_path):
+        img = Image.open(image_path)
+        img.thumbnail((800, 600), Image.LANCZOS)
+        tk_img = ImageTk.PhotoImage(img)
+        for widget in self.root.winfo_children():
+            if isinstance(widget, tk.Label) and hasattr(widget, 'image'):
+                widget.destroy()
+        image_label = tk.Label(self.root, image=tk_img)
+        image_label.image = tk_img
+        image_label.pack()
+
+    def display_multiple_images(self, image_paths):
+        for widget in self.root.winfo_children():
+            if isinstance(widget, tk.Canvas) or isinstance(widget, tk.Label):
+                widget.destroy()
+
+        self.image_paths = image_paths
+        self.filename_label = tk.Label(self.root, text="")
+        self.filename_label.pack(pady=5)
+
+        self.image_label = tk.Label(self.root, text="Pas d'image selectionnée")
+        self.image_label.pack(pady=10, padx=10)
+
+        next_button = tk.Button(self.root, text=" > ", command=self.next_image)
+        prev_button = tk.Button(self.root, text=" < ", command=self.prev_image)
+
+        self.count_label = tk.Label(self.root, text=f"Image 1 / {len(image_paths)}")
+        self.count_label.pack(side=tk.BOTTOM, pady=5)
+
+        next_button.pack(side='right', padx=5)
+        prev_button.pack(side='left', padx=5)
+        self.count_label.place(relx=0.5, rely=1, anchor="s", x=0)
+        self.show_image(self.current_image_index)
+
+    def next_image(self):
+        if len(self.image_paths) > 0:
+            new_index = (self.current_image_index + 1) % len(self.image_paths)
+            self.current_image_index = new_index
+            self.show_image(new_index)
+
+    def prev_image(self):
+        if len(self.image_paths) > 0:
+            new_index = (self.current_image_index - 1) % len(self.image_paths)
+            self.current_image_index = new_index
+            self.show_image(new_index)
+
+    def show_image(self, index):
+        if 0 <= index < len(self.image_paths):
+            img = Image.open(self.image_paths[index])
+            img.thumbnail((800, 600), Image.LANCZOS)
+            tk_img = ImageTk.PhotoImage(img)
+
+            self.image_label.config(image=tk_img)
+            self.image_label.image = tk_img
+
+        self.count_label.config(text=f"Image {index + 1} of {len(self.image_paths)}")
+        filename = os.path.basename(self.image_paths[index])
+        print(f"Updating filename label with: {filename}")
+        self.filename_label.config(text=filename)
 
     def select_file(self):
     # Specify the file types for the dialog
@@ -105,7 +161,7 @@ class FiligraneApp:
             ("BMP files", "*.bmp"),
         ]
 
-        files = filedialog.askopenfilenames(title="Sélection d'un fichier", filetypes=filetypes)
+        files = filedialog.askopenfilenames(title="Sélection de fichier(s)", filetypes=filetypes)
         if files:
             self.selected_files_path = list(files)
             print(f"Selected files: {self.selected_files_path}")
@@ -152,7 +208,7 @@ class FiligraneApp:
     def about_dialog(self):
         # Create a custom dialog window for the About section with a clickable link
         about_window = tk.Toplevel(self.root)
-        about_window.title("About Filigrane App")
+        about_window.title("A Propos Filigrane App")
         about_window.resizable(False, False)
         info_text = (
             "Filigrane App Version 1.1\n\n"
@@ -178,7 +234,7 @@ class FiligraneApp:
         webbrowser.open("https://github.com/aginies/easy_tag")
 
     def on_add_filigrane_clicked(self):
-        # Check if a file is selected
+        self.current_image_index = 0
         if not self.selected_files_path:
             messagebox.showwarning("Input Error", "SVP Séléctionnez des image")
             return
@@ -202,14 +258,9 @@ class FiligraneApp:
                     self.all_images.append(output_image_path)
 
             if len(self.selected_files_path) == 1:
-                output_image_path = self.add_filigrane_to_image(self.selected_files_path[0], filigrane_text)
-                img = Image.open(output_image_path)
-                img.thumbnail((800, 600), Image.LANCZOS)
-                self.tk_img = ImageTk.PhotoImage(img)
-                self.image_label.config(image=self.tk_img)
-                self.generated_file_label.config(text=f"Generated File: {os.path.basename(output_image_path)}")
+                self.display_single_image(self.all_images[0])
             else:
-                CustomMessageDialog("OK\n", f"Generated Files\n: {self.all_images}")
+                self.display_multiple_images(self.all_images)
 
         except Exception as err:
             print(f"Error processing the image: {err}")
