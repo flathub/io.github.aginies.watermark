@@ -26,20 +26,22 @@ python -m pip install PyInstaller
 pyinstaller --onefile --windowed filigrane_app.py
 ```
 
-Le fichier **filigrane_app.exe** sera dans le répertoire **dist**
+Le fichier **filigrane_app.exe** sera dans le répertoire **dist**.
+Pour obtenir une version avec du debug de console il faut retirer l'option **--windowed** de la commande **pyinstaller**.
 
-## easytag.py
+## easytag.py (obsolete)
 
 Script en Python3 GTK. Version initiale mais impossible de le faire fonctionner sous Windows,
-donc j'ai fait une version avec TK.
+donc j'ai fait une version avec TK. Cette version n'est plus la maintenue pour privilégié
+une version mult- plateforme (avec TK).
 ```
 chmod 755 easy_tag.py
 ./easy_tag.py
 ```
 
-## easy_tag.sh
+## easy_tag.sh (No GUI)
 
-Premiere version eb bash qui utilise ImageMagick.
+Premiere version en bash qui utilise ImageMagick.
 
 ### AVANT UTILISATION
 
