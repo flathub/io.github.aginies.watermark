@@ -36,9 +36,10 @@ class FiligraneApp:
         self.selected_files_path = []
         self.compression_rate = 75
         self.fili_font_size = 20
-        self.fili_density = 12
+        self.fili_density = 90
         self.all_images = []
         self.current_image_index = 0
+        self.image_paths = ""
 
         # Main frame for all widgets
         main_frame = tk.Frame(root, padx=10, pady=10) #, width=100, height=100)
@@ -47,7 +48,7 @@ class FiligraneApp:
         # Create a menu bar
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
-        menubar.add_command(label="Quit", command=self.root.quit)
+        menubar.add_command(label="Quitter", command=self.root.quit)
         about_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="A Propos", menu=about_menu)
         about_menu.add_command(label="A Propos de Filigrane App", command=self.about_dialog)
@@ -65,7 +66,7 @@ class FiligraneApp:
         # Filigrane text frame
         filigrane_frame = tk.Frame(main_frame)
         filigrane_frame.pack(fill="x", pady=5)
-        tk.Label(filigrane_frame, text="Filigrane Texte").pack(side="left", padx=(0, 10))
+        tk.Label(filigrane_frame, text="Texte du Filigrane").pack(side="left", padx=(0, 10))
         self.filigrane_entry = tk.Entry(filigrane_frame)
         self.filigrane_entry.insert(0, "Data")
         self.filigrane_entry.pack(side="left", expand=True, fill="x", padx=(0, 5))
@@ -83,8 +84,8 @@ class FiligraneApp:
         #self.expert_mode_checkbox = tk.Checkbutton(main_frame, text="Expert Mode", variable=self.expert_mode_var, command=self.toggle_expert_mode)
 
         # Add filigrane button
-        self.add_filigrane_button = tk.Button(main_frame, text="Génération Image", command=self.on_add_filigrane_clicked)
-        self.add_filigrane_button.pack(pady=(5, 5))
+        self.add_filigrane_button = tk.Button(main_frame, text="Ajouter Filigrane", command=self.on_add_filigrane_clicked)
+        self.add_filigrane_button.pack(side="top")#, pady=(5, 5))
 
         # Generated file label
         self.generated_file_label = tk.Label(main_frame, text="")
@@ -106,6 +107,7 @@ class FiligraneApp:
         image_label.pack()
 
     def display_multiple_images(self, image_paths):
+        """ displaying multiple images """
         for widget in self.root.winfo_children():
             if isinstance(widget, tk.Canvas) or isinstance(widget, tk.Label):
                 widget.destroy()
@@ -129,18 +131,21 @@ class FiligraneApp:
         self.show_image(self.current_image_index)
 
     def next_image(self):
+        """ got to next image """
         if len(self.image_paths) > 0:
             new_index = (self.current_image_index + 1) % len(self.image_paths)
             self.current_image_index = new_index
             self.show_image(new_index)
 
     def prev_image(self):
+        """ got to previous image """
         if len(self.image_paths) > 0:
             new_index = (self.current_image_index - 1) % len(self.image_paths)
             self.current_image_index = new_index
             self.show_image(new_index)
 
     def show_image(self, index):
+        """ show the image """
         if 0 <= index < len(self.image_paths):
             img = Image.open(self.image_paths[index])
             img.thumbnail((800, 600), Image.LANCZOS)
@@ -155,7 +160,7 @@ class FiligraneApp:
         self.filename_label.config(text=filename)
 
     def select_file(self):
-    # Specify the file types for the dialog
+        """ select dialog"""
         filetypes = [
             ("All files", "*.*"),
             ("PNG files", "*.png"),
@@ -209,8 +214,6 @@ class FiligraneApp:
             # Compression rate label and entry
             self.root.grid_slaves(row=5, column=0)[0].destroy()
             self.compression_entry.destroy()
-            #self.root.grid_slaves(row=6, column=0)[0].destroy()
-            #self.density_entry.destroy()
         except (IndexError, AttributeError):
             pass
 
@@ -221,7 +224,7 @@ class FiligraneApp:
         about_window.resizable(False, False)
         info_text = (
             "Filigrane App Version 2.0\n\n"
-            "Cette application ajoute un filigrane à une image\n"
+            "Cette application ajoute un filigrane à des images\n"
             "Licence GPL2 \n\n"
             "Project Open Source sur GitHub: "
         )
@@ -238,11 +241,13 @@ class FiligraneApp:
         close_button.pack(pady=10)
 
     def open_github(self):
+        """ open github web """
         # Open the GitHub link in the default web browser
         import webbrowser
         webbrowser.open("https://github.com/aginies/easy_tag")
 
     def on_add_filigrane_clicked(self):
+        """ action when clic! """
         self.current_image_index = 0
         if not self.selected_files_path:
             messagebox.showwarning("Input Error", "SVP Séléctionnez des image")
@@ -284,87 +289,68 @@ class FiligraneApp:
     def add_filigrane_to_image(self, image_path, text):
         try:
             with Image.open(image_path).convert("RGBA") as img:
+                # Resize image if it's too large while preserving aspect ratio
                 width_percent = (1280 / float(img.width))
                 height_size = int((float(img.height) * float(width_percent)))
 
-            if max(img.size) > 1280:
-                img = img.resize((1280, height_size), Image.LANCZOS)
+                if max(img.size) > 1280:
+                    img = img.resize((1280, height_size), Image.LANCZOS)
 
-            draw = ImageDraw.Draw(img)
+                draw = ImageDraw.Draw(img)
+                cest_time = self.get_current_time_ces()
 
-            cest_time = self.get_current_time_ces()
-
-            if os.path.exists('/usr/share/fonts/truetype/DejaVuSans.ttf'):
-                font = ImageFont.truetype("DejaVuSans.ttf", self.fili_font_size)
-            else:
-                print("Pas trouvé de Font DejaVuSans....")
-                font = ImageFont.load_default()
-
-            timestamp_str_text = time.strftime('%d%m%Y_%H%M%S', cest_time)
-            full_filigrane_text = f"{text} {timestamp_str_text}"
-            bbox = draw.textbbox((0, 0), full_filigrane_text, font=font)
-
-            text_width = bbox[2] - bbox[0]
-            text_height = bbox[3] - bbox[1]
-
-            dpi = self.fili_density
-            interval_pixels = int(1 * dpi)
-
-            for y in range(interval_pixels, img.height, interval_pixels):
-                if y < text_height:
-                    x_positions = [random.randint(max(0, img.width // 2 - text_width), min(img.width // 2 + text_width, img.width))]
-                elif y > img.height - text_height:
-                    x_positions = [random.randint(0, min(img.width - text_width, text_width))]
+                # Load font
+                if os.path.exists('/usr/share/fonts/truetype/DejaVuSans.ttf'):
+                    font = ImageFont.truetype("DejaVuSans.ttf", self.fili_font_size)
                 else:
-                    left_x_end = max(0, (img.width // 3) - text_width)
-                    right_x_start = img.width - (img.width // 3)
+                    print("Pas trouvé de Font DejaVuSans....")
+                    font = ImageFont.load_default()
+    
+                timestamp_str_text = time.strftime('%d%m%Y_%H%M%S', cest_time)
+                full_filigrane_text = f"{text} {timestamp_str_text}"
+                bbox = draw.textbbox((0, 0), full_filigrane_text, font=font)
 
-                    if left_x_end < 0 and right_x_start >= img.width:
-                        x_positions = []
-                    elif left_x_end < 0:
-                        x_positions = [random.randint(right_x_start, min(img.width, right_x_start + text_width))]
-                    elif right_x_start >= img.width:
-                        x_positions = [random.randint(left_x_end, min(img.width // 3, img.width))]
-                    else:
-                        x_positions = [
-                            random.randint(max(0, left_x_end), min(img.width // 3, img.width)),
-                            random.randint(right_x_start, min(img.width, right_x_start + text_width))
-                        ]
+                text_width = bbox[2] - bbox[0]
+                text_height = bbox[3] - bbox[1]
 
-                for x in x_positions:
-                    angle = random.uniform(-30, 40)
+                dpi = self.fili_density
+                interval_pixels_y = int(dpi)
+                used_positions = set()
 
-                    color = (
-                        random.randint(0, 255),
-                        random.randint(0, 255),
-                        random.randint(0, 255),
-                        40
-                    )
+                # Draw the continuous watermark across the image
+                for y in range(interval_pixels_y, img.height, interval_pixels_y):
+                    x_positions = [(x % img.width) for x in range(0, img.width, text_width)]
 
-                    rotated_text_img = Image.new('RGBA', img.size)
-                    draw_rotated = ImageDraw.Draw(rotated_text_img)
+                    for x in x_positions:
+                        if (x, y) not in used_positions:
+                            angle = random.uniform(-12, 12)
+                            color = (
+                                random.randint(0, 255),
+                                random.randint(0, 255),
+                                random.randint(0, 255),
+                                40 # Adjust transparency here
+                            )
+                            rotated_text_img = Image.new('RGBA', img.size)
+                            draw_rotated = ImageDraw.Draw(rotated_text_img)
+                            text_position = (x + text_width / 2, y + text_height / 2)
+                            temp_image = Image.new('RGBA', (text_width * 3, text_height * 3), (0, 0, 0, 0))
+                            temp_draw = ImageDraw.Draw(temp_image)
+                            temp_draw.text((text_width, text_height), full_filigrane_text, font=font, fill=color)
+                            rotated_text = temp_image.rotate(angle, expand=True)
+                            rotated_text_position = (
+                                x + text_width / 2 - rotated_text.width / 2,
+                                y + text_height / 2 - rotated_text.height / 2
+                            )
+                            img.paste(rotated_text, (int(rotated_text_position[0]), int(rotated_text_position[1])), mask=rotated_text)
+                            used_positions.add((x, y))
 
-                    text_position = (x + text_width, y + text_height / 2)
-                    temp_image = Image.new('RGBA', (text_width * 3, text_height * 3), (0, 0, 0, 0))
-                    temp_draw = ImageDraw.Draw(temp_image)
-                    temp_draw.text((text_width, text_height), full_filigrane_text, font=font, fill=color)
-
-                    rotated_text = temp_image.rotate(angle, expand=True)
-
-                    rotated_text_position = (
-                        x + text_width / 2 - rotated_text.width / 2,
-                        y + text_height / 2 - rotated_text.height / 2
-                    )
-
-                    img.paste(rotated_text, (int(rotated_text_position[0]), int(rotated_text_position[1])), mask=rotated_text)
-
-            timestamp_str = time.strftime('%d%m%Y_%H%M%S', cest_time)
-            original_filename = os.path.basename(image_path)
-            name_without_ext = os.path.splitext(original_filename)[0]
-            final_filename = f"ready_{text}_{timestamp_str}_{name_without_ext}.jpg"
-            output_path = os.path.join(self.output_folder_path, final_filename)
-            img.convert("RGB").save(output_path, "JPEG", quality=self.compression_rate)
-            return output_path
+                timestamp_str = time.strftime('%d%m%Y_%H%M%S', cest_time)
+                original_filename = os.path.basename(image_path)
+                name_without_ext = os.path.splitext(original_filename)[0]
+                final_filename = f"ready_{text}_{timestamp_str}_{name_without_ext}.jpg"
+                output_path = os.path.join(self.output_folder_path, final_filename)
+                img.convert("RGB").save(output_path, "JPEG", quality=self.compression_rate)
+                return output_path
 
         except Exception as err:
             print(f"Error adding filigrane: {err}")
