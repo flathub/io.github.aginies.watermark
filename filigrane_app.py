@@ -211,7 +211,7 @@ class FiligraneApp:
         about_window.title("A Propos Filigrane App")
         about_window.resizable(False, False)
         info_text = (
-            "Filigrane App Version 1.1\n\n"
+            "Filigrane App Version 2.0\n\n"
             "Cette application ajoute un filigrane à une image\n"
             "Licence GPL2 \n\n"
             "Project Open Source sur GitHub: "
