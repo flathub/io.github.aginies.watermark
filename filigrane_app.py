@@ -36,7 +36,7 @@ class FiligraneApp:
         self.selected_files_path = []
         self.compression_rate = 75
         self.fili_font_size = 20
-        self.fili_density = 120
+        self.fili_density = 20
         self.all_images = []
         self.current_image_index = 0
         self.image_paths = ""
