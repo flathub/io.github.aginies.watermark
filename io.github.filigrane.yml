@@ -1,8 +1,8 @@
-app-id: com.guibo.www.filigraneapp
+app-id: io.github.watermark
 runtime: org.gnome.Platform
 runtime-version: '48'
 sdk: org.gnome.Sdk
-command: filigrane_app
+command: watermark_app
 tags:
   - utility
   - image-processing
@@ -16,19 +16,19 @@ finish-args:
   - --talk-name=org.freedesktop.Notifications
   - --share=network
 modules:
-  - name: filigrane_app
+  - name: watermark_app
     buildsystem: simple
     build-commands:
-      - install -Dm755 filigrane_app.py /app/bin/filigrane_app
-      - install -Dm644 com.guibo.www.filigraneapp.png /app/share/icons/hicolor/256x256/apps/com.guibo.www.filigraneapp.png
-      - install -Dm644 com.guibo.www.filigraneapp.desktop /app/share/applications/com.guibo.www.filigraneapp.desktop
+      - install -Dm755 watermark_app.py /app/bin/watermark_app
+      - install -Dm644 io.github.watermark.png /app/share/icons/hicolor/256x256/apps/io.github.watermark.png
+      - install -Dm644 io.github.watermark.desktop /app/share/applications/io.github.watermark.desktop
     sources:
       - type: file
-        path: filigrane_app.py
+        path: watermark_app.py
       - type: file
-        path: com.guibo.www.filigraneapp.png
+        path: io.github.watermark.png
       - type: file
-        path: com.guibo.www.filigraneapp.desktop
+        path: io.github.watermark.desktop
   - name: python-dependencies
     buildsystem: simple
     build-options:
