@@ -1,5 +1,5 @@
 {
-  "app-id": "io.github.watermark",
+  "app-id": "io.github.aginies.watermark",
   "runtime": "org.gnome.Platform",
   "runtime-version": "48",
   "sdk": "org.gnome.Sdk",
@@ -21,8 +21,8 @@
       "buildsystem": "simple",
       "build-commands": [
         "install -Dm755 watermark_app.py /app/bin/watermark_app",
-        "install -Dm644 io.github.watermark.png /app/share/icons/hicolor/256x256/apps/io.github.watermark.png",
-        "install -Dm644 io.github.watermark.desktop /app/share/applications/io.github.watermark.desktop"
+        "install -Dm644 io.github.aginies.watermark.png /app/share/icons/hicolor/256x256/apps/io.github.watermark.png",
+        "install -Dm644 io.github.aginies.watermark.desktop /app/share/applications/io.github.aginies.watermark.desktop"
       ],
       "sources": [
         {
@@ -31,11 +31,11 @@
         },
         {
           "type": "file",
-          "path": "io.github.watermark.png"
+          "path": "io.github.aginies.watermark.png"
         },
         {
           "type": "file",
-          "path": "io.github.watermark.desktop"
+          "path": "io.github.aginies.watermark.desktop"
         }
       ]
     },
