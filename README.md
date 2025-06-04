@@ -2,7 +2,7 @@
 
 Python Application to Add a Watermark to an Image or Images
 
-FR: Application en python pour ajouter un filigrane à une image ou des images.
+**FR**: Application en python pour ajouter un filigrane à une image ou des images.
 
 # filigrane_app.py
 
@@ -15,7 +15,7 @@ Python TK script. For use on Windows or Linux.
 * Default save directory is that of the first image
 
 
-FR:
+**FR**:
 Script en Python TK. Pour une utilisation sous Windows ou Linux.
 * Ajout filigrane sur de multiple images
 * Liste des images selectionnées
