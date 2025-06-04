@@ -30,7 +30,7 @@ class CustomMessageDialog(tk.Toplevel):
 class FiligraneApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Filigrane/Watermark App Image")
+        self.root.title("Watermark/Filigrane App")
         #self.root.resizable(False, False)
         self.output_folder_path = ""
         self.selected_files_path = []

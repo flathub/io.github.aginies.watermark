@@ -10,11 +10,11 @@ build:
 		--user \
 		--repo=repo \
 		builddir \
-		io.github.watermark.json
+		io.github.aginies.watermark.json
 
 lint:
 	flatpak run --command=flatpak-builder-lint \
-	       	org.flatpak.Builder manifest io.github.watermark.json
+	       	org.flatpak.Builder manifest io.github.aginies.watermark.json
 
 run:
-	flatpak run io.github.watermark
+	flatpak run io.github.aginies.watermark
