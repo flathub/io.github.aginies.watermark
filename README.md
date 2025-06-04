@@ -54,6 +54,8 @@ To run it:
 make run
 ```
 
+For more information: https://docs.flathub.org/docs/for-app-authors/submission#build-and-install
+
 # OLD stuff
 
 ## easytag.py (obsolete)
