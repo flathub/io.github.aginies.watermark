@@ -2,9 +2,9 @@
 Name=Watermark App
 Name[fr]=Filigrane App
 Comment=An application to add watermarks to images
-Comment[fr]=Application pour ajouter un filigrane a des images
-Exec=filigrane_app
-Icon=com.guibo.www.filigraneapp
+Comment[fr]=Application pour ajouter des filigranes sur des images
+Exec=watermark_app
+Icon=io.github.watermark
 Terminal=false
 Type=Application
 Categories=Utility;Graphics;

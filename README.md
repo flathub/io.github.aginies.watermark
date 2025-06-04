@@ -4,7 +4,7 @@ Python Application to Add a Watermark to an Image or Images
 
 **FR**: Application en python pour ajouter un filigrane à une image ou des images.
 
-# filigrane_app.py
+# watermark_app.py
 
 Python TK script. For use on Windows or Linux.
 * Add watermark to multiple images
@@ -36,10 +36,10 @@ python -m pip install PyInstaller
 
 * Go to the script directory and type:
 ```
-pyinstaller --onefile --windowed filigrane_app.py
+pyinstaller --onefile --windowed watermark_app.py
 ```
 
-The **filigrane_app.exe** file will be in the **dist** directory.
+The **watermark_app.exe** file will be in the **dist** directory.
 To get a version with console debug, you need to remove the **--windowed** option from the **pyinstaller** command.
 
 ## flathub app

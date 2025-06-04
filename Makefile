@@ -10,11 +10,11 @@ build:
 		--user \
 		--repo=repo \
 		builddir \
-		com.guibo.www.filigraneapp.json
+		io.github.watermark.json
 
 lint:
 	flatpak run --command=flatpak-builder-lint \
-	       	org.flatpak.Builder manifest com.guibo.www.filigraneapp.json
+	       	org.flatpak.Builder manifest io.github.watermark.json
 
 run:
-	flatpak run com.guibo.www.filigraneapp
+	flatpak run io.github.watermark
