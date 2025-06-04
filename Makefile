@@ -1,6 +1,8 @@
 .PHONY: build
 
 build:
+	flatpak install -y flathub org.flatpak.Builder
+	flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpak
 	flatpak run org.flatpak.Builder \
 		--force-clean \
 		--install \
