@@ -24,7 +24,7 @@ Script en Python TK. Pour une utilisation sous Windows ou Linux.
 * Compression en JPEG à 75%
 * Répertoire de sauvegarde par défaut est celui de la première image
 
-![image](https://github.com/aginies/easy_tag/blob/555160b92cffaeda17972068ce4b4d2828de350f/filigrane_app.jpg)
+[![Demo](https://img.youtube.com/vi/XCRIuAW7zwY/0.jpg)](https://www.youtube.com/watch?v=XCRIuAW7zwY)
 
 ## Get the .exe (Windows)
 
