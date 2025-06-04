@@ -232,7 +232,7 @@ class FiligraneApp:
         label.pack(padx=20, pady=10)
 
         # Create a clickable hyperlink
-        github_link = tk.Label(about_window, text="https://github.com/aginies/easy_tag", foreground="blue", cursor="hand2")
+        github_link = tk.Label(about_window, text="https://github.com/aginies/watermark", foreground="blue", cursor="hand2")
         github_link.pack(padx=20, pady=5)
         github_link.bind("<Button-1>", lambda e: self.open_github())
 
@@ -243,7 +243,7 @@ class FiligraneApp:
         """ open github web """
         # Open the GitHub link in the default web browser
         import webbrowser
-        webbrowser.open("https://github.com/aginies/easy_tag")
+        webbrowser.open("https://github.com/aginies/watermark")
 
     def on_add_filigrane_clicked(self):
         """ action when clic! """
