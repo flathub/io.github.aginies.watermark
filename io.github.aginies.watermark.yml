@@ -9,7 +9,6 @@ tags:
 desktop-file-name-suffix: (Flatpak)
 finish-args:
   - --share=ipc
-  - --socket=wayland
   - --socket=x11
   - --device=dri
   - --filesystem=host
