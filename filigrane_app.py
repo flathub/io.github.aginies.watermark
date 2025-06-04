@@ -30,7 +30,7 @@ class CustomMessageDialog(tk.Toplevel):
 class FiligraneApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Filigrane App Image")
+        self.root.title("Filigrane/Watermark App Image")
         #self.root.resizable(False, False)
         self.output_folder_path = ""
         self.selected_files_path = []
@@ -48,16 +48,16 @@ class FiligraneApp:
         # Create a menu bar
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
-        menubar.add_command(label="Quitter", command=self.root.quit)
+        menubar.add_command(label="Exit", command=self.root.quit)
         about_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="A Propos", menu=about_menu)
-        about_menu.add_command(label="A Propos de Filigrane App", command=self.about_dialog)
+        menubar.add_cascade(label="About", menu=about_menu)
+        about_menu.add_command(label="About Filigrane App", command=self.about_dialog)
 
         # File selection frame
         file_frame = tk.Frame(main_frame)
         file_frame.pack(fill="x", pady=5)
-        tk.Label(file_frame, text="Sélection Images").pack(side="left", padx=(0, 10))
-        self.file_button = tk.Button(file_frame, text="Sélection", command=self.select_file)
+        tk.Label(file_frame, text="Select Image(s)").pack(side="left", padx=(0, 10))
+        self.file_button = tk.Button(file_frame, text="Select", command=self.select_file)
         self.file_button.pack(side="right")
 
         self.files_label = tk.Label(main_frame, text="", wraplength=400, justify="left")
@@ -66,17 +66,17 @@ class FiligraneApp:
         # Filigrane text frame
         filigrane_frame = tk.Frame(main_frame)
         filigrane_frame.pack(fill="x", pady=5)
-        tk.Label(filigrane_frame, text="Texte du Filigrane").pack(side="left", padx=(0, 10))
+        tk.Label(filigrane_frame, text="Watermark/Filigrane Text").pack(side="left", padx=(0, 10))
         self.filigrane_entry = tk.Entry(filigrane_frame)
         self.filigrane_entry.insert(0, "Data")
         self.filigrane_entry.pack(side="left", expand=True, fill="x", padx=(0, 5))
-        tk.Label(filigrane_frame, text="+ Date_Heure").pack(side="right")
+        tk.Label(filigrane_frame, text="+ Date_Time").pack(side="right")
 
         # Output path selection frame
         output_frame = tk.Frame(main_frame)
         output_frame.pack(fill="x", pady=5)
-        tk.Label(output_frame, text="Répertoire Sauvegarde").pack(side="left", padx=(0, 10))
-        self.output_button = tk.Button(output_frame, text="Sélection", command=self.select_output_folder)
+        tk.Label(output_frame, text="Backup Directory (to store Watermaked images)").pack(side="left", padx=(0, 10))
+        self.output_button = tk.Button(output_frame, text="Select", command=self.select_output_folder)
         self.output_button.pack(side="right")
 
         # Expert mode toggle
@@ -84,7 +84,7 @@ class FiligraneApp:
         #self.expert_mode_checkbox = tk.Checkbutton(main_frame, text="Expert Mode", variable=self.expert_mode_var, command=self.toggle_expert_mode)
 
         # Add filigrane button
-        self.add_filigrane_button = tk.Button(main_frame, text="Ajouter Filigrane", command=self.on_add_filigrane_clicked)
+        self.add_filigrane_button = tk.Button(main_frame, text="Add Watermark/Filigrane", command=self.on_add_filigrane_clicked)
         self.add_filigrane_button.pack(side="top")#, pady=(5, 5))
 
         # Generated file label
@@ -115,7 +115,7 @@ class FiligraneApp:
         self.filename_label = tk.Label(self.root, text="")
         self.filename_label.pack(pady=5)
 
-        self.image_label = tk.Label(self.root, text="Pas d'image selectionnée")
+        self.image_label = tk.Label(self.root, text="No image(s) Selected")
         self.image_label.pack(pady=10, padx=10)
 
         next_button = tk.Button(self.root, text=" > ", command=self.next_image)
@@ -168,19 +168,19 @@ class FiligraneApp:
             ("BMP files", "*.bmp"),
         ]
 
-        files = filedialog.askopenfilenames(title="Sélection de fichier(s)", filetypes=filetypes)
+        files = filedialog.askopenfilenames(title="Select File(s)", filetypes=filetypes)
         if files:
             self.selected_files_path = list(files)
             self.update_file_button_text()
             self.current_image_index = 0
-            print(f"Selected files: {self.selected_files_path}")
+            print(f"Selected file(s): {self.selected_files_path}")
 
     def update_file_button_text(self):
         selected_files_str = ", ".join(os.path.basename(path) for path in self.selected_files_path)
-        self.files_label.config(text=f"Fichier(s) séléctionné(s):\n {selected_files_str}")
+        self.files_label.config(text=f"Selected File(s):\n {selected_files_str}")
 
     def select_output_folder(self):
-        folder_path = filedialog.askdirectory(title="Séléction Répertoire Sauvegarde")
+        folder_path = filedialog.askdirectory(title="Choose Backup Directory")
         if folder_path:
             self.output_button.config(text=os.path.basename(folder_path))
             self.output_folder_path = folder_path
@@ -195,7 +195,7 @@ class FiligraneApp:
     def show_expert_settings(self):
         """Display the additional settings for expert mode."""
         # Compression rate
-        tk.Label(self.root, text="Compression du JPEG (0=aucune; 95=Forte)").grid(row=5, column=0, padx=10, pady=5, sticky='e')
+        tk.Label(self.root, text="JPEG Compression (0=none; 95=Strong)").grid(row=5, column=0, padx=10, pady=5, sticky='e')
         self.compression_entry = tk.Entry(self.root)
         self.compression_entry.insert(0, str(self.compression_rate))
         self.compression_entry.grid(row=5, column=1, padx=10, pady=5)
@@ -219,13 +219,13 @@ class FiligraneApp:
     def about_dialog(self):
         # Create a custom dialog window for the About section with a clickable link
         about_window = tk.Toplevel(self.root)
-        about_window.title("A Propos Filigrane App")
+        about_window.title("About Watermark/Filigrane App")
         about_window.resizable(False, False)
         info_text = (
-            "Filigrane App Version 2.0\n\n"
-            "Cette application ajoute un filigrane à des images\n"
+            "Watermark/Filigrane App Version 2.0\n\n"
+            "This app add a Watermark/Filigrane to images\n"
             "Licence GPL2 \n\n"
-            "Project Open Source sur GitHub: "
+            "Project Open Source on GitHub: "
         )
 
         label = tk.Label(about_window, text=info_text)
@@ -249,13 +249,13 @@ class FiligraneApp:
         """ action when clic! """
         self.current_image_index = 0
         if not self.selected_files_path:
-            messagebox.showwarning("Input Error", "SVP Séléctionnez des image")
+            messagebox.showwarning("Input Error", "Please select an Image")
             return
 
         filigrane_text = self.filigrane_entry.get()
 
         if not filigrane_text:
-            messagebox.showwarning("Input Error", "SVP Entrez un texte pour le filigrane")
+            messagebox.showwarning("Input Error", "Please enter a watermark/Filigrane text")
             return
 
         if not self.output_folder_path:
@@ -280,7 +280,7 @@ class FiligraneApp:
 
         except Exception as err:
             print(f"Error processing the image: {err}")
-            messagebox.showerror("Processing Error", f"Une erreur lors du traitement de l'image: {err}")
+            messagebox.showerror("Processing Error", f"An error occurred during image processing: {err}")
 
     def get_current_time_ces(self):
         now = time.time()
@@ -304,7 +304,7 @@ class FiligraneApp:
                 if os.path.exists('DejaVuSans.ttf'):
                     font = ImageFont.truetype("DejaVuSans.ttf", self.fili_font_size)
                 else:
-                    print("Pas trouvé de Font DejaVuSans....")
+                    print("No DejaVuSans Font....")
                     font = ImageFont.truetype("arial.ttf", self.fili_font_size)
     
                 timestamp_str_text = time.strftime('%d%m%Y_%H%M%S', cest_time)

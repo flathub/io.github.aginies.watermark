@@ -1,0 +1,57 @@
+{
+  "app-id": "com.guibo.www.filigraneapp",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "48",
+  "sdk": "org.gnome.Sdk",
+  "command": "filigrane_app",
+  "tags": ["utility", "image-processing"],
+  "desktop-file-name-suffix": "(Flatpak)",
+  "finish-args": [
+    "--share=ipc",
+    "--socket=wayland",
+    "--socket=x11",
+    "--device=dri",
+    "--filesystem=host",
+    "--talk-name=org.freedesktop.Notifications",
+    "--share=network"
+  ],
+  "modules": [
+    {
+      "name": "filigrane_app",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm755 filigrane_app.py /app/bin/filigrane_app",
+        "install -Dm644 com.guibo.www.filigraneapp.png /app/share/icons/hicolor/256x256/apps/com.guibo.www.filigraneapp.png",
+        "install -Dm644 com.guibo.www.filigraneapp.desktop /app/share/applications/com.guibo.www.filigraneapp.desktop"
+      ],
+      "sources": [
+        {
+          "type": "file",
+          "path": "filigrane_app.py"
+        },
+        {
+          "type": "file",
+          "path": "com.guibo.www.filigraneapp.png"
+        },
+        {
+          "type": "file",
+          "path": "com.guibo.www.filigraneapp.desktop"
+        }
+      ]
+    },
+    {
+      "name": "python-dependencies",
+      "buildsystem": "simple",
+      "build-options": {
+              "build-args": [
+                "--share=network"
+              ]
+      },
+      "build-commands": [
+	      "pip3 install --prefix=/app pillow"
+],
+      "sources": []
+    }
+  ]
+}
+

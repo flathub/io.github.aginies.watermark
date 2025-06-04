@@ -1,11 +1,23 @@
-# Objectif
+# Goal (Objectif)
 
-Application en python pour ajouter un filigrane à une image ou des images.
+Python Application to Add a Watermark to an Image or Images
 
-## filigrane_app.py
+FR: Application en python pour ajouter un filigrane à une image ou des images.
 
+# filigrane_app.py
+
+Python TK script. For use on Windows or Linux.
+* Add watermark to multiple images
+* List of selected images
+* Image viewer
+* Image resizing to 1280x
+* JPEG compression at 75%
+* Default save directory is that of the first image
+
+
+FR:
 Script en Python TK. Pour une utilisation sous Windows ou Linux.
-* Ajour filigrane sur de multiple images
+* Ajout filigrane sur de multiple images
 * Liste des images selectionnées
 * visualiseur d'images
 * Redimension de l'image en 1280x
@@ -14,27 +26,41 @@ Script en Python TK. Pour une utilisation sous Windows ou Linux.
 
 ![image](https://github.com/aginies/easy_tag/blob/555160b92cffaeda17972068ce4b4d2828de350f/filigrane_app.jpg)
 
-## Obtenir le .exe (Windows)
+## Get the .exe (Windows)
 
-* installer python sous windows https://www.python.org/downloads/?lang=fr
-* installer PyInstaller
+* Install Python on Windows https://www.python.org/downloads/?lang=fr
+* Install PyInstaller
 ```
 python -m pip install PyInstaller
 ```
 
-* Aller dans le répertoire du script et taper:
+* Go to the script directory and type:
 ```
 pyinstaller --onefile --windowed filigrane_app.py
 ```
 
-Le fichier **filigrane_app.exe** sera dans le répertoire **dist**.
-Pour obtenir une version avec du debug de console il faut retirer l'option **--windowed** de la commande **pyinstaller**.
+The **filigrane_app.exe** file will be in the **dist** directory.
+To get a version with console debug, you need to remove the **--windowed** option from the **pyinstaller** command.
+
+## flathub app
+
+To build it:
+```
+make build
+```
+
+To run it:
+```
+make run
+```
+
+# OLD stuff
 
 ## easytag.py (obsolete)
 
 Script en Python3 GTK. Version initiale mais impossible de le faire fonctionner sous Windows,
-donc j'ai fait une version avec TK. Cette version n'est plus la maintenue pour privilégié
-une version mult- plateforme (avec TK).
+donc j'ai fait une version avec TK. Cette version n'est plus la maintenue pour privilégier
+une version multi-plateforme (avec TK).
 ```
 chmod 755 easy_tag.py
 ./easy_tag.py
