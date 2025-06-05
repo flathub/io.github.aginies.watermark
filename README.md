@@ -26,6 +26,10 @@ Script en Python TK. Pour une utilisation sous Windows ou Linux.
 
 [![Demo](https://img.youtube.com/vi/XCRIuAW7zwY/0.jpg)](https://www.youtube.com/watch?v=XCRIuAW7zwY)
 
+# Python requirements
+
+* pillow
+
 ## Get the .exe (Windows)
 
 * Install Python on Windows https://www.python.org/downloads/?lang=fr
