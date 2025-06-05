@@ -226,7 +226,7 @@ class FiligraneApp:
         about_window.resizable(False, False)
         info_text = _((
             "Watermark/Filigrane App Version 2.2\n\n"
-            "This app add a Watermark/Filigrane to images\n"
+            "This app add a Watermark to images\n"
             "Licence GPL2 \n\n"
             "Project Open Source on GitHub: "
         ))
