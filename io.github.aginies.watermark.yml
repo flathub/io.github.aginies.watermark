@@ -30,5 +30,5 @@ modules:
     sources:
       - type: file
         url: https://github.com/aginies/watermark/archive/refs/tags/2.1.tar.gz
-        sha256: a7e321acb89af2ce5c29ad74e65ce3fb458231e60108d1e5b9c99a235e392689
+        sha256: 0b93589448f20ab7d028b21693f53cfa3c7bae6eb91902b49c1c864e715fed15
         dest-filename: watermark-2.1.tar.gz
