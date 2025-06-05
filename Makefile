@@ -20,3 +20,7 @@ lint:
 
 run:
 	flatpak run io.github.aginies.watermark
+
+trans:
+	rm -vf locale/watermark_app.pot
+	xgettext --language=Python --keyword=_ -o locale/watermark_app.pot watermark_app.py
