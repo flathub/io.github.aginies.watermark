@@ -23,13 +23,13 @@ modules:
       - tar -xvf watermark-2.2.tar.gz
       # remove unwated files
       - rm -rvf watermark-2.2/old watermark-2.2/windows watermark-2.2/DejaVuSans.ttf 
-      - rm -rvf watermark-2.2/Makefile watermark-2.2/test.jpg
+      - rm -rvf watermark-2.2/Makefile watermark-2.2/test.jpg *.json
       - install -Dm755 watermark-2.2/watermark_app.py /app/bin/watermark_app
       - install -Dm644 watermark-2.2/io.github.aginies.watermark.png /app/share/icons/hicolor/256x256/apps/io.github.aginies.watermark.png
       - install -Dm644 watermark-2.2/io.github.aginies.watermark.desktop /app/share/applications/io.github.aginies.watermark.desktop
-      - cp -a locale/* /app/share/locale/
+      - cp -a watermark-2.2/locale /app/share/
     sources:
       - type: file
         url: https://github.com/aginies/watermark/archive/refs/tags/2.2.tar.gz
-        sha256: 0b93589448f20ab7d028b21693f53cfa3c7bae6eb91902b49c1c864e715fed15
+        sha256: d4ee2e46aa822f336a9dfdb4398c6aa2d63c042cc17b09c226579fb07414ef8a
         dest-filename: watermark-2.2.tar.gz
