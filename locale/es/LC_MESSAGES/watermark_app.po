@@ -21,6 +21,10 @@ msgstr ""
 msgid "Watermark App"
 msgstr "Aplicación de Marca de Agua"
 
+#: watermark_app.py:54
+msgid "Exit"
+msgstr "Salir"
+
 #: watermark_app.py:56
 msgid "About"
 msgstr "Acerca de"

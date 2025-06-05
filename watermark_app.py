@@ -51,7 +51,7 @@ class FiligraneApp:
         # Create a menu bar
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
-        menubar.add_command(label="Exit", command=self.root.quit)
+        menubar.add_command(label=_("Exit"), command=self.root.quit)
         about_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label=_("About"), menu=about_menu)
         about_menu.add_command(label=_("About Filigrane App"), command=self.about_dialog)
