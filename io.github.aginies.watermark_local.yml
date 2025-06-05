@@ -1,0 +1,29 @@
+app-id: io.github.aginies.watermark_local
+runtime: 'org.freedesktop.Platform'
+runtime-version: '24.08'
+sdk: 'org.freedesktop.Sdk'
+command: watermark_app
+tags:
+  - utility
+  - image-processing
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --device=dri
+  - --filesystem=host
+  - --talk-name=org.freedesktop.Notifications
+  - --share=network
+modules:
+  - python3-modules.json
+  - name: watermark_app
+    no-autogen: true
+    no-make-install: true
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 watermark_app.py /app/bin/watermark_app
+      - install -Dm644 io.github.aginies.watermark.png /app/share/icons/hicolor/256x256/apps/io.github.aginies.watermark.png
+      - install -Dm644 io.github.aginies.watermark.desktop /app/share/applications/io.github.aginies.watermark.desktop
+      - cp -av locale /app/share/
+    sources:
+      - type: dir
+        path: .

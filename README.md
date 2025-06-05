@@ -44,12 +44,17 @@ To get a version with console debug, you need to remove the **--windowed** optio
 
 ## flathub app
 
-To build it:
+To build the current latest version tarballon github:
 ```
 make build
 ```
 
-To run it:
+To build local files
+```
+make localbuild
+```
+
+To run latest tarball version:
 ```
 make run
 ```
