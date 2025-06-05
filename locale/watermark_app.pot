@@ -74,6 +74,16 @@ msgstr ""
 msgid "About Watermark App"
 msgstr ""
 
+#: watermark_app.py:228
+msgid ""
+"Watermark/Filigrane App Version 2.3\n"
+"\n"
+"This app add a Watermark to images\n"
+"Licence GPL2 \n"
+"\n"
+"Project Open Source on GitHub: "
+msgstr ""
+
 #: watermark_app.py:255 watermark_app.py:261
 msgid "Input Error"
 msgstr ""

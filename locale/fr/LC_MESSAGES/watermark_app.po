@@ -79,6 +79,22 @@ msgstr "Compression JPEG (0=aucune; 95=forte)"
 msgid "About Watermark App"
 msgstr "À propos de l'Application de Filigrane"
 
+#: watermark_app.py:228
+msgid ""
+"Watermark/Filigrane App Version 2.3\n"
+"\n"
+"This app add a Watermark to images\n"
+"Licence GPL2 \n"
+"\n"
+"Project Open Source on GitHub: "
+msgstr ""
+"Application de Filigrane Version 2.3\n"
+"\n"
+"Cette application ajoute un filigrane aux images\n"
+"Licence GPL2 \n"
+"\n"
+"Projet Open Source sur GitHub : "
+
 #: watermark_app.py:255 watermark_app.py:261
 msgid "Input Error"
 msgstr "Erreur d'Entrée"

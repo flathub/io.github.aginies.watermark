@@ -78,6 +78,22 @@ msgstr "Compresión JPEG (0=nada; 95=fuerte)"
 msgid "About Watermark App"
 msgstr "Acerca de la Aplicación de Marca de Agua"
 
+#: watermark_app.py:228
+msgid ""
+"Watermark/Filigrane App Version 2.3\n"
+"\n"
+"This app add a Watermark to images\n"
+"Licence GPL2 \n"
+"\n"
+"Project Open Source on GitHub: "
+msgstr ""
+"Aplicación de Marca de Agua Versión 2.3\n"
+"\n"
+"Esta aplicación añade una marca de agua a las imágenes\n"
+"Licencia GPL2 \n"
+"\n"
+"Proyecto de Código Abierto en GitHub: "
+
 #: watermark_app.py:255 watermark_app.py:261
 msgid "Input Error"
 msgstr "Error de Entrada"
