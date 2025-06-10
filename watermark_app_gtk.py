@@ -602,19 +602,6 @@ class WatermarkApp(Gtk.Window):
         selected_files_str = "\n".join(os.path.basename(path) for path in self.selected_files_path)
         self.files_label.set_text(_(f"Selected File(s):\n{selected_files_str}"))
 
-    def on_file_selected(self, widget):
-        file_paths = widget.get_filenames()
-        if file_paths:
-            self.selected_files_path.extend(file_paths)
-            print("Selected files:", self.selected_files_path)
-
-    def on_folder_selected(self, widget):
-        folder_path = widget.get_filename()
-        if folder_path:
-            self.output_folder_path = folder_path
-            print("Output folder selected:", self.output_folder_path)
-            self.output_filechooser_button.set_current_folder(self.output_folder_path)
-
     def on_add_watermark_clicked(self, widget):
         if not self.selected_files_path:
             warning_dialog = WarningDialog(
@@ -652,7 +639,7 @@ class WatermarkApp(Gtk.Window):
             for image_path in self.selected_files_path:
                 output_image_path = self.add_watermark_to_image(image_path, watermark_text)
                 if output_image_path:
-                    print("Success", f"Generated File: {os.path.basename(output_image_path)}\n")
+                    print("Success", f"Generated File: {os.path.basename(output_image_path)}")
                     self.all_images.append(output_image_path)
 
             self.main_display_images(self.all_images)
