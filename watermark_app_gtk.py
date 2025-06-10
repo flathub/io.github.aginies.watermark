@@ -159,17 +159,16 @@ class ImageViewerWindow(Gtk.Window):
         """Handle right-click event on the image"""
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             # Create context menu
-            print("here")
             menu = Gtk.Menu()
 
             # Add "Save" option to menu
-            save_item = Gtk.MenuItem(label="Save")
+            save_item = Gtk.MenuItem(label="Save Image as")
             save_item.connect("activate", self.on_save_activated)
             menu.append(save_item)
 
             # Show the menu
             menu.show_all()
-            menu.popup(None, None, None, event.button, event.time)
+            menu.popup_at_pointer(event)
 
     def on_save_activated(self, widget):
         """Handle the Save option selection"""
@@ -177,20 +176,27 @@ class ImageViewerWindow(Gtk.Window):
         dialog = Gtk.FileChooserDialog(
             title="Save Image As",
             action=Gtk.FileChooserAction.SAVE,
-            buttons=(("_Cancel", Gtk.ResponseType.CANCEL), ("_Save", Gtk.ResponseType.ACCEPT))
         )
+
+        dialog.add_button("_Cancel", Gtk.ResponseType.CANCEL)
+        dialog.add_button("_Save", Gtk.ResponseType.ACCEPT)
 
         # Set the default file name to the current image name
         dialog.set_current_name(Gio.file_new_for_path(current_image_path).get_basename())
-
         response = dialog.run()
 
         if response == Gtk.ResponseType.ACCEPT:
             save_path = dialog.get_filename()
             try:
                 # Copy the current image to the selected location
-                Gio.file_copy(Gio.File.new_for_path(current_image_path),
-                              Gio.File.new_for_path(save_path), Gio.FileCopyFlags.OVERWRITE, None)
+                source_file = Gio.File.new_for_path(current_image_path)
+                destination_file = Gio.File.new_for_path(save_path)
+                source_file.copy(
+                    destination_file,
+                    Gio.FileCopyFlags.OVERWRITE,
+                    None,
+                    None
+                )
                 print(f"Image saved to {save_path}")
             except Exception as err:
                 print(f"Error saving image: {err}")
@@ -206,7 +212,7 @@ class WatermarkApp(Gtk.Window):
         self.compression_rate = 75
         self.font_size = 20
         self.font_base_name = None
-        self.prefix = "Ready"
+        self.watermak_prefix = ""
         self.fili_density = 140
         self.rotation_angle = 30
         self.selected_files_path = []
@@ -234,6 +240,11 @@ class WatermarkApp(Gtk.Window):
         self.expert_options_check.connect("toggled", self.on_expert_toggle)
         self.expert_options_check.set_active(False)
         pref_menu.append(self.expert_options_check)
+
+        # Create a check menu item to toggle Auto save Images options
+        #self.autosave_options_check = Gtk.CheckMenuItem(label="Auto Save Images")
+        #self.autosave_options_check.set_active(True)
+        #pref_menu.append(self.autosave_options_check)
 
         # Attach the menu to the "View" menu item
         pref_menu_item.set_submenu(pref_menu)
@@ -267,16 +278,6 @@ class WatermarkApp(Gtk.Window):
         self.files_selected_hbox.pack_start(self.files_label, False, False, 3)
         self.vbox.pack_start(self.files_selected_hbox, False, False, 3)
 
-        #final_filename_hbox = Gtk.Box(spacing=6)
-        #final_filename_label = Gtk.Label(label=_("Filename"))
-        #self.watermark_prefix = Gtk.Entry()
-        #self.watermark_prefix.set_text("watermark")
-        #final_filename_date_label = Gtk.Label(label=_(" Date + Hour"))
-        #final_filename_hbox.pack_start(final_filename_label, False, False, 10)
-        #final_filename_hbox.pack_start(self.watermark_prefix, False, False, 10)
-        #final_filename_hbox.pack_start(final_filename_date_label, False, False, 10)
-        #self.vbox.pack_start(final_filename_hbox, False, False, 3)
-
         # Watermark text horizontal box (label + entry)
         watermark_hbox = Gtk.Box(spacing=3)
         watermark_label = Gtk.Label(label=_("Watermark Text"))
@@ -287,7 +288,7 @@ class WatermarkApp(Gtk.Window):
         watermark_hbox.pack_end(self.watermark_entry, False, False, 12)
         self.vbox.pack_start(watermark_hbox, False, False, 3)
 
-	    # Font Chooser
+	# Font Chooser
         font_chooser_hbox = Gtk.Box(spacing=3)
         font_chooser_label = Gtk.Label(label=_("Font chooser"))
         self.font_chooser_button = Gtk.Button(label=_("Select font"))
@@ -344,7 +345,24 @@ class WatermarkApp(Gtk.Window):
         density_hbox.pack_end(self.text_density_scale, False, False, 12)
         self.expert_options_box.pack_start(density_hbox, False, False, 3)
 
-	    # JPEG Compression level
+        prefix_filename_hbox = Gtk.Box(spacing=6)
+        prefix_filename_label = Gtk.Label(label=_("Filename Prefix"))
+        self.watermark_prefix = Gtk.Entry()
+        self.watermark_prefix.set_placeholder_text(_("Filename Prefix"))
+
+        prefix_filename_hbox.pack_start(prefix_filename_label, False, False, 10)
+        prefix_filename_hbox.pack_start(self.watermark_prefix, False, False, 10)
+        self.expert_options_box.pack_start(prefix_filename_hbox, False, False, 3)
+
+        date_filename_hbox = Gtk.Box(spacing=6)
+        date_filename_label = Gtk.Label(label=_("Add Date + Hour in filename"))
+        self.date_filename_check = Gtk.CheckButton()
+        self.date_filename_check.set_active(True)
+        date_filename_hbox.pack_start(date_filename_label, False, False, 10)
+        date_filename_hbox.pack_start(self.date_filename_check, False, False, 10)
+        self.expert_options_box.pack_start(date_filename_hbox, False, False, 3)
+
+	# JPEG Compression level
         compression_rate_hbox = Gtk.Box(spacing=3)
         compression_rate_label = Gtk.Label(label=_("JPEG Compression"))
         adjustment_compression = Gtk.Adjustment(value=self.compression_rate,
@@ -669,7 +687,14 @@ class WatermarkApp(Gtk.Window):
                 timestamp_str = time.strftime('%d%m%Y_%H%M%S', cest_time)
                 original_filename = os.path.basename(image_path)
                 name_without_ext = os.path.splitext(original_filename)[0]
-                final_filename = f"{self.prefix}_{text}_{timestamp_str}_{name_without_ext}.jpg"
+                fprefix = ""
+                if self.watermark_prefix.get_text() != "":
+                    fprefix = self.watermark_prefix.get_text() + "_"
+                if self.date_filename_check.get_active():
+                    final_filename = f"{fprefix}{text}_{timestamp_str}_{name_without_ext}.jpg"
+                else:
+                    final_filename = f"{fprefix}{text}_{name_without_ext}.jpg"
+
                 output_path = os.path.join(self.output_folder_path, final_filename)
                 img.convert("RGB").save(output_path, "JPEG", quality=self.compression_rate)
                 return output_path
