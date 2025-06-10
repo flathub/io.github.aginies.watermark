@@ -47,6 +47,7 @@ class ImageViewerWindow(Gtk.Window):
     def __init__(self):
         super().__init__(title="Image Viewer")
         self.set_default_size(800, 600)
+        self.image_widget = None
 
         # Create a vertical box to hold widgets
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -99,6 +100,11 @@ class ImageViewerWindow(Gtk.Window):
         # Load the image using GdkPixbuf
         pixbuf = GdkPixbuf.Pixbuf.new_from_file(image_path)
         scaled_pixbuf = pixbuf.scale_simple(800, 600, GdkPixbuf.InterpType.HYPER)
+
+        if hasattr(self, 'image_widget') and self.image_widget is not None:
+            # Remove the old image widget from its container
+            self.vbox.remove(self.image_widget)
+            self.image_widget = None
 
         if hasattr(self, 'image_label') and self.image_label is not None:
             # Remove the old image label from its container
@@ -210,6 +216,7 @@ class WatermarkApp(Gtk.Window):
         self.set_default_size(210, 70)
         self.output_folder_path = ""
         self.compression_rate = 75
+        self.selected_resize = "1280"
         self.font_size = 20
         self.font_base_name = None
         self.watermak_prefix = ""
@@ -345,6 +352,7 @@ class WatermarkApp(Gtk.Window):
         density_hbox.pack_end(self.text_density_scale, False, False, 12)
         self.expert_options_box.pack_start(density_hbox, False, False, 3)
 
+        # Filename Prefix option
         prefix_filename_hbox = Gtk.Box(spacing=6)
         prefix_filename_label = Gtk.Label(label=_("Filename Prefix"))
         self.watermark_prefix = Gtk.Entry()
@@ -354,6 +362,7 @@ class WatermarkApp(Gtk.Window):
         prefix_filename_hbox.pack_end(self.watermark_prefix, False, False, 12)
         self.expert_options_box.pack_start(prefix_filename_hbox, False, False, 3)
 
+        # Filename Date option
         date_filename_hbox = Gtk.Box(spacing=6)
         date_filename_label = Gtk.Label(label=_("Date + Hour in filename"))
         self.date_filename_check = Gtk.CheckButton()
@@ -363,7 +372,21 @@ class WatermarkApp(Gtk.Window):
         date_filename_hbox.pack_end(self.date_filename_check, False, False, 12)
         self.expert_options_box.pack_start(date_filename_hbox, False, False, 3)
 
-	# JPEG Compression level
+        # Select the size for resize the image
+        resize_hbox = Gtk.Box(spacing=6)
+        resize_label = Gtk.Label(label=_("Resize the image to"))
+        self.list_size = Gtk.ComboBoxText()
+        elements = ["None", "320", "640", "800", "1024" ,"1280", "1600", "2048",]
+        for text in elements:
+            self.list_size.append_text(text)
+        self.list_size.set_active(0)
+        self.list_size.connect("changed", self.on_resize_changed)
+        button_size_group.add_widget(self.list_size)
+        resize_hbox.pack_start(resize_label, False, False, 12)
+        resize_hbox.pack_end(self.list_size, False, False, 12)
+        self.expert_options_box.pack_start(resize_hbox, False, False, 3)
+
+	    # JPEG Compression level
         compression_rate_hbox = Gtk.Box(spacing=3)
         compression_rate_label = Gtk.Label(label=_("JPEG Compression Level"))
         adjustment_compression = Gtk.Adjustment(value=self.compression_rate,
@@ -445,6 +468,9 @@ class WatermarkApp(Gtk.Window):
             return None
         except (subprocess.CalledProcessError, FileNotFoundError):
             return None
+
+    def on_resize_changed(self, combo):
+        self.selected_resize = combo.get_active_text()
 
     def on_rotation_angle_changed(self, widget):
         self.rotation_angle = int(widget.get_value())
@@ -633,11 +659,19 @@ class WatermarkApp(Gtk.Window):
         try:
             with Image.open(image_path).convert("RGBA") as img:
                 # Resize image if it's too large while preserving aspect ratio
-                width_percent = (1280 / float(img.width))
-                height_size = int((float(img.height) * float(width_percent)))
+                if self.list_size.get_active_text() != "None":
+                    resize_selected = int(self.list_size.get_active_text())
+                    width_percent = (resize_selected / float(img.width))
+                    height_size = int((float(img.height) * float(width_percent)))
 
-                if max(img.size) > 1280:
-                    img = img.resize((1280, height_size), Image.LANCZOS)
+                    if max(img.size) > resize_selected:
+                        img = img.resize((resize_selected, height_size), Image.LANCZOS)
+                    else:
+                        warning_dialog = WarningDialog(
+                            title="Error",
+                            message=_(f"Image size is  {img.size}, will not rescale it to {resize_selected}"),
+                            )
+                        warning_dialog.show()
 
                 draw = ImageDraw.Draw(img)
                 cest_time = self.get_current_time_ces()
