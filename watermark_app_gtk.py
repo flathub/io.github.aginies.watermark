@@ -227,6 +227,9 @@ class WatermarkApp(Gtk.Window):
         self.current_image_index = 0
         self.image_paths = ""
         self.default_font_description = Pango.FontDescription("Sans 20")
+        self.font_color = Gdk.RGBA()
+        self.font_color_choosen = False
+        self.font_transparency = 50
 
         # Create main vertical box container
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
@@ -327,7 +330,6 @@ class WatermarkApp(Gtk.Window):
         # Rotation angle
         rotation_hbox = Gtk.Box(spacing=3)
         rotation_label = Gtk.Label(label=_("Text Angle (degrees)"))
-        # Create a Gtk.Scale widget for setting the rotation angle
         adjustment_rotation = Gtk.Adjustment(value=self.rotation_angle,
                                              lower=0, upper=90, step_increment=1, page_increment=4)
         self.rotation_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
@@ -339,6 +341,21 @@ class WatermarkApp(Gtk.Window):
         rotation_hbox.pack_end(self.rotation_scale, False, False, 12)
         self.expert_options_box.pack_start(rotation_hbox, False, False, 3)
 
+        # Font Transparency
+        transparency_hbox = Gtk.Box(spacing=3)
+        transparency_label = Gtk.Label(label=_("Font Transparency"))
+        adjustment_transparency = Gtk.Adjustment(value=self.font_transparency, lower=0,
+                                            upper=100, step_increment=1, page_increment=10)
+        self.transparency_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
+                                            adjustment=adjustment_transparency)
+        self.transparency_scale.set_digits(0)
+        self.transparency_scale.set_inverted(False)
+        self.transparency_scale.connect("value-changed", self.on_transparency_changed)
+        button_size_group.add_widget(self.transparency_scale)
+        transparency_hbox.pack_start(transparency_label, False, False, 12)
+        transparency_hbox.pack_end(self.transparency_scale, False, False, 12)
+        self.expert_options_box.pack_start(transparency_hbox, False, False, 3)
+
         # Font density
         density_hbox = Gtk.Box(spacing=3)
         density_label = Gtk.Label(label=_("Font Density"))
@@ -348,10 +365,21 @@ class WatermarkApp(Gtk.Window):
                                             adjustment=adjustment_density)
         self.text_density_scale.set_digits(0)
         self.text_density_scale.set_inverted(False)
+        self.text_density_scale.connect("value-changed", self.on_rotation_density_changed)
         button_size_group.add_widget(self.text_density_scale)
         density_hbox.pack_start(density_label, False, False, 12)
         density_hbox.pack_end(self.text_density_scale, False, False, 12)
         self.expert_options_box.pack_start(density_hbox, False, False, 3)
+
+        # Font color chooser
+        color_hbox = Gtk.Box(spacing=6)
+        color_label = Gtk.Label(label=_("Font color"))
+        self.color_button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(0, 1, 0, 1))
+        self.color_button.connect("color-set", self.on_color_button_set)
+        button_size_group.add_widget(self.color_button)
+        color_hbox.pack_start(color_label, False, False, 12)
+        color_hbox.pack_end(self.color_button, False, False, 12)
+        self.expert_options_box.pack_start(color_hbox, False, False, 3)
 
         # Filename Prefix option
         prefix_filename_hbox = Gtk.Box(spacing=6)
@@ -414,6 +442,11 @@ class WatermarkApp(Gtk.Window):
 
         # Se default Font
         self.set_default_font()
+
+    def on_color_button_set(self, button):
+        self.font_color = button.get_rgba()
+        print(f"Selected color: {self.font_color.red}, {self.font_color.green}, {self.font_color.blue}, {self.font_color.alpha}")
+        self.font_color_choosen = True
 
     def set_default_font(self):
         font_desc = self.default_font_description.to_string()
@@ -489,6 +522,9 @@ class WatermarkApp(Gtk.Window):
 
     def on_rotation_angle_changed(self, widget):
         self.rotation_angle = int(widget.get_value())
+
+    def on_transparency_changed(self, widget):
+        self.font_transparency = int(widget.get_value())
 
     def on_rotation_density_changed(self, widget):
         self.fili_density = int(widget.get_value())
@@ -699,12 +735,21 @@ class WatermarkApp(Gtk.Window):
                         if (xdata, ydata) not in used_positions:
                             angle = random.uniform(- int(self.rotation_scale.get_value()),
                                                    int(self.rotation_scale.get_value()))
-                            color = (
-                                random.randint(0, 255),
-                                random.randint(0, 255),
-                                random.randint(0, 255),
-                                50 # Adjust transparency
-                            )
+                            self.font_transp = 100 - self.font_transparency
+                            if self.font_color_choosen is False:
+                                color = (
+                                    random.randint(0, 255),
+                                    random.randint(0, 255),
+                                    random.randint(0, 255),
+                                    self.font_transp
+                                )
+                            else:
+                                color = (
+                                    int(self.font_color.red * 255),
+                                    int(self.font_color.green * 255),
+                                    int(self.font_color.blue * 255),
+                                    self.font_transp
+                                    )
                             rotated_text_img = Image.new('RGBA', img.size)
                             ImageDraw.Draw(rotated_text_img)
                             temp_image = Image.new('RGBA', (text_width * 3,
