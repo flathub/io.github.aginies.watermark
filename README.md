@@ -9,20 +9,18 @@ Python Application to Add a Watermark to an Image or Images
 Python GTK version.
 * Add watermark to multiple images
 * List of selected images
-* Image viewer
-* Image resizing to 1280x
+* Multiple Image viewer
 * Default save directory is that of the first image
-* Expert mode: font selection, text rotation, density, JPG compression level
+* Expert mode: font selection, text rotation, density, JPG compression level, Image resize
 
 
 **FR**:
 Script en Python GTK.
 * Ajout filigrane sur de multiple images
 * Liste des images selectionnées
-* visualiseur d'images
-* Redimension de l'image en 1280x
+* Visualiseur d'images
 * Répertoire de sauvegarde par défaut est celui de la première image
-* Expert mode: séléction font, rotation du texte, densité, niveau de compression JPEG
+* Expert mode: séléction font, rotation du texte, densité, niveau de compression JPEG, taille image
 
 # watermark_app.py
 
