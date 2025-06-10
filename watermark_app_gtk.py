@@ -227,8 +227,8 @@ class WatermarkApp(Gtk.Window):
         # Setup menu bar
         menubar = Gtk.MenuBar()
         menubar_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        menubar_box.pack_start(menubar, False, False, 3)
-        self.vbox.pack_start(menubar_box, False, False, 3)
+        menubar_box.pack_start(menubar, False, False, 0)
+        self.vbox.pack_start(menubar_box, False, False, 0)
 
         # Create a "Pref" menu item
         pref_menu_item = Gtk.MenuItem(label="Preferences")
@@ -314,7 +314,7 @@ class WatermarkApp(Gtk.Window):
         self.expert_options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         expert_title_label = Gtk.Label(label=_("Expert Options"))
         expert_title_label.set_markup("<b>{}</b>".format(_("Expert Options")))
-        self.expert_options_box.pack_start(expert_title_label, False, False, 0)
+        self.expert_options_box.pack_start(expert_title_label, False, False, 3)
 
         # Rotation angle
         rotation_hbox = Gtk.Box(spacing=3)
@@ -349,22 +349,23 @@ class WatermarkApp(Gtk.Window):
         prefix_filename_label = Gtk.Label(label=_("Filename Prefix"))
         self.watermark_prefix = Gtk.Entry()
         self.watermark_prefix.set_placeholder_text(_("Filename Prefix"))
-
-        prefix_filename_hbox.pack_start(prefix_filename_label, False, False, 10)
-        prefix_filename_hbox.pack_start(self.watermark_prefix, False, False, 10)
+        button_size_group.add_widget(self.watermark_prefix)
+        prefix_filename_hbox.pack_start(prefix_filename_label, False, False, 12)
+        prefix_filename_hbox.pack_end(self.watermark_prefix, False, False, 12)
         self.expert_options_box.pack_start(prefix_filename_hbox, False, False, 3)
 
         date_filename_hbox = Gtk.Box(spacing=6)
-        date_filename_label = Gtk.Label(label=_("Add Date + Hour in filename"))
+        date_filename_label = Gtk.Label(label=_("Date + Hour in filename"))
         self.date_filename_check = Gtk.CheckButton()
         self.date_filename_check.set_active(True)
-        date_filename_hbox.pack_start(date_filename_label, False, False, 10)
-        date_filename_hbox.pack_start(self.date_filename_check, False, False, 10)
+        button_size_group.add_widget(self.date_filename_check)
+        date_filename_hbox.pack_start(date_filename_label, False, False, 12)
+        date_filename_hbox.pack_end(self.date_filename_check, False, False, 12)
         self.expert_options_box.pack_start(date_filename_hbox, False, False, 3)
 
 	# JPEG Compression level
         compression_rate_hbox = Gtk.Box(spacing=3)
-        compression_rate_label = Gtk.Label(label=_("JPEG Compression"))
+        compression_rate_label = Gtk.Label(label=_("JPEG Compression Level"))
         adjustment_compression = Gtk.Adjustment(value=self.compression_rate,
                                                 lower=0, upper=100, step_increment=1,
                                                 page_increment=10)
