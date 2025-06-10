@@ -4,9 +4,29 @@ Python Application to Add a Watermark to an Image or Images
 
 **FR**: Application en python pour ajouter un filigrane à une image ou des images.
 
+# watermark_app_gtk.py
+
+Python GTK version.
+* Add watermark to multiple images
+* List of selected images
+* Image viewer
+* Image resizing to 1280x
+* Default save directory is that of the first image
+* Expert mode: font selection, text rotation, density, JPG compression level
+
+
+**FR**:
+Script en Python GTK.
+* Ajout filigrane sur de multiple images
+* Liste des images selectionnées
+* visualiseur d'images
+* Redimension de l'image en 1280x
+* Répertoire de sauvegarde par défaut est celui de la première image
+* Expert mode: séléction font, rotation du texte, densité, niveau de compression JPEG
+
 # watermark_app.py
 
-Python TK script. For use on Windows or Linux.
+Basix Python TK script. Mostly built For use under Windows.
 * Add watermark to multiple images
 * List of selected images
 * Image viewer
@@ -16,7 +36,7 @@ Python TK script. For use on Windows or Linux.
 
 
 **FR**:
-Script en Python TK. Pour une utilisation sous Windows ou Linux.
+Script en Python TK. Pour une utilisation sous Windows.
 * Ajout filigrane sur de multiple images
 * Liste des images selectionnées
 * visualiseur d'images
