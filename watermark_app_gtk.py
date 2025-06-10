@@ -226,6 +226,7 @@ class WatermarkApp(Gtk.Window):
         self.all_images = []
         self.current_image_index = 0
         self.image_paths = ""
+        self.default_font_description = Pango.FontDescription("Sans 20")
 
         # Create main vertical box container
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
@@ -411,16 +412,30 @@ class WatermarkApp(Gtk.Window):
         self.watermarkb_hbox.pack_start(add_watermark_button, False, False, 12)
         self.vbox.pack_start(self.watermarkb_hbox, False, False, 3)
 
+        # Se default Font
+        self.set_default_font()
+
+    def set_default_font(self):
+        font_desc = self.default_font_description.to_string()
+        font_path = self.find_font_file(font_desc)
+
+        if font_path:
+            self.font_base_name = font_path.split('.ttf')[0] + '.ttf'
+            print(f"Font name: {self.font_base_name}")
+            parts_desc = font_desc.split()
+            self.font_size = int(parts_desc[-1]) if parts_desc else None
+            self.font_chooser_button.set_label(font_desc)
+        else:
+            print("Could not find the default font file.")
 
     def on_font_selected(self, widget):
         dialog = Gtk.FontChooserDialog(title="Choose a Font", transient_for=self, flags=0)
-        #default_font_description = Pango.FontDescription("Sans 20")
+        dialog.set_font_desc(self.default_font_description)
 
         while True:
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
                 font_desc = dialog.get_font()
-                print(font_desc)
                 #font_description = Pango.FontDescription.from_string(font_desc)
                 font_path = self.find_font_file(font_desc)
 
@@ -532,12 +547,12 @@ class WatermarkApp(Gtk.Window):
     def add_images_filters(self):
         filter_img = Gtk.FileFilter()
         filter_img.set_name("Image Files")
-        filter_img.add_mime_type("text/plain")
         filter_img.add_mime_type("image/png")
         filter_img.add_mime_type("image/jpeg")
         filter_img.add_mime_type("image/gif")
         filter_img.add_mime_type("image/bmp")
         filter_img.add_mime_type("image/tiff")
+        filter_img.add_mime_type("image/webp")
         filter_img.add_pattern("*.png")
         filter_img.add_pattern("*.jpg")
         filter_img.add_pattern("*.jpeg")
@@ -545,6 +560,7 @@ class WatermarkApp(Gtk.Window):
         filter_img.add_pattern("*.bmp")
         filter_img.add_pattern("*.tiff")
         filter_img.add_pattern("*.tif")
+        filter_img.add_pattern("*.webp")
         return filter_img
 
     def on_files_clicked(self, widget):
