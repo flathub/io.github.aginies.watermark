@@ -15,8 +15,10 @@ Python GTK version.
   * font selection
   * font color
   * font transparency
-  * text rotation
+  * text angle
   * density
+  * optionnal Date + Hour
+  * filename prefix
   * JPG compression level
   * Image resize
 
@@ -30,7 +32,9 @@ Script en Python GTK.
   * séléction font
   * couleur font
   * transparence font
-  * rotation du texte
+  * angle du texte
+  * option date + Heure
+  * prefix de nom de fichier
   * densité
   * niveau de compression JPEG
   * taille image
