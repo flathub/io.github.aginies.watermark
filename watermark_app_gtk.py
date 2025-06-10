@@ -436,7 +436,7 @@ class WatermarkApp(Gtk.Window):
     def on_compression_changed(self, widget):
         self.compression_rate = int(widget.get_value())
 
-    def on_expert_toggle(self), checkmenuitem):
+    def on_expert_toggle(self, checkmenuitem):
         if self.expert_options_check.get_active():
             self.vbox.remove(self.watermarkb_hbox)
             self.vbox.pack_start(self.expert_options_box, False, False, 12)
