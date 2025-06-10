@@ -11,8 +11,14 @@ Python GTK version.
 * List of selected images
 * Multiple Image viewer
 * Default save directory is that of the first image
-* Expert mode: font selection, text rotation, density, JPG compression level, Image resize
-
+* Expert mode: 
+  * font selection
+  * font color
+  * font transparency
+  * text rotation
+  * density
+  * JPG compression level
+  * Image resize
 
 **FR**:
 Script en Python GTK.
@@ -20,7 +26,14 @@ Script en Python GTK.
 * Liste des images selectionnées
 * Visualiseur d'images
 * Répertoire de sauvegarde par défaut est celui de la première image
-* Expert mode: séléction font, rotation du texte, densité, niveau de compression JPEG, taille image
+* Expert mode: 
+  * séléction font
+  * couleur font
+  * transparence font
+  * rotation du texte
+  * densité
+  * niveau de compression JPEG
+  * taille image
 
 # watermark_app.py
 
