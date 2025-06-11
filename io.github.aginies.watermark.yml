@@ -21,4 +21,4 @@ modules:
     sources:
       - type: archive
         url: https://github.com/aginies/watermark/archive/refs/tags/3.0.tar.gz
-        sha256: d29b6ed8d0bf4f3fcb35507aa58e991e28921514d09f9793bd814b8cb837b3e9
+        sha256: 8b2110295f2961b4bbaab15109b731af899d371b589cce2fa1117dc57fb7a6ea
