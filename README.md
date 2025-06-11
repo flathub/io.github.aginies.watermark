@@ -4,6 +4,8 @@ Python Application to Add a Watermark to an Image or Images
 
 **FR**: Application en python pour ajouter un filigrane à une image ou des images.
 
+![image](https://github.com/aginies/watermark/blob/08da28cacd0612f564e3e23a19ac0b765343b820/images/example.jpg)
+
 # Python requirements
 
 * pillow
