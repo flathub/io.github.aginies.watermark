@@ -7,7 +7,8 @@ import gettext
 import platform
 import subprocess
 import gi
-import winreg
+if platform.system() == 'Windows':
+    import winreg
 from PIL import Image, ImageDraw, ImageFont
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GdkPixbuf, Gio, Pango, GLib, Gdk
@@ -214,6 +215,15 @@ class ImageViewerWindow(Gtk.Window):
 class WatermarkApp(Gtk.Window):
     """  Main app"""
     def __init__(self):
+        self.startup_dialog = Gtk.MessageDialog(
+            parent=None,
+            flags=0,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.NONE,
+            text=_("Application is starting...")
+        )
+        self.startup_dialog.show_all()
+
         Gtk.Window.__init__(self, title=_("Watermark App"))
         self.set_default_size(210, 70)
         self.output_folder_path = ""
@@ -447,6 +457,8 @@ class WatermarkApp(Gtk.Window):
 
         # Se default Font
         self.set_default_font()
+
+        self.startup_dialog.destroy()
 
     def on_random_color_toggled(self, button):
         if button.get_active():
