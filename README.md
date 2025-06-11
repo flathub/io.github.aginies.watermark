@@ -58,7 +58,7 @@ Script en Python GTK.
 
 * Go to the script directory and type:
 ```
-pyinstaller.exe --onefile --windowed watermark_app_gtk.py --name watermark --splash watermark_starting.jpg -i io.github.aginies.watermark.ico
+pyinstaller.exe --onefile --windowed watermark_app_gtk.py --name watermark --splash watermark_starting.jpg -i io.github.aginies.watermark.ico --version-file="version.txt"
 ```
 
 The **watermark.exe** file will be in the **dist** directory.
