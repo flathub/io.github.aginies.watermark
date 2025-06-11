@@ -7,6 +7,7 @@ import gettext
 import platform
 import subprocess
 import gi
+import winreg
 from PIL import Image, ImageDraw, ImageFont
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GdkPixbuf, Gio, Pango, GLib, Gdk
