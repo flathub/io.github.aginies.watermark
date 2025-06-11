@@ -36,6 +36,6 @@ run:
 	flatpak run io.github.aginies.watermark
 
 trans:
-	xgettext --language=Python --keyword=_ -o locale/watermark_app_new.pot watermark_app.py
+	xgettext --language=Python --keyword=_ -o locale/watermark_app_new.pot watermark_app_gtk.py
 	#msgfmt watermark_app.po -o watermark_app.mo
 
