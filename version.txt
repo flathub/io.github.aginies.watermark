@@ -23,11 +23,15 @@ VSVersionInfo(
             StringStruct(u'LegalCopyright', u'GPL2'),
             StringStruct(u'ProductName', u'Watermark guibo.com'),
             StringStruct(u'ProductVersion', u'3.1'),
-            StringStruct(u'ApplicationName', u'watermark.exe')
+            StringStruct(u'ApplicationName', u'watermark.exe'),
+	    StringStruct(u'Author', u'Antoine Ginies')
           ]
         )
       ]
     ),
-    VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
-  ]
+    VarFileInfo([
+	    VarStruct(u'Translation', [1033, 1200]), # English (United States)
+	    VarStruct(u'Translation', [1036, 1200]), # French (France)
+	    VarStruct(u'Translation', [1034, 1200])  # Spanish (Spain, International Sort)
+  ])
 )
