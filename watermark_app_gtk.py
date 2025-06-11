@@ -541,8 +541,8 @@ class WatermarkApp(Gtk.Window):
                     font_file = value_data
                     font_path = f"C:\\Windows\\Fonts\\{font_file}"
                     return font_path
-        return None
-        
+            return None
+
         except Exception as err:
             print(f"Error finding font file on Windows: {e}")
             return None
@@ -568,6 +568,7 @@ class WatermarkApp(Gtk.Window):
                     return line
 
             return None
+
         except (subprocess.CalledProcessError, FileNotFoundError):
             return None
 
