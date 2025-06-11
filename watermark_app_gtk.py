@@ -20,7 +20,7 @@ class WarningDialog:
         self.dialog = None
 
     def show(self):
-        # Create the warning dialog if it doesn't exist yet
+        """ Create the warning dialog if it doesn't exist yet"""
         if not self.dialog:
             self.dialog = Gtk.MessageDialog(
                 transient_for=self.parent,
@@ -210,7 +210,7 @@ class ImageViewerWindow(Gtk.Window):
         dialog.destroy()
 
 class WatermarkApp(Gtk.Window):
-
+    """  Main app"""
     def __init__(self):
         Gtk.Window.__init__(self, title=_("Watermark App"))
         self.set_default_size(210, 70)
@@ -247,7 +247,7 @@ class WatermarkApp(Gtk.Window):
         pref_menu = Gtk.Menu()
 
         # Create a check menu item to toggle expert options
-        self.expert_options_check = Gtk.CheckMenuItem(label="Show Expert Options")
+        self.expert_options_check = Gtk.CheckMenuItem(label=_("Show Expert Options"))
         self.expert_options_check.connect("toggled", self.on_expert_toggle)
         self.expert_options_check.set_active(False)
         pref_menu.append(self.expert_options_check)
@@ -277,7 +277,7 @@ class WatermarkApp(Gtk.Window):
         file_hbox = Gtk.Box(spacing=3)
         file_label_text = _("Select Image File(s)")
         file_label = Gtk.Label(label=file_label_text, halign=Gtk.Align.START)
-        self.file_chooser_button = Gtk.Button(label="Choose Files")
+        self.file_chooser_button = Gtk.Button(label=_("Choose Files"))
         self.file_chooser_button.connect("clicked", self.on_files_clicked)
         button_size_group.add_widget(self.file_chooser_button)
         file_hbox.pack_start(file_label, False, False, 12)
@@ -313,7 +313,7 @@ class WatermarkApp(Gtk.Window):
         output_hbox = Gtk.Box(spacing=3)
         output_label = Gtk.Label(label=_("Select Output Folder"))
         self.output_filechooser_button = Gtk.FileChooserButton()
-        self.output_filechooser_button.set_title("Select Output Folder")
+        self.output_filechooser_button.set_title(_("Select Output Folder"))
         self.output_filechooser_button.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         self.output_filechooser_button.set_current_folder(self.output_folder_path)
         button_size_group.add_widget(self.output_filechooser_button)
@@ -373,11 +373,13 @@ class WatermarkApp(Gtk.Window):
 
         # Font color chooser
         color_hbox = Gtk.Box(spacing=6)
-        color_label = Gtk.Label(label=_("Font color"))
         self.color_button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(0, 1, 0, 1))
         self.color_button.connect("color-set", self.on_color_button_set)
+        self.random_color_check = Gtk.CheckButton(label=_("Random Color"))
+        self.random_color_check.connect("toggled", self.on_random_color_toggled)
+        self.random_color_check.set_active(True)
         button_size_group.add_widget(self.color_button)
-        color_hbox.pack_start(color_label, False, False, 12)
+        color_hbox.pack_start(self.random_color_check, False, False, 12)
         color_hbox.pack_end(self.color_button, False, False, 12)
         self.expert_options_box.pack_start(color_hbox, False, False, 3)
 
@@ -403,7 +405,7 @@ class WatermarkApp(Gtk.Window):
 
         # Select the size for resize the image
         resize_hbox = Gtk.Box(spacing=6)
-        resize_label = Gtk.Label(label=_("Resize the image to"))
+        resize_label = Gtk.Label(label=_("Resize Image to"))
         self.list_size = Gtk.ComboBoxText()
         elements = ["None", "320", "640", "800", "1024" ,"1280", "1600", "2048",]
         for text in elements:
@@ -415,9 +417,9 @@ class WatermarkApp(Gtk.Window):
         resize_hbox.pack_end(self.list_size, False, False, 12)
         self.expert_options_box.pack_start(resize_hbox, False, False, 3)
 
-	    # JPEG Compression level
+	# JPEG Compression level
         compression_rate_hbox = Gtk.Box(spacing=3)
-        compression_rate_label = Gtk.Label(label=_("JPEG Compression Level"))
+        compression_rate_label = Gtk.Label(label=_("JPEG Compression"))
         adjustment_compression = Gtk.Adjustment(value=self.compression_rate,
                                                 lower=0, upper=100, step_increment=1,
                                                 page_increment=10)
@@ -443,6 +445,14 @@ class WatermarkApp(Gtk.Window):
         # Se default Font
         self.set_default_font()
 
+    def on_random_color_toggled(self, button):
+        if button.get_active():
+            self.color_button.set_sensitive(False)
+            self.font_color_choosen = False
+        else:
+            self.color_button.set_sensitive(True)
+            self.font_color_choosen = True
+
     def on_color_button_set(self, button):
         self.font_color = button.get_rgba()
         print(f"Selected color: {self.font_color.red}, {self.font_color.green}, {self.font_color.blue}, {self.font_color.alpha}")
@@ -460,9 +470,14 @@ class WatermarkApp(Gtk.Window):
             self.font_chooser_button.set_label(font_desc)
         else:
             print("Could not find the default font file.")
+            warning_dialog = WarningDialog(
+                title="Error",
+                message=_("Could not find the default font file, choose another one."),
+                )
+            warning_dialog.show()
 
     def on_font_selected(self, widget):
-        dialog = Gtk.FontChooserDialog(title="Choose a Font", transient_for=self, flags=0)
+        dialog = Gtk.FontChooserDialog(title=_("Choose a Font"), transient_for=self, flags=0)
         dialog.set_font_desc(self.default_font_description)
 
         while True:
@@ -546,34 +561,30 @@ class WatermarkApp(Gtk.Window):
                 self.resize(210, 110)
 
     def about_dialog(self, widget):
-        # Create a custom dialog window for the About section with a clickable link
-        about_window = Gtk.Window(title=_("About Watermark App"))
-        about_window.set_default_size(400, 250)
+        """ Create a custom dialog window for the About section with a clickable link"""
+        about_window = Gtk.Window(title=_("Watermark App Version 3.0"))
+        about_window.set_default_size(100, 100)
         about_window.set_position(Gtk.WindowPosition.CENTER)
 
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
         about_window.add(vbox)
 
         info_text = _(
-            "Watermark App Version 3.0\n\n"
             "This app add a Watermark to images\n"
-            "Licence GPL2 \n\n"
-            "Open Source Project on GitHub: "
+            "Open Source Project\nLicence GPL2"
         )
 
         label = Gtk.Label(label=info_text)
-        vbox.pack_start(label, True, True, 12)
+        vbox.pack_start(label, True, True, 3)
 
         # Create a clickable hyperlink using GtkLinkButton
         github_link = Gtk.LinkButton("https://github.com/aginies/watermark",
                                      "https://github.com/aginies/watermark")
-        vbox.pack_start(github_link, False, False, 12)
+        vbox.pack_start(github_link, False, False, 3)
 
-        close_button = Gtk.Button(label="Close")
+        close_button = Gtk.Button(label=_("Close"))
         close_button.connect("clicked", lambda btn: about_window.destroy())
-        vbox.pack_end(close_button, False, False, 12)
-
-        # Show the window and all its children
+        vbox.pack_end(close_button, False, False, 3)
         about_window.show_all()
 
     def main_display_images(self, image_path):
@@ -582,7 +593,7 @@ class WatermarkApp(Gtk.Window):
 
     def add_images_filters(self):
         filter_img = Gtk.FileFilter()
-        filter_img.set_name("Image Files")
+        filter_img.set_name(_("Image Files"))
         filter_img.add_mime_type("image/png")
         filter_img.add_mime_type("image/jpeg")
         filter_img.add_mime_type("image/gif")
@@ -600,7 +611,7 @@ class WatermarkApp(Gtk.Window):
         return filter_img
 
     def on_files_clicked(self, widget):
-        # Create a file chooser dialog with multiple selection option
+        """ Create a file chooser dialog with multiple selection option"""
         dialog = Gtk.FileChooserDialog(
             _("Please choose files"),
             self,
@@ -609,7 +620,6 @@ class WatermarkApp(Gtk.Window):
              Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
         )
 
-        # Set the dialog to allow multiple selections
         dialog.set_select_multiple(True)
 
         # Add filters
