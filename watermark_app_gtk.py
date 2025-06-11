@@ -638,7 +638,7 @@ class WatermarkApp(Gtk.Window):
         vbox.pack_start(label, True, True, 3)
 
         # Create a clickable hyperlink using GtkLinkButton
-        github_link = Gtk.LinkButton("https://github.com/aginies/watermark",
+        github_link = Gtk.LinkButton.new_with_label("https://github.com/aginies/watermark",
                                      "https://github.com/aginies/watermark")
         vbox.pack_start(github_link, False, False, 3)
 
