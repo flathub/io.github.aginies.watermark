@@ -20,5 +20,5 @@ modules:
       - cp -a locale /app/share/
     sources:
       - type: archive
-        url: https://github.com/aginies/watermark/archive/refs/tags/3.0.tar.gz
-        sha256: 8b2110295f2961b4bbaab15109b731af899d371b589cce2fa1117dc57fb7a6ea
+        url: https://github.com/aginies/watermark/archive/refs/tags/3.1.tar.gz
+        sha256: f95c5fb74ea671c033c90c2871e292339c05c611b6723a243b0dac6465326dda
