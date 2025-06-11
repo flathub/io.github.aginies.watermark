@@ -217,7 +217,8 @@ class WatermarkApp(Gtk.Window):
     """  Main app"""
     def __init__(self):
         Gtk.Window.__init__(self, title=_("Watermark App"))
-        self.set_default_size(210, 70)
+        self.set_default_size(450, 100)
+        self.set_size_request(450, 100)
         self.output_folder_path = ""
         self.compression_rate = 75
         self.selected_resize = "1280"
@@ -376,7 +377,7 @@ class WatermarkApp(Gtk.Window):
         self.expert_options_box.pack_start(density_hbox, False, False, 3)
 
         # Font color chooser
-        color_hbox = Gtk.Box(spacing=6)
+        color_hbox = Gtk.Box(spacing=3)
         self.color_button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(0, 1, 0, 1))
         self.font_color = self.color_button.get_rgba()
         self.color_button.connect("color-set", self.on_color_button_set)
@@ -389,7 +390,7 @@ class WatermarkApp(Gtk.Window):
         self.expert_options_box.pack_start(color_hbox, False, False, 3)
 
         # Filename Prefix option
-        prefix_filename_hbox = Gtk.Box(spacing=6)
+        prefix_filename_hbox = Gtk.Box(spacing=3)
         prefix_filename_label = Gtk.Label(label=_("Filename Prefix"))
         self.watermark_prefix = Gtk.Entry()
         self.watermark_prefix.set_placeholder_text(_("Filename Prefix"))
@@ -399,7 +400,7 @@ class WatermarkApp(Gtk.Window):
         self.expert_options_box.pack_start(prefix_filename_hbox, False, False, 3)
 
         # Filename Date option
-        date_filename_hbox = Gtk.Box(spacing=6)
+        date_filename_hbox = Gtk.Box(spacing=3)
         date_filename_label = Gtk.Label(label=_("Date + Hour in filename"))
         self.date_filename_check = Gtk.CheckButton()
         self.date_filename_check.set_active(True)
@@ -409,7 +410,7 @@ class WatermarkApp(Gtk.Window):
         self.expert_options_box.pack_start(date_filename_hbox, False, False, 3)
 
         # Select the size for resize the image
-        resize_hbox = Gtk.Box(spacing=6)
+        resize_hbox = Gtk.Box(spacing=3)
         resize_label = Gtk.Label(label=_("Resize Image to"))
         self.list_size = Gtk.ComboBoxText()
         elements = ["None", "320", "640", "800", "1024" ,"1280", "1600", "2048",]
