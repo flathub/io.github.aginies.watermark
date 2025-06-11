@@ -1,0 +1,174 @@
+# Transalation file for watermark_app
+# Copyright (C) 2025 Guibo.com
+# This file is distributed under the same license as the watermark_app package.
+# Antoine Ginies <antoine@ginies.org>, 2025.
+msgid ""
+msgstr ""
+"Project-Id-Version: 2.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-05 16:14+0200\n"
+"PO-Revision-Date: 2025-06-05 16:14+0200\n"
+"Last-Translator: Antoine Ginies <antoine@ginies.org>\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: watermark_app_gtk.py:217
+msgid "Watermark App"
+msgstr "Aplicación de Marca de Agua"
+
+#: watermark_app_gtk.py:252
+msgid "Show Expert Options"
+msgstr "Mostrar Opciones de Experto"
+
+#: watermark_app_gtk.py:266
+msgid "About App"
+msgstr "Acerca de la Aplicación"
+
+#: watermark_app_gtk.py:272
+msgid "About Watermark App"
+msgstr "Acerca de la Aplicación de Marca de Agua"
+
+#: watermark_app_gtk.py:280
+msgid "Select Image File(s)"
+msgstr "Seleccionar Archivo(s) de Imagen"
+
+#: watermark_app_gtk.py:282
+msgid "Choose Files"
+msgstr "Elegir Archivos"
+
+#: watermark_app_gtk.py:296
+msgid "Watermark Text"
+msgstr "Texto de Marca de Agua"
+
+#: watermark_app_gtk.py:298
+msgid "Watermark text"
+msgstr "Texto de marca de agua"
+
+#: watermark_app_gtk.py:306
+msgid "Font chooser"
+msgstr "Selector de fuente"
+
+#: watermark_app_gtk.py:307
+msgid "Select font"
+msgstr "Seleccionar fuente"
+
+#: watermark_app_gtk.py:316 watermark_app_gtk.py:318
+msgid "Select Output Folder"
+msgstr "Seleccionar Carpeta de Salida"
+
+#: watermark_app_gtk.py:328 watermark_app_gtk.py:329
+msgid "Expert Options"
+msgstr "Opciones de Experto"
+
+#: watermark_app_gtk.py:334
+msgid "Text Angle (degrees)"
+msgstr "Ángulo del Texto (grados)"
+
+#: watermark_app_gtk.py:348
+msgid "Font Transparency"
+msgstr "Transparencia de la Fuente"
+
+#: watermark_app_gtk.py:363
+msgid "Font Density"
+msgstr "Densidad de la Fuente"
+
+#: watermark_app_gtk.py:381
+msgid "Random Color"
+msgstr "Color Aleatorio"
+
+#: watermark_app_gtk.py:391 watermark_app_gtk.py:393
+msgid "Filename Prefix"
+msgstr "Prefijo del Nombre de Archivo"
+
+#: watermark_app_gtk.py:401
+msgid "Date + Hour in filename"
+msgstr "Fecha + Hora en el nombre de archivo"
+
+#: watermark_app_gtk.py:411
+msgid "Resize Image to"
+msgstr "Redimensionar Imagen a"
+
+#: watermark_app_gtk.py:425
+msgid "JPEG Compression"
+msgstr "Compresión JPEG"
+
+#: watermark_app_gtk.py:443
+msgid "Add Watermark"
+msgstr "Añadir Marca de Agua"
+
+#: watermark_app_gtk.py:485
+msgid "Could not find the default font file, choose another one."
+msgstr "No se pudo encontrar el archivo de fuente predeterminado, elija otro."
+
+#: watermark_app_gtk.py:490
+msgid "Choose a Font"
+msgstr "Elegir una Fuente"
+
+#: watermark_app_gtk.py:512
+msgid "An error occurred, can't find the font path, please choose another one"
+msgstr "Ocurrió un error, no se puede encontrar la ruta de la fuente, por favor elija otra"
+
+#: watermark_app_gtk.py:610
+msgid "Watermark App Version 3.0"
+msgstr "Aplicación de Marca de Agua Versión 3.0"
+
+#: watermark_app_gtk.py:618
+msgid ""
+"This app add a Watermark to images\n"
+"Open Source Project\n"
+"Licence GPL2"
+msgstr ""
+"Esta aplicación añade una marca de agua a las imágenes\n"
+"Proyecto de Código Abierto\n"
+"Licencia GPL2"
+
+#: watermark_app_gtk.py:630
+msgid "Close"
+msgstr "Cerrar"
+
+#: watermark_app_gtk.py:641
+msgid "Image Files"
+msgstr "Archivos de Imagen"
+
+#: watermark_app_gtk.py:661
+msgid "Please choose files"
+msgstr "Por favor, elija archivos"
+
+#: watermark_app_gtk.py:694
+#, python-brace-format
+msgid ""
+"Selected File(s):\n"
+"{selected_files_str}"
+msgstr ""
+"Archivo(s) seleccionado(s):\n"
+"{selected_files_str}"
+
+#: watermark_app_gtk.py:700
+msgid "Please select an image."
+msgstr "Por favor, seleccione una imagen."
+
+#: watermark_app_gtk.py:709
+msgid "Please enter a watermark text."
+msgstr "Por favor, ingrese un texto de marca de agua."
+
+#: watermark_app_gtk.py:717
+msgid "Please Select a Font"
+msgstr "Por favor, seleccione una fuente"
+
+#: watermark_app_gtk.py:743
+#, python-brace-format
+msgid "An error occurred during image processing: {err}"
+msgstr "Ocurrió un error durante el procesamiento de la imagen: {err}"
+
+#: watermark_app_gtk.py:766
+#, python-brace-format
+msgid "Image size is {img.size}, will not rescale it to {resize_selected}"
+msgstr "El tamaño de la imagen es {img.size}, no se redimensionará a {resize_selected}"
+
+#: watermark_app_gtk.py:844
+#, python-brace-format
+msgid "An error occurred while adding the watermark: {err}"
+msgstr "Ocurrió un error al añadir la marca de agua: {err}"
