@@ -4,6 +4,11 @@ Python Application to Add a Watermark to an Image or Images
 
 **FR**: Application en python pour ajouter un filigrane à une image ou des images.
 
+# Python requirements
+
+* pillow
+* gobject
+
 # watermark_app_gtk.py
 
 Python GTK version.
@@ -13,7 +18,7 @@ Python GTK version.
 * Default save directory is that of the first image
 * Expert mode: 
   * font selection
-  * font color
+  * font color choice or random
   * font transparency
   * text angle
   * density
@@ -30,7 +35,7 @@ Script en Python GTK.
 * Répertoire de sauvegarde par défaut est celui de la première image
 * Expert mode: 
   * séléction font
-  * couleur font
+  * couleur font ou via le hasard
   * transparence font
   * angle du texte
   * option date + Heure
@@ -39,7 +44,7 @@ Script en Python GTK.
   * niveau de compression JPEG
   * taille image
 
-# watermark_app.py
+# watermark_app.py TK (version 2.0 for windows)
 
 Basix Python TK script. Mostly built For use under Windows.
 * Add watermark to multiple images
@@ -61,10 +66,6 @@ Script en Python TK. Pour une utilisation sous Windows.
 
 [![Demo](https://img.youtube.com/vi/XCRIuAW7zwY/0.jpg)](https://www.youtube.com/watch?v=XCRIuAW7zwY)
 
-# Python requirements
-
-* pillow
-
 ## Get the .exe (Windows)
 
 * Install Python on Windows https://www.python.org/downloads/?lang=fr
@@ -81,7 +82,7 @@ pyinstaller --onefile --windowed watermark_app.py
 The **watermark_app.exe** file will be in the **dist** directory.
 To get a version with console debug, you need to remove the **--windowed** option from the **pyinstaller** command.
 
-## flathub app
+## flathub app (TOFIX)
 
 To build the current latest version tarballon github:
 ```
@@ -101,16 +102,6 @@ make run
 For more information: https://docs.flathub.org/docs/for-app-authors/submission#build-and-install
 
 # OLD stuff
-
-## easytag.py (obsolete)
-
-Script en Python3 GTK. Version initiale mais impossible de le faire fonctionner sous Windows,
-donc j'ai fait une version avec TK. Cette version n'est plus la maintenue pour privilégier
-une version multi-plateforme (avec TK).
-```
-chmod 755 easy_tag.py
-./easy_tag.py
-```
 
 ## easy_tag.sh (No GUI)
 
