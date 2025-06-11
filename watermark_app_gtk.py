@@ -462,10 +462,10 @@ class WatermarkApp(Gtk.Window):
 
     def set_default_font(self):
         if platform.system() == 'Windows':
-            self.default_font_description = "Arial 20"
+            self.default_font_description = Pango.FontDescription("Arial 20")
             self.font_base_name = "arial.ttf"
             self.font_size = 20
-            self.font_chooser_button.set_label("Arial 12")
+            self.font_chooser_button.set_label("Arial 20")
             print("Default font set to Arial on Windows.")
         else:
             font_desc = self.default_font_description.to_string()
