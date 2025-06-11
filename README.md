@@ -48,6 +48,14 @@ Script en Python GTK.
   * niveau de compression JPEG
   * taille image
 
+## Use directly
+
+```
+git clone https://github.com/aginies/watermark.git
+cd watermark
+python3 watermark_app_gtk.py
+```
+
 ## Get the .exe (Windows)
 
 * Install Python on Windows https://www.python.org/downloads/?lang=fr
