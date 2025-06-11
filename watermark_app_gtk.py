@@ -460,6 +460,10 @@ class WatermarkApp(Gtk.Window):
         self.font_color_choosen = True
 
     def set_default_font(self):
+        if platform.system() == 'Windows':
+            print("Skipping default font setting on Windows.")
+            return
+
         font_desc = self.default_font_description.to_string()
         font_path = self.find_font_file(font_desc)
 
@@ -510,6 +514,40 @@ class WatermarkApp(Gtk.Window):
                 return None
 
     def find_font_file(self, font_description):
+        """
+        Try to find the font file for a given Pango font description.
+        Uses `fc-list` on Unix-like systems and Windows Registry on Windows.
+        """
+        font_family = font_description.split()[0]
+
+        if platform.system() == 'Windows':
+            return self.find_font_file_windows(font_family)
+        else:
+            return self.find_font_file_unix(font_family)
+
+    def find_font_file_windows(self, font_family):
+        """
+        Try to find the font file for a given font family on Windows.
+        Uses Windows Registry to find installed fonts.
+        """
+        try:
+            # Open the Windows Registry key for installed fonts
+            registry_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts")
+
+            # Iterate through the registry keys to find the font family
+            for i in range(winreg.QueryInfoKey(registry_key)[1]):
+                value_name, value_data, _ = winreg.EnumValue(registry_key, i)
+                if font_family.lower() in value_name.lower():
+                    font_file = value_data
+                    font_path = f"C:\\Windows\\Fonts\\{font_file}"
+                    return font_path
+        return None
+        
+        except Exception as err:
+            print(f"Error finding font file on Windows: {e}")
+            return None
+
+    def find_font_file_unix(self, font_description):
         """
         Try to find the font file for a given Pango font description.
         Uses `fc-list` command line tool from fontconfig package.
