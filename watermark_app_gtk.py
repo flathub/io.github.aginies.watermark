@@ -261,9 +261,18 @@ class WatermarkApp(Gtk.Window):
         #self.autosave_options_check = Gtk.CheckMenuItem(label="Auto Save Images")
         #self.autosave_options_check.set_active(True)
         #pref_menu.append(self.autosave_options_check)
-
-        # Attach the menu to the "View" menu item
         pref_menu_item.set_submenu(pref_menu)
+
+        # Create "Help" menu with cascading items
+        help_menu_item = Gtk.MenuItem(label=_("Help"))
+        help_menu = Gtk.Menu()
+        help_menu_item.set_submenu(help_menu)
+        menubar.append(help_menu_item)
+
+        # Add "Help on Filigrane App" to the About menu
+        help_filigrane_menu_item = Gtk.MenuItem(label=_("Online Help"))
+        help_filigrane_menu_item.connect("activate", self.help_dialog)
+        help_menu.append(help_filigrane_menu_item)
 
         # Create "About" menu with cascading items
         about_menu_item = Gtk.MenuItem(label=_("About App"))
@@ -291,7 +300,7 @@ class WatermarkApp(Gtk.Window):
 
         self.files_selected_hbox = Gtk.Box(spacing=3)
         self.files_label = Gtk.Label()
-        self.files_selected_hbox.pack_start(self.files_label, False, False, 3)
+        self.files_selected_hbox.pack_start(self.files_label, False, False, 12)
         self.vbox.pack_start(self.files_selected_hbox, False, False, 3)
 
         # Watermark text horizontal box (label + entry)
@@ -638,6 +647,22 @@ class WatermarkApp(Gtk.Window):
         vbox.pack_end(close_button, False, False, 3)
         about_window.show_all()
 
+    def help_dialog(self, widget):
+        """ Create a custom dialog window for the Help section with a clickable link"""
+        help_window = Gtk.Window(title=_("help"))
+        help_window.set_default_size(100, 100)
+        help_window.set_position(Gtk.WindowPosition.CENTER)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
+        help_window.add(vbox)
+
+        github_link = Gtk.LinkButton("https://github.com/aginies/watermark/blob/main/README.md",
+                                     "Online information")
+        vbox.pack_start(github_link, False, False, 3)
+        close_button = Gtk.Button(label=_("Close"))
+        close_button.connect("clicked", lambda btn: help_window.destroy())
+        vbox.pack_end(close_button, False, False, 3)
+        help_window.show_all()        
+
     def main_display_images(self, image_path):
         app = ImageViewerWindow()
         app.load_images(image_path)
@@ -696,8 +721,14 @@ class WatermarkApp(Gtk.Window):
         dialog.destroy()
 
     def update_file_button_text(self):
-        selected_files_str = "\n".join(os.path.basename(path) for path in self.selected_files_path)
-        self.files_label.set_text(_(f"Selected File(s):\n{selected_files_str}"))
+        how_many_files = len(self.selected_files_path)
+        if how_many_files > 3:
+            selected_files_str = "\n".join(os.path.basename(path) for path in self.selected_files_path[:3])
+            selected_files_str += _(f"\n... and more files selected ({how_many_files}).")
+            self.files_label.set_text(_(f"{selected_files_str}"))
+        else:
+            selected_files_str = "\n".join(os.path.basename(path) for path in self.selected_files_path)
+            self.files_label.set_text(_(f"{selected_files_str}"))
 
     def on_add_watermark_clicked(self, widget):
         if not self.selected_files_path:
