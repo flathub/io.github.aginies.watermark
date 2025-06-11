@@ -7,15 +7,14 @@ finish-args:
   - --share=ipc
   - --socket=x11
   - --device=dri
-  # - --filesystem=host
-  - --talk-name=org.freedesktop.Notifications
+  - --filesystem=xdg-pictures
   - --share=network
 modules:
   - python3-modules.json
   - name: watermark_app
     buildsystem: simple
     build-commands:
-      - install -Dm755 watermark_app.py /app/bin/watermark_app
+      - install -Dm755 watermark_app_gtk.py /app/bin/watermark_app
       - install -Dm644 io.github.aginies.watermark.png /app/share/icons/hicolor/256x256/apps/io.github.aginies.watermark.png
       - install -Dm644 io.github.aginies.watermark.desktop /app/share/applications/io.github.aginies.watermark.desktop
       - cp -av locale /app/share/
