@@ -748,7 +748,6 @@ class WatermarkApp(Gtk.Window):
                                                    int(self.rotation_scale.get_value()))
                             self.font_transp = 100 - self.font_transparency
                             if self.font_color_choosen is False:
-                                print("Random Color")
                                 color = (
                                     random.randint(0, 255),
                                     random.randint(0, 255),
@@ -756,7 +755,6 @@ class WatermarkApp(Gtk.Window):
                                     self.font_transp
                                 )
                             else:
-                                print("Custom Color Selected")
                                 color = (
                                     int(self.font_color.red * 255),
                                     int(self.font_color.green * 255),
