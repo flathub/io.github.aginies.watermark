@@ -34,4 +34,5 @@ VSVersionInfo(
 	    VarStruct(u'Translation', [1036, 1200]), # French (France)
 	    VarStruct(u'Translation', [1034, 1200])  # Spanish (Spain, International Sort)
   ])
+ ]
 )
