@@ -374,6 +374,7 @@ class WatermarkApp(Gtk.Window):
         # Font color chooser
         color_hbox = Gtk.Box(spacing=6)
         self.color_button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(0, 1, 0, 1))
+        self.font_color = self.color_button.get_rgba()
         self.color_button.connect("color-set", self.on_color_button_set)
         self.random_color_check = Gtk.CheckButton(label=_("Random Color"))
         self.random_color_check.connect("toggled", self.on_random_color_toggled)
@@ -747,6 +748,7 @@ class WatermarkApp(Gtk.Window):
                                                    int(self.rotation_scale.get_value()))
                             self.font_transp = 100 - self.font_transparency
                             if self.font_color_choosen is False:
+                                print("Random Color")
                                 color = (
                                     random.randint(0, 255),
                                     random.randint(0, 255),
@@ -754,6 +756,7 @@ class WatermarkApp(Gtk.Window):
                                     self.font_transp
                                 )
                             else:
+                                print("Custom Color Selected")
                                 color = (
                                     int(self.font_color.red * 255),
                                     int(self.font_color.green * 255),
