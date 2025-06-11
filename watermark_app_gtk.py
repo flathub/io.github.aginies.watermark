@@ -9,6 +9,7 @@ import subprocess
 import gi
 if platform.system() == 'Windows':
     import winreg
+    import pyi_splash
 from PIL import Image, ImageDraw, ImageFont
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GdkPixbuf, Gio, Pango, GLib, Gdk
@@ -448,6 +449,9 @@ class WatermarkApp(Gtk.Window):
 
         # Se default Font
         self.set_default_font()
+
+        if platform.system() == 'Windows':
+            pyi_splash.close()
 
     def on_random_color_toggled(self, button):
         if button.get_active():
