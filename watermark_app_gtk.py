@@ -4,6 +4,7 @@ import os
 import random
 import time
 import gettext
+import platform
 import subprocess
 import gi
 from PIL import Image, ImageDraw, ImageFont
@@ -461,25 +462,28 @@ class WatermarkApp(Gtk.Window):
 
     def set_default_font(self):
         if platform.system() == 'Windows':
-            print("Skipping default font setting on Windows.")
-            return
-
-        font_desc = self.default_font_description.to_string()
-        font_path = self.find_font_file(font_desc)
-
-        if font_path:
-            self.font_base_name = font_path.split('.ttf')[0] + '.ttf'
-            print(f"Font name: {self.font_base_name}")
-            parts_desc = font_desc.split()
-            self.font_size = int(parts_desc[-1]) if parts_desc else None
-            self.font_chooser_button.set_label(font_desc)
+            self.default_font_description = "Arial 20"
+            self.font_base_name = "arial.ttf"
+            self.font_size = 20
+            self.font_chooser_button.set_label("Arial 12")
+            print("Default font set to Arial on Windows.")
         else:
-            print("Could not find the default font file.")
-            warning_dialog = WarningDialog(
-                title="Error",
-                message=_("Could not find the default font file, choose another one."),
-                )
-            warning_dialog.show()
+            font_desc = self.default_font_description.to_string()
+            font_path = self.find_font_file(font_desc)
+
+            if font_path:
+                self.font_base_name = font_path.split('.ttf')[0] + '.ttf'
+                print(f"Font name: {self.font_base_name}")
+                parts_desc = font_desc.split()
+                self.font_size = int(parts_desc[-1]) if parts_desc else None
+                self.font_chooser_button.set_label(font_desc)
+            else:
+                print("Could not find the default font file.")
+                warning_dialog = WarningDialog(
+                    title="Error",
+                    message=_("Could not find the default font file, choose another one."),
+                    )
+                warning_dialog.show()
 
     def on_font_selected(self, widget):
         dialog = Gtk.FontChooserDialog(title=_("Choose a Font"), transient_for=self, flags=0)
@@ -544,7 +548,7 @@ class WatermarkApp(Gtk.Window):
             return None
 
         except Exception as err:
-            print(f"Error finding font file on Windows: {e}")
+            print(f"Error finding font file on Windows: {err}")
             return None
 
     def find_font_file_unix(self, font_description):
