@@ -46,42 +46,22 @@ Script en Python GTK.
   * niveau de compression JPEG
   * taille image
 
-# watermark_app.py TK (version 2.0 for windows)
-
-Basix Python TK script. Mostly built For use under Windows.
-* Add watermark to multiple images
-* List of selected images
-* Image viewer
-* Image resizing to 1280x
-* JPEG compression at 75%
-* Default save directory is that of the first image
-
-
-**FR**:
-Script en Python TK. Pour une utilisation sous Windows.
-* Ajout filigrane sur de multiple images
-* Liste des images selectionnées
-* visualiseur d'images
-* Redimension de l'image en 1280x
-* Compression en JPEG à 75%
-* Répertoire de sauvegarde par défaut est celui de la première image
-
-[![Demo](https://img.youtube.com/vi/XCRIuAW7zwY/0.jpg)](https://www.youtube.com/watch?v=XCRIuAW7zwY)
-
 ## Get the .exe (Windows)
 
 * Install Python on Windows https://www.python.org/downloads/?lang=fr
-* Install PyInstaller
+* install MSYS2: http://www.msys2.org
+* Open a Terminal:
 ```
-python -m pip install PyInstaller
+* pacman -Suy
+* pacman -Su mingw-w64-x86_64-python-gobject mingw-w64-x86_64-python-gtk mingw-w64-x86_64-gtk3 mingw-w64-x86_64-pyinstaller
 ```
 
 * Go to the script directory and type:
 ```
-pyinstaller --onefile --windowed watermark_app.py
+pyinstaller.exe --onefile --windowed watermark_app_gtk.py --name watermark --splash watermark_starting.jpg -i io.github.aginies.watermark.ico
 ```
 
-The **watermark_app.exe** file will be in the **dist** directory.
+The **watermark.exe** file will be in the **dist** directory.
 To get a version with console debug, you need to remove the **--windowed** option from the **pyinstaller** command.
 
 ## flathub app (TOFIX)
@@ -128,6 +108,28 @@ test_TAG_TO_INCLUDE_20240515.png
 ```
 
 ![image](https://github.com/aginies/easy_tag/blob/202f6f2a8de8fd39f0d14bc8ea4232a029f3b6d9/suse_TAG_TO_INCLUDE_20240515.jpg)
+
+## watermark_app.py TK (version 2.0 for windows)
+
+Basix Python TK script. Mostly built For use under Windows.
+* Add watermark to multiple images
+* List of selected images
+* Image viewer
+* Image resizing to 1280x
+* JPEG compression at 75%
+* Default save directory is that of the first image
+
+
+**FR**:
+Script en Python TK. Pour une utilisation sous Windows.
+* Ajout filigrane sur de multiple images
+* Liste des images selectionnées
+* visualiseur d'images
+* Redimension de l'image en 1280x
+* Compression en JPEG à 75%
+* Répertoire de sauvegarde par défaut est celui de la première image
+
+[![Demo](https://img.youtube.com/vi/XCRIuAW7zwY/0.jpg)](https://www.youtube.com/watch?v=XCRIuAW7zwY)
 
 # LICENCE
 
