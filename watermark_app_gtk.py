@@ -372,7 +372,7 @@ class WatermarkApp(Gtk.Window):
 
         # Font density
         density_hbox = Gtk.Box(spacing=3)
-        density_label = Gtk.Label(label=_("Font Density"))
+        density_label = Gtk.Label(label=_("Watermark Density"))
         adjustment_density = Gtk.Adjustment(value=self.fili_density, lower=1,
                                             upper=200, step_increment=1, page_increment=10)
         self.text_density_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
@@ -390,7 +390,7 @@ class WatermarkApp(Gtk.Window):
         self.color_button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(0, 1, 0, 1))
         self.font_color = self.color_button.get_rgba()
         self.color_button.connect("color-set", self.on_color_button_set)
-        self.random_color_check = Gtk.CheckButton(label=_("Random Color"))
+        self.random_color_check = Gtk.CheckButton(label=_("Random Colors"))
         self.random_color_check.connect("toggled", self.on_random_color_toggled)
         self.random_color_check.set_active(True)
         button_size_group.add_widget(self.color_button)

@@ -80,11 +80,11 @@ msgid "Font Transparency"
 msgstr ""
 
 #: watermark_app_gtk.py:375
-msgid "Font Density"
+msgid "Watermark Density"
 msgstr ""
 
 #: watermark_app_gtk.py:393
-msgid "Random Color"
+msgid "Random Colors"
 msgstr ""
 
 #: watermark_app_gtk.py:403 watermark_app_gtk.py:405

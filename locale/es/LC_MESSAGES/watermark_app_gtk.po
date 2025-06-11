@@ -81,12 +81,12 @@ msgid "Font Transparency"
 msgstr "Transparencia de la Fuente"
 
 #: watermark_app_gtk.py:375
-msgid "Font Density"
-msgstr "Densidad de la Fuente"
+msgid "Watermark Density"
+msgstr "Densidad de Marcas de Agua"
 
 #: watermark_app_gtk.py:393
 msgid "Random Color"
-msgstr "Color Aleatorio"
+msgstr "Colores Aleatorios"
 
 #: watermark_app_gtk.py:403 watermark_app_gtk.py:405
 msgid "Filename Prefix"

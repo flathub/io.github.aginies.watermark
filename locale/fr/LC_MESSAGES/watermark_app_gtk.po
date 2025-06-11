@@ -80,12 +80,12 @@ msgid "Font Transparency"
 msgstr "Transparence de la Police"
 
 #: watermark_app_gtk.py:375
-msgid "Font Density"
-msgstr "Densité de la Police"
+msgid "Watermark Density"
+msgstr "Densité du filigrane"
 
 #: watermark_app_gtk.py:393
-msgid "Random Color"
-msgstr "Couleur Aléatoire"
+msgid "Random Colors"
+msgstr "Couleurs Aléatoires"
 
 #: watermark_app_gtk.py:403 watermark_app_gtk.py:405
 msgid "Filename Prefix"
