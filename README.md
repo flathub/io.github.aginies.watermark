@@ -3,8 +3,8 @@
 Python Application to Add a Watermark to Image(s). An expert mode is available to customize the watermark.
 This application is used to combat **identity theft by securing official documents** with a watermark. For example: if you need to send your passport to subscribe to car insurance, you just need to select the image of your passport and add the watermark: "Insurance subscription." The application will add the watermark across the entire image, including the date and time. If someone uses this document for anything other than insurance, you can state that this document was sent solely for your insurance purposes.
 
-**FR**: Application en python pour ajouter un filigrane à une image ou des images. Un mode expert est disponibl pour ajuster le filigranne.
-Cette application est utilise pour lutter contre  l'usurpation d'identité en sécurisant des documents officiels avec un filigranne. Par example: vous devez envoyer votre passeport pour souscrire une assurance automobile, il vous suffit de séléctionner l'image de votre passport, et rajouter le filigranne: "Assurance souscrire". L'application rajoutera le filigranne sur toute l'image en ajoutant aussi la date et l'heure. Si quelqu'un utilise ce document pour autre chose qu'une assurance, vous pouvez dire que ce document a été envoyé uniquement pour votre assurance.
+**FR**: Application en python pour ajouter un filigrane à une image ou des images. Un mode expert est disponibl pour ajuster le filigrane.
+Cette application est utilise pour lutter contre  l'usurpation d'identité en sécurisant des documents officiels avec un filigrane. Par example: vous devez envoyer votre passeport pour souscrire une assurance automobile, il vous suffit de séléctionner l'image de votre passport, et rajouter le filigrane: "Assurance souscrire". L'application rajoutera le filigrane sur toute l'image en ajoutant aussi la date et l'heure. Si quelqu'un utilise ce document pour autre chose qu'une assurance, vous pouvez dire que ce document a été envoyé uniquement pour votre assurance.
 
 ![image](https://github.com/aginies/watermark/blob/08da28cacd0612f564e3e23a19ac0b765343b820/images/example.jpg)
 
