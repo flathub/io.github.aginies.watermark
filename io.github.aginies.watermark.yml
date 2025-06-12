@@ -19,7 +19,7 @@ modules:
       - install -Dm644 io.github.aginies.watermark.desktop /app/share/applications/io.github.aginies.watermark.desktop
       - cp -a locale /app/share/
       - mkdir /app/share/metainfo/
-      - cp -a io.github.aginies.watermark.metainfo.xml /app/share/appdata/
+      - cp -a io.github.aginies.watermark.metainfo.xml /app/share/metainfo/
     sources:
       - type: archive
         url: https://github.com/aginies/watermark/archive/refs/tags/3.2.tar.gz
