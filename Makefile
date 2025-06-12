@@ -35,6 +35,9 @@ lint:
 run:
 	flatpak run io.github.aginies.watermark
 
+json:
+	flatpak_pip_generator --requirements-file=requirements.txt
+
 trans:
 	xgettext --language=Python --keyword=_ -o locale/watermark_app_gtk_new.pot watermark_app_gtk.py
 	xgettext --language=Python --keyword=_ -o locale/watermark_app_new.pot watermark_app.py
