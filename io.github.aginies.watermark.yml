@@ -18,6 +18,7 @@ modules:
       - install -Dm644 io.github.aginies.watermark.png /app/share/icons/hicolor/256x256/apps/io.github.aginies.watermark.png
       - install -Dm644 io.github.aginies.watermark.desktop /app/share/applications/io.github.aginies.watermark.desktop
       - cp -a locale /app/share/
+      - cp -a metainfo.xml /app/share/metainfo
     sources:
       - type: archive
         url: https://github.com/aginies/watermark/archive/refs/tags/3.1.tar.gz
