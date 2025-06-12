@@ -20,7 +20,20 @@
   <launchable type="desktop-id">io.github.aginies.watermark.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/aginies/watermark/08da28cacd0612f564e3e23a19ac0b765343b820/images/example.jpg</image>
+	    <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/example.jpg</image>
+	    <caption>Main application</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/font_chooser.jpg</image>
+      <caption>Font Chooser</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/color_chooser.jpg</image>
+      <caption>Color Chooser</caption>
+    </screenshot>
+   <screenshot>
+      <image></image>
+      <caption>Color Chooser</caption>
     </screenshot>
   </screenshots>
   <releases>
