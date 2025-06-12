@@ -7,14 +7,15 @@
   <summary>A simple application for adding watermarks to images</summary>
   <description>
     <p>
-      Watermark is an easy-to-use application that allows users to add custom watermarks to their images. It supports various image formats and provides options to customize the watermark text and appearance.
+      Watermark is an easy-to-use application that allows users to add custom watermarks to their images.
+      It supports various image formats and provides options to customize the watermark text and appearance.
     </p>
   </description>
   <url type="homepage">https://github.com/aginies/watermark</url>
   <launchable type="desktop-id">io.github.aginies.watermark.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-	    <image><https://raw.githubusercontent.com/aginies/watermark/08da28cacd0612f564e3e23a19ac0b765343b820/images/example.jpg></image>
+      <image>https://raw.githubusercontent.com/aginies/watermark/08da28cacd0612f564e3e23a19ac0b765343b820/images/example.jpg</image>
     </screenshot>
   </screenshots>
   <releases>
