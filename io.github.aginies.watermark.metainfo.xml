@@ -11,7 +11,11 @@
       It supports various image formats and provides options to customize the watermark text and appearance.
     </p>
   </description>
+  <developer id="com.guibo">
+  <name>Antoine Ginies</name>
+  </developer>
   <url type="homepage">https://github.com/aginies/watermark</url>
+  <url type="bugtracker">https://github.com/aginies/watermark/issues</url>
   <launchable type="desktop-id">io.github.aginies.watermark.desktop</launchable>
   <screenshots>
     <screenshot type="default">
