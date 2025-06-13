@@ -4,7 +4,7 @@
  <metadata_license>CC0-1.0</metadata_license>
  <project_license>GPL-2.0+</project_license>
  <name>Watermark</name>
- <icon type="stock">io.github.aginies.watermark.png</icon>
+ <icon type="stock">io.github.aginies.watermark</icon>
  <summary>A simple application for adding watermarks to images</summary>
  <description>
   <p>
@@ -42,9 +42,9 @@
     <p>Main features</p>
     <ul>
      <li>Add watermark to multiple images</li>
-     <li>Multiple Image viewer</li>
+     <li>Can export to PDF or JPG files</li>
      <li>Expert mode: font selection, font color choice or random, font transparency,
-     text angle, watermark density, optional Date + Hour, filename prefix,
+     text angle, watermark density, optional Date + Hour, filename prefix, PDF or JPG output,
      JPG compression level, image resize</li>
     </ul>
    </description>
