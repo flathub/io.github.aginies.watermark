@@ -20,11 +20,7 @@ modules:
       - cp -a locale /app/share/
       - mkdir /app/share/metainfo/
       - cp -a io.github.aginies.watermark.metainfo.xml /app/share/metainfo/
-      - mkdir /app/share/images/
-      - cp -a images/example.jpg /app/share/images/
-      - cp -a images/font_chooser.jpg /app/share/images/
-      - cp -a images/color_chooser.jpg /app/share/images/
     sources:
       - type: archive
         url: https://github.com/aginies/watermark/archive/refs/tags/3.3.tar.gz
-        sha256: 9612ad1a9fba33fbd999577f2a9f63d3515a904651bec8a1aabcfee97119c013
+        sha256: 2f938f71ff3b7abfd1b4189ace04951f10f4db92185d89ed2ef3e48563582853
