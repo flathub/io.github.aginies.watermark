@@ -16,6 +16,29 @@ from gi.repository import Gtk, GdkPixbuf, Gio, Pango, GLib, Gdk
 
 gettext.install('watermark_app_gtk', localedir='locale')
 
+class ProgressDialog(Gtk.Dialog):
+    def __init__(self, title, max_value, parent=None):
+        Gtk.Dialog.__init__(self, title, parent, 0,
+                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL))
+        self.set_default_size(300, 100)
+        self.max_value = max_value
+        self.current_value = 0
+        self.progress = Gtk.ProgressBar()
+        self.label = Gtk.Label(label=_("Processing..."))
+        box = self.get_content_area()
+        box.add(self.progress)
+        box.add(self.label)
+        self.show_all()
+
+    def update_progress(self, value):
+        self.current_value = value
+        fraction = self.current_value / self.max_value
+        self.progress.set_fraction(fraction)
+        self.label.set_text(f"Processing... {self.current_value}/{self.max_value}")
+
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+
 class WarningDialog:
     def __init__(self, title=None, message="", parent=None):
         self.title = title or "Warning"
@@ -235,6 +258,7 @@ class WatermarkApp(Gtk.Window):
         self.font_color = Gdk.RGBA()
         self.font_color_choosen = False
         self.font_transparency = 50
+        self.pdf_choosen = False
 
         # Create main vertical box container
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
@@ -432,9 +456,9 @@ class WatermarkApp(Gtk.Window):
         resize_hbox.pack_end(self.list_size, False, False, 12)
         self.expert_options_box.pack_start(resize_hbox, False, False, 3)
 
-	# JPEG Compression level
-        compression_rate_hbox = Gtk.Box(spacing=3)
-        compression_rate_label = Gtk.Label(label=_("JPEG Compression"))
+	# Output PDF or JPEG Compression level
+        output_hbox = Gtk.Box(spacing=3)
+        self.compression_rate_label = Gtk.Label(label=_("JPEG (%)"))
         adjustment_compression = Gtk.Adjustment(value=self.compression_rate,
                                                 lower=0, upper=100, step_increment=1,
                                                 page_increment=10)
@@ -443,9 +467,15 @@ class WatermarkApp(Gtk.Window):
         self.compression_scale.set_digits(0)
         self.compression_scale.connect("value-changed", self.on_compression_changed)
         button_size_group.add_widget(self.compression_scale)
-        compression_rate_hbox.pack_start(compression_rate_label, False, False, 12)
-        compression_rate_hbox.pack_end(self.compression_scale, False, False, 12)
-        self.expert_options_box.pack_start(compression_rate_hbox, False, False, 3)
+        self.pdf_check = Gtk.CheckButton(label=_("PDF"))
+        self.pdf_check.connect("toggled", self.on_pdf_toggled)
+        self.pdf_check.set_active(False)
+        self.compression_scale.set_sensitive(True)
+        self.compression_rate_label.set_sensitive(True)
+        output_hbox.pack_start(self.pdf_check, False, False, 12)
+        output_hbox.pack_end(self.compression_scale, False, False, 12)
+        output_hbox.pack_end(self.compression_rate_label, False, False, 12)
+        self.expert_options_box.pack_start(output_hbox, False, False, 3)
 
         #self.vbox.pack_start(self.expert_options_box, False, False, 12)
         #self.expert_options_box.hide()
@@ -462,6 +492,16 @@ class WatermarkApp(Gtk.Window):
 
         if platform.system() == 'Windows':
             pyi_splash.close()
+
+    def on_pdf_toggled(self, button):
+        if button.get_active():
+            self.compression_scale.set_sensitive(False)
+            self.compression_rate_label.set_sensitive(False)
+            self.pdf_choosen = True
+        else:
+            self.compression_scale.set_sensitive(True)
+            self.compression_rate_label.set_sensitive(True)
+            self.pdf_choosen = False
 
     def on_random_color_toggled(self, button):
         if button.get_active():
@@ -763,15 +803,29 @@ class WatermarkApp(Gtk.Window):
             default_output_dir = self.output_folder_path
             self.output_filechooser_button.set_current_folder(self.output_folder_path)
 
+        #p_dialog = ProgressDialog(self, "Adding Watermark", len(self.selected_files_path))
+
         try:
-            for image_path in self.selected_files_path:
+            for i, image_path in enumerate(self.selected_files_path):
                 output_image_path = self.add_watermark_to_image(image_path, watermark_text)
                 if output_image_path:
                     print("Success", f"Generated File: {os.path.basename(output_image_path)}")
                     self.all_images.append(output_image_path)
+                #p_dialog.update_progress(i + 1)
 
-            self.main_display_images(self.all_images)
-            self.all_images = []
+            #p_dialog.close()
+            # If this is a PDF file show list of files
+            if self.all_images[0].lower().endswith('.pdf'):
+                warning_dialog = WarningDialog(
+                title=_("Success"),
+                    message=_(f"Generated file(s):\n{self.all_images}"),
+                )
+                warning_dialog.show()
+                self.all_images = []
+                return
+            else:
+                self.main_display_images(self.all_images)
+                self.all_images = []
 
         except Exception as err:
             print(f"Error processing the image: {err}")
@@ -866,13 +920,18 @@ class WatermarkApp(Gtk.Window):
                 if self.watermark_prefix.get_text() != "":
                     fprefix = self.watermark_prefix.get_text() + "_"
                 if self.date_filename_check.get_active():
-                    final_filename = f"{fprefix}{text}_{timestamp_str}_{name_without_ext}.jpg"
+                    final_filename = f"{fprefix}{text}_{timestamp_str}_{name_without_ext}"
                 else:
-                    final_filename = f"{fprefix}{text}_{name_without_ext}.jpg"
+                    final_filename = f"{fprefix}{text}_{name_without_ext}"
 
                 output_path = os.path.join(self.output_folder_path, final_filename)
-                img.convert("RGB").save(output_path, "JPEG", quality=self.compression_rate)
-                return output_path
+                if self.pdf_choosen is False:
+                    img.convert("RGB").save(output_path+".jpg", "JPEG", quality=self.compression_rate)
+                    extension = ".jpg"
+                else:
+                    img.convert("RGB").save(output_path+".pdf", "PDF")
+                    extension = ".pdf"
+                return output_path+extension
 
         except Exception as err:
             print(f"Error adding watermark: {err}")
