@@ -222,21 +222,21 @@ class ImageViewerWindow(Gtk.Window):
 
         # Set the default file name to the current image name
         dialog.set_current_name(Gio.file_new_for_path(current_image_path).get_basename())
+        dialog.set_current_folder(os.path.dirname(current_image_path))
         response = dialog.run()
 
         if response == Gtk.ResponseType.ACCEPT:
-            save_path = dialog.get_filename()
             try:
                 # Copy the current image to the selected location
                 source_file = Gio.File.new_for_path(current_image_path)
-                destination_file = Gio.File.new_for_path(save_path)
+                destination_file = Gio.File.new_for_path(output_dir)
                 source_file.copy(
                     destination_file,
                     Gio.FileCopyFlags.OVERWRITE,
                     None,
                     None
                 )
-                print(f"Image saved to {save_path}")
+                print(f"Image saved to {output_dir}")
             except Exception as err:
                 print(f"Error saving image: {err}")
 
@@ -363,7 +363,12 @@ class WatermarkApp(Gtk.Window):
         button_size_group.add_widget(self.output_filechooser_button)
         output_hbox.pack_start(output_label, False, False, 12)
         output_hbox.pack_end(self.output_filechooser_button, False, False, 12)
-        self.vbox.pack_start(output_hbox, False, False, 3)
+        if self.is_running_under_flatpak():
+            print("Runing under a flatpak sandobx environement")
+            with open('DONT_SAVE_HERE', 'w') as f:
+                f.write('This is a reminder not to save files here.')
+        else:
+            self.vbox.pack_start(output_hbox, False, False, 3)
 
         # Expert options section
         self.expert_options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
@@ -498,6 +503,9 @@ class WatermarkApp(Gtk.Window):
 
         if platform.system() == 'Windows':
             pyi_splash.close()
+
+    def is_running_under_flatpak(self):
+        return 'FLATPAK_ID' in os.environ
 
     def on_pdf_toggled(self, button):
         if button.get_active():
@@ -735,13 +743,15 @@ class WatermarkApp(Gtk.Window):
     def on_files_clicked(self, widget):
         """ Create a file chooser dialog with multiple selection option"""
         dialog = Gtk.FileChooserDialog(
-            _("Please choose files"),
-            self,
-            Gtk.FileChooserAction.OPEN,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-             Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+            title=_("Please choose files"),
+            parent=self,
+            action=Gtk.FileChooserAction.OPEN
         )
 
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OPEN, Gtk.ResponseType.OK
+        )
         dialog.set_select_multiple(True)
 
         # Add filters
@@ -803,22 +813,24 @@ class WatermarkApp(Gtk.Window):
             return
 
         if not self.output_folder_path:
-            default_output_dir = os.path.dirname(self.selected_files_path[0])
-            self.output_filechooser_button.set_current_folder(default_output_dir)
+            self.default_output_dir = os.path.dirname(self.selected_files_path[0])
+            if not self.is_running_under_flatpak():
+                self.output_filechooser_button.set_current_folder(self.default_output_dir)
         else:
-            default_output_dir = self.output_folder_path
-            self.output_filechooser_button.set_current_folder(self.output_folder_path)
+            self.default_output_dir = self.output_folder_path
+            if not self.is_running_under_flatpak():
+                self.output_filechooser_button.set_current_folder(self.output_folder_path)
 
         win = Gtk.Window()
         p_dialog = ProgressDialog(win, _("Adding Watermark"), len(self.selected_files_path))
 
         try:
-            for i, image_path in enumerate(self.selected_files_path):
-                output_image_path = self.add_watermark_to_image(image_path, watermark_text)
+            for ind, image_path in enumerate(self.selected_files_path):
+                output_image_path  = self.add_watermark_to_image(image_path, self.default_output_dir, watermark_text)
                 if output_image_path:
                     print("Success", f"Generated File: {os.path.basename(output_image_path)}")
                     self.all_images.append(output_image_path)
-                p_dialog.update_progress(i + 1)
+                p_dialog.update_progress(ind + 1)
 
             p_dialog.close()
             # If this is a PDF file show list of files
@@ -847,7 +859,7 @@ class WatermarkApp(Gtk.Window):
         cest_time = time.localtime(now + 3600)
         return cest_time
 
-    def add_watermark_to_image(self, image_path, text):
+    def add_watermark_to_image(self, image_path, decided_output_path, text):
         try:
             with Image.open(image_path).convert("RGBA") as img:
                 # Resize image if it's too large while preserving aspect ratio
@@ -931,14 +943,14 @@ class WatermarkApp(Gtk.Window):
                 else:
                     final_filename = f"{fprefix}{text}_{name_without_ext}"
 
-                output_path = os.path.join(self.output_folder_path, final_filename)
+                full_output_filename = os.path.join(decided_output_path, final_filename)
                 if self.pdf_choosen is False:
-                    img.convert("RGB").save(output_path+".jpg", "JPEG", quality=self.compression_rate)
+                    img.convert("RGB").save(full_output_filename+".jpg", "JPEG", quality=self.compression_rate)
                     extension = ".jpg"
                 else:
-                    img.convert("RGB").save(output_path+".pdf", "PDF")
+                    img.convert("RGB").save(full_output_filename+".pdf", "PDF")
                     extension = ".pdf"
-                return output_path+extension
+                return full_output_filename+extension
 
         except Exception as err:
             print(f"Error adding watermark: {err}")
