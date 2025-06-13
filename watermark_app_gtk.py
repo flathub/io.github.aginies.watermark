@@ -17,27 +17,33 @@ from gi.repository import Gtk, GdkPixbuf, Gio, Pango, GLib, Gdk
 gettext.install('watermark_app_gtk', localedir='locale')
 
 class ProgressDialog(Gtk.Dialog):
-    def __init__(self, title, max_value, parent=None):
-        Gtk.Dialog.__init__(self, title, parent, 0,
-                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL))
+    def __init__(self, parent, title, max_value):
+        Gtk.Dialog.__init__(self, title, parent, 0)
+                            #(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL))
         self.set_default_size(300, 100)
-        self.max_value = max_value
-        self.current_value = 0
+
         self.progress = Gtk.ProgressBar()
-        self.label = Gtk.Label(label=_("Processing..."))
+        self.progress.set_show_text(True)
+        test_ p = _("Processing...")
+        self.progress.set_text(text_p)
+        self.progress.set_fraction(0.0)
+        self.label = Gtk.Label(label=text_p)
         box = self.get_content_area()
         box.add(self.progress)
         box.add(self.label)
         self.show_all()
+        self.max_value = max_value
 
     def update_progress(self, value):
         self.current_value = value
         fraction = self.current_value / self.max_value
         self.progress.set_fraction(fraction)
-        self.label.set_text(f"Processing... {self.current_value}/{self.max_value}")
-
+        self.progress.set_text(f"{self.current_value}/{self.max_value}")
         while Gtk.events_pending():
             Gtk.main_iteration()
+
+    def close(self):
+        self.destroy()
 
 class WarningDialog:
     def __init__(self, title=None, message="", parent=None):
@@ -662,7 +668,7 @@ class WatermarkApp(Gtk.Window):
 
     def about_dialog(self, widget):
         """ Create a custom dialog window for the About section with a clickable link"""
-        about_window = Gtk.Window(title=_("Watermark App Version 3.2"))
+        about_window = Gtk.Window(title=_("Watermark App Version 3.3"))
         about_window.set_default_size(400, 200)
         about_window.set_position(Gtk.WindowPosition.CENTER)
 
@@ -803,7 +809,8 @@ class WatermarkApp(Gtk.Window):
             default_output_dir = self.output_folder_path
             self.output_filechooser_button.set_current_folder(self.output_folder_path)
 
-        #p_dialog = ProgressDialog(self, "Adding Watermark", len(self.selected_files_path))
+        win = Gtk.Window()
+        p_dialog = ProgressDialog(win, _("Adding Watermark"), len(self.selected_files_path))
 
         try:
             for i, image_path in enumerate(self.selected_files_path):
@@ -811,9 +818,9 @@ class WatermarkApp(Gtk.Window):
                 if output_image_path:
                     print("Success", f"Generated File: {os.path.basename(output_image_path)}")
                     self.all_images.append(output_image_path)
-                #p_dialog.update_progress(i + 1)
+                p_dialog.update_progress(i + 1)
 
-            #p_dialog.close()
+            p_dialog.close()
             # If this is a PDF file show list of files
             if self.all_images[0].lower().endswith('.pdf'):
                 warning_dialog = WarningDialog(
