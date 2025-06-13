@@ -20,20 +20,20 @@
  <launchable type="desktop-id">io.github.aginies.watermark.desktop</launchable>
  <screenshots>
   <screenshot type="default">
-   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.3/images/example.jpg</image>
+   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.4/images/example.jpg</image>
    <caption>Main application</caption>
   </screenshot>
   <screenshot>
-   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.3/images/font_chooser.jpg</image>
+   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.4/images/font_chooser.jpg</image>
    <caption>Font Chooser</caption>
   </screenshot>
   <screenshot>
-   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.3/images/color_chooser.jpg</image>
+   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.4/images/color_chooser.jpg</image>
    <caption>Color Chooser</caption>
   </screenshot>
  </screenshots>
  <releases>
-  <release version="3.3" date="2025-06-12">
+  <release version="3.4" date="2025-06-12">
    <description>
     <p>Main features</p>
     <ul>
@@ -46,5 +46,27 @@
    </description>
   </release>
  </releases>
-   <update_contact>antoine@ginies.org</update_contact>
+ <update_contact>antoine@ginies.org</update_contact>
+ <content_rating type="oars-1.1">
+  <content_attribute id="violence-cartoon">none</content_attribute>
+  <content_attribute id="violence-fantasy">none</content_attribute>
+  <content_attribute id="violence-realistic">none</content_attribute>
+  <content_attribute id="violence-bloodshed">none</content_attribute>
+  <content_attribute id="violence-sexual">none</content_attribute>
+  <content_attribute id="drugs-alcohol">none</content_attribute>
+  <content_attribute id="drugs-narcotics">none</content_attribute>
+  <content_attribute id="drugs-tobacco">none</content_attribute>
+  <content_attribute id="sex-nudity">none</content_attribute>
+  <content_attribute id="sex-themes">none</content_attribute>
+  <content_attribute id="language-profanity">none</content_attribute>
+  <content_attribute id="language-humor">none</content_attribute>
+  <content_attribute id="language-discrimination">none</content_attribute>
+  <content_attribute id="social-chat">none</content_attribute>
+  <content_attribute id="social-info">none</content_attribute>
+  <content_attribute id="social-audio">none</content_attribute>
+  <content_attribute id="social-location">none</content_attribute>
+  <content_attribute id="social-contacts">none</content_attribute>
+  <content_attribute id="money-purchasing">none</content_attribute>
+  <content_attribute id="money-gambling">none</content_attribute>
+ </content_rating>
 </component>
