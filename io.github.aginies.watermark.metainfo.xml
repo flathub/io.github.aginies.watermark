@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.aginies.watermark</id>
-  <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2.0+</project_license>
-  <name>Watermark</name>
-  <icon type="stock">io.github.aginies.watermark.png</icon>
-  <summary>A simple application for adding watermarks to images</summary>
-  <description>
-    <p>
-      Watermark is an easy-to-use application that allows users to add custom watermarks to their images.
-      It supports various image formats and provides options to customize the watermark text and appearance.
-    </p>
-  </description>
-  <developer id="com.guibo">
+ <id>io.github.aginies.watermark</id>
+ <metadata_license>CC0-1.0</metadata_license>
+ <project_license>GPL-2.0+</project_license>
+ <name>Watermark</name>
+ <icon type="stock">io.github.aginies.watermark.png</icon>
+ <summary>A simple application for adding watermarks to images</summary>
+ <description>
+  <p>
+   Watermark is an easy-to-use application that allows users to add custom watermarks to their images.
+   It supports various image formats and provides expert options to customize the watermark text and appearance.
+  </p>
+ </description>
+ <developer id="com.guibo">
   <name>Antoine Ginies</name>
-  </developer>
-  <url type="homepage">https://github.com/aginies/watermark</url>
-  <url type="bugtracker">https://github.com/aginies/watermark/issues</url>
-  <launchable type="desktop-id">io.github.aginies.watermark.desktop</launchable>
-  <screenshots>
-    <screenshot type="default">
-	    <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/example.jpg</image>
-	    <caption>Main application</caption>
-    </screenshot>
-    <screenshot>
-      <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/font_chooser.jpg</image>
-      <caption>Font Chooser</caption>
-    </screenshot>
-    <screenshot>
-      <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/color_chooser.jpg</image>
-      <caption>Color Chooser</caption>
-    </screenshot>
-   <screenshot>
-      <image></image>
-      <caption>Color Chooser</caption>
-    </screenshot>
-  </screenshots>
-  <releases>
-    <release version="3.1" date="2025-06-12">
-      <description>
-        <p>Initial release of Watermark application.</p>
-      </description>
-    </release>
-  </releases>
+ </developer>
+ <url type="homepage">https://github.com/aginies/watermark</url>
+ <url type="bugtracker">https://github.com/aginies/watermark/issues</url>
+ <launchable type="desktop-id">io.github.aginies.watermark.desktop</launchable>
+ <screenshots>
+  <screenshot type="default">
+   <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/example.jpg</image>
+   <caption>Main application</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/font_chooser.jpg</image>
+   <caption>Font Chooser</caption>
+  </screenshot>
+  <screenshot>
+   <image>https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/color_chooser.jpg</image>
+   <caption>Color Chooser</caption>
+  </screenshot>
+  <screenshot>
+   <image></image>
+   <caption>Color Chooser</caption>
+  </screenshot>
+ </screenshots>
+ <releases>
+  <release version="3.2" date="2025-06-12">
+   <description>
+    <p>Watermark application version 3.2</p>
+    <ul>
+     <li>Add watermark to multiple images</li>
+     <li>List of selected images</li>
+     <li>Multiple Image viewer</li>
+     <li>Default save directory is that of the first image</li>
+     <li>Expert mode:</li>
+     <ul>
+      <li>Font selection</li>
+      <li>Font color choice or random</li>
+      <li>Font transparency</li>
+      <li>Text angle</li>
+      <li>Density</li>
+      <li>Optional Date + Hour</li>
+      <li>Filename prefix</li>
+      <li>JPG compression level</li>
+      <li>Image resize</li>
+     </ul>
+    </ul>
+   </description>
+  </release>
+ </releases>
 </component>
