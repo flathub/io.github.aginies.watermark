@@ -24,7 +24,7 @@ class ProgressDialog(Gtk.Dialog):
 
         self.progress = Gtk.ProgressBar()
         self.progress.set_show_text(True)
-        test_p = _("Processing...")
+        text_p = _("Processing...")
         self.progress.set_text(text_p)
         self.progress.set_fraction(0.0)
         self.label = Gtk.Label(label=text_p)
