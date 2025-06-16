@@ -102,7 +102,7 @@ class ImageViewerWindow(Gtk.Window):
         self.vbox.pack_start(self.hbox, False, False, 0)
 
         # Previous button
-        self.prev_button = Gtk.Button(label="Previous")
+        self.prev_button = Gtk.Button(label=_("Previous"))
         self.prev_button.connect("clicked", self.on_previous_clicked)
         self.hbox.pack_start(self.prev_button, True, True, 6)
 
@@ -111,7 +111,7 @@ class ImageViewerWindow(Gtk.Window):
         self.hbox.pack_start(self.index_label, False, False, 6)
 
         # Next button
-        self.next_button = Gtk.Button(label="Next")
+        self.next_button = Gtk.Button(label=_("Next"))
         self.next_button.connect("clicked", self.on_next_clicked)
         self.hbox.pack_start(self.next_button, True, True, 6)
 
@@ -263,7 +263,7 @@ class WatermarkApp(Gtk.Window):
         self.default_font_description = Pango.FontDescription("Sans 20")
         self.font_color = Gdk.RGBA()
         self.font_color_choosen = False
-        self.font_transparency = 50
+        self.font_transparency = 35
         self.pdf_choosen = False
 
         # Create main vertical box container
@@ -277,7 +277,7 @@ class WatermarkApp(Gtk.Window):
         self.vbox.pack_start(menubar_box, False, False, 0)
 
         # Create a "Pref" menu item
-        pref_menu_item = Gtk.MenuItem(label="Preferences")
+        pref_menu_item = Gtk.MenuItem(label=_("Preferences"))
         menubar.append(pref_menu_item)
         pref_menu = Gtk.Menu()
 
@@ -335,9 +335,10 @@ class WatermarkApp(Gtk.Window):
 
         # Watermark text horizontal box (label + entry)
         watermark_hbox = Gtk.Box(spacing=3)
-        watermark_label = Gtk.Label(label=_("Watermark Text"))
+        watermark_text = _("Watermark Text")
+        watermark_label = Gtk.Label(label=watermark_text)
         self.watermark_entry = Gtk.Entry()
-        self.watermark_entry.set_placeholder_text(_("Watermark text"))
+        self.watermark_entry.set_placeholder_text(watermark_text)
         button_size_group.add_widget(self.watermark_entry)
         watermark_hbox.pack_start(watermark_label, False, False, 12)
         watermark_hbox.pack_end(self.watermark_entry, False, False, 12)
@@ -346,7 +347,8 @@ class WatermarkApp(Gtk.Window):
 	# Font Chooser
         font_chooser_hbox = Gtk.Box(spacing=3)
         font_chooser_label = Gtk.Label(label=_("Font chooser"))
-        self.font_chooser_button = Gtk.Button(label=_("Select font"))
+        self.font_chooser_button = Gtk.Button()
+        self.font_chooser_button.set_label(_("No font selected"))
         self.font_chooser_button.connect("clicked", self.on_font_selected)
         button_size_group.add_widget(self.font_chooser_button)
         font_chooser_hbox.pack_start(font_chooser_label, False, False, 12)
@@ -355,16 +357,17 @@ class WatermarkApp(Gtk.Window):
 
         # Output path selection horizontal box
         output_hbox = Gtk.Box(spacing=3)
-        output_label = Gtk.Label(label=_("Select Output Folder"))
+        output_text = _("Select Output Folder")
+        output_label = Gtk.Label(label=output_text)
         self.output_filechooser_button = Gtk.FileChooserButton()
-        self.output_filechooser_button.set_title(_("Select Output Folder"))
+        self.output_filechooser_button.set_title(output_text)
         self.output_filechooser_button.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         self.output_filechooser_button.set_current_folder(self.output_folder_path)
         button_size_group.add_widget(self.output_filechooser_button)
         output_hbox.pack_start(output_label, False, False, 12)
         output_hbox.pack_end(self.output_filechooser_button, False, False, 12)
         if self.is_running_under_flatpak():
-            print("Runing under a flatpak sandobx environement")
+            print("Runing under a flatpak sandbox environement")
             with open('DONT_SAVE_HERE', 'w') as f:
                 f.write('This is a reminder not to save files here.')
         else:
@@ -372,8 +375,9 @@ class WatermarkApp(Gtk.Window):
 
         # Expert options section
         self.expert_options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        expert_title_label = Gtk.Label(label=_("Expert Options"))
-        expert_title_label.set_markup("<b>{}</b>".format(_("Expert Options")))
+        expert_test = _("Expert Options")
+        expert_title_label = Gtk.Label(label=expert_text)
+        expert_title_label.set_markup("<b>{}</b>".format(expert_text))
         self.expert_options_box.pack_start(expert_title_label, False, False, 3)
 
         # Rotation angle
@@ -435,9 +439,10 @@ class WatermarkApp(Gtk.Window):
 
         # Filename Prefix option
         prefix_filename_hbox = Gtk.Box(spacing=3)
-        prefix_filename_label = Gtk.Label(label=_("Filename Prefix"))
+        prefix_text = _("Filename Prefix")
+        prefix_filename_label = Gtk.Label(label=prefix_text)
         self.watermark_prefix = Gtk.Entry()
-        self.watermark_prefix.set_placeholder_text(_("Filename Prefix"))
+        self.watermark_prefix.set_placeholder_text(prefix_text)
         button_size_group.add_widget(self.watermark_prefix)
         prefix_filename_hbox.pack_start(prefix_filename_label, False, False, 12)
         prefix_filename_hbox.pack_end(self.watermark_prefix, False, False, 12)
@@ -445,7 +450,7 @@ class WatermarkApp(Gtk.Window):
 
         # Filename Date option
         date_filename_hbox = Gtk.Box(spacing=3)
-        date_filename_label = Gtk.Label(label=_("Date + Hour in filename"))
+        date_filename_label = Gtk.Label(label=_("Add Date + Hour"))
         self.date_filename_check = Gtk.CheckButton()
         self.date_filename_check.set_active(True)
         button_size_group.add_widget(self.date_filename_check)
@@ -540,6 +545,10 @@ class WatermarkApp(Gtk.Window):
         else:
             font_desc = self.default_font_description.to_string()
             font_path = self.find_font_file(font_desc)
+            if self.is_running_under_flatpak
+                # Dont select default font in sanbox env, force user select one
+                self.font_chooser_button.set_label(_("No font selected"))
+                return
 
             if font_path:
                 self.font_base_name = font_path.split('.ttf')[0] + '.ttf'
@@ -676,7 +685,7 @@ class WatermarkApp(Gtk.Window):
 
     def about_dialog(self, widget):
         """ Create a custom dialog window for the About section with a clickable link"""
-        about_window = Gtk.Window(title=_("Watermark App Version 3.4"))
+        about_window = Gtk.Window(title=_("Watermark App Version 3.5"))
         about_window.set_default_size(400, 200)
         about_window.set_position(Gtk.WindowPosition.CENTER)
 
@@ -709,7 +718,7 @@ class WatermarkApp(Gtk.Window):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
         help_window.add(vbox)
 
-        github_link = Gtk.LinkButton("https://github.com/aginies/watermark/blob/main/README.md",
+        github_link = Gtk.LinkButton.new_with_label("https://github.com/aginies/watermark/blob/main/README.md",
                                      "Online information")
         vbox.pack_start(github_link, False, False, 3)
         close_button = Gtk.Button(label=_("Close"))
@@ -786,7 +795,7 @@ class WatermarkApp(Gtk.Window):
         if not self.selected_files_path:
             warning_dialog = WarningDialog(
                 title="Warning",
-                message=_("Please select an image."),
+                message=_("Please select an image"),
             )
             warning_dialog.show()
             return
@@ -795,7 +804,7 @@ class WatermarkApp(Gtk.Window):
         if not watermark_text:
             warning_dialog = WarningDialog(
                 title="Warning",
-                message=_("Please enter a watermark text."),
+                message=_("Please enter a watermark text"),
             )
             warning_dialog.show()
             return
@@ -877,8 +886,11 @@ class WatermarkApp(Gtk.Window):
                 cest_time = self.get_current_time_ces()
                 font = ImageFont.truetype(self.font_base_name, int(self.font_size))
 
-                timestamp_str_text = time.strftime('%d%m%Y_%H%M%S', cest_time)
-                full_watermark_text = f"{text} {timestamp_str_text}"
+                timestamp_str_text = time.strftime('%d %B %Y_%Hh%M', cest_time)
+                if self.date_filename_check.get_active():
+                    full_watermark_text = f"{text} {timestamp_str_text}"
+                else:
+                    full_watermark_text = f"{text}"
                 bbox = draw.textbbox((0, 0), full_watermark_text, font=font)
                 text_width = bbox[2] - bbox[0]
                 text_height = bbox[3] - bbox[1]
@@ -928,7 +940,7 @@ class WatermarkApp(Gtk.Window):
                                       mask=rotated_text)
                             used_positions.add((xdata, ydata))
 
-                timestamp_str = time.strftime('%d%m%Y_%H%M%S', cest_time)
+                timestamp_str = time.strftime('%Y%m%d_%H%M%S', cest_time)
                 original_filename = os.path.basename(image_path)
                 name_without_ext = os.path.splitext(original_filename)[0]
                 fprefix = ""
