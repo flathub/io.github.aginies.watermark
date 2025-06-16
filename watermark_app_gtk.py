@@ -375,7 +375,7 @@ class WatermarkApp(Gtk.Window):
 
         # Expert options section
         self.expert_options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        expert_test = _("Expert Options")
+        expert_text = _("Expert Options")
         expert_title_label = Gtk.Label(label=expert_text)
         expert_title_label.set_markup("<b>{}</b>".format(expert_text))
         self.expert_options_box.pack_start(expert_title_label, False, False, 3)
@@ -545,8 +545,9 @@ class WatermarkApp(Gtk.Window):
         else:
             font_desc = self.default_font_description.to_string()
             font_path = self.find_font_file(font_desc)
-            if self.is_running_under_flatpak
+            if self.is_running_under_flatpak():
                 # Dont select default font in sanbox env, force user select one
+                print("Dont select default font in sanbox env, force user select one")
                 self.font_chooser_button.set_label(_("No font selected"))
                 return
 
