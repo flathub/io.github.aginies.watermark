@@ -229,14 +229,14 @@ class ImageViewerWindow(Gtk.Window):
             try:
                 # Copy the current image to the selected location
                 source_file = Gio.File.new_for_path(current_image_path)
-                destination_file = Gio.File.new_for_path(output_dir)
+                destination_file = Gio.File.new_for_path(self.default_output_dir)
                 source_file.copy(
                     destination_file,
                     Gio.FileCopyFlags.OVERWRITE,
                     None,
                     None
                 )
-                print(f"Image saved to {output_dir}")
+                print(f"Image saved to {self.default_output_dir}")
             except Exception as err:
                 print(f"Error saving image: {err}")
 
@@ -398,7 +398,7 @@ class WatermarkApp(Gtk.Window):
         transparency_hbox = Gtk.Box(spacing=3)
         transparency_label = Gtk.Label(label=_("Font Transparency"))
         adjustment_transparency = Gtk.Adjustment(value=self.font_transparency, lower=0,
-                                            upper=100, step_increment=1, page_increment=10)
+                                                 upper=100, step_increment=1, page_increment=10)
         self.transparency_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
                                             adjustment=adjustment_transparency)
         self.transparency_scale.set_digits(0)
@@ -462,7 +462,7 @@ class WatermarkApp(Gtk.Window):
         resize_hbox = Gtk.Box(spacing=3)
         resize_label = Gtk.Label(label=_("Resize Image to"))
         self.list_size = Gtk.ComboBoxText()
-        elements = ["None", "320", "640", "800", "1024" ,"1280", "1600", "2048",]
+        elements = ["None", "320", "640", "800", "1024", "1280", "1600", "2048",]
         for text in elements:
             self.list_size.append_text(text)
         self.list_size.set_active(0)
@@ -606,8 +606,7 @@ class WatermarkApp(Gtk.Window):
 
         if platform.system() == 'Windows':
             return self.find_font_file_windows(font_family)
-        else:
-            return self.find_font_file_unix(font_family)
+        return self.find_font_file_unix(font_family)
 
     def find_font_file_windows(self, font_family):
         """
@@ -703,7 +702,7 @@ class WatermarkApp(Gtk.Window):
 
         # Create a clickable hyperlink using GtkLinkButton
         github_link = Gtk.LinkButton.new_with_label("https://github.com/aginies/watermark",
-                                     "https://github.com/aginies/watermark")
+                                                    "https://github.com/aginies/watermark")
         vbox.pack_start(github_link, False, False, 3)
 
         close_button = Gtk.Button(label=_("Close"))
@@ -720,7 +719,7 @@ class WatermarkApp(Gtk.Window):
         help_window.add(vbox)
 
         github_link = Gtk.LinkButton.new_with_label("https://github.com/aginies/watermark/blob/main/README.md",
-                                     "Online information")
+                                                    "Online information")
         vbox.pack_start(github_link, False, False, 3)
         close_button = Gtk.Button(label=_("Close"))
         close_button.connect("clicked", lambda btn: help_window.destroy())
@@ -832,7 +831,7 @@ class WatermarkApp(Gtk.Window):
 
         try:
             for ind, image_path in enumerate(self.selected_files_path):
-                output_image_path  = self.add_watermark_to_image(image_path, self.default_output_dir, watermark_text)
+                output_image_path = self.add_watermark_to_image(image_path, self.default_output_dir, watermark_text)
                 if output_image_path:
                     print("Success", f"Generated File: {os.path.basename(output_image_path)}")
                     self.all_images.append(output_image_path)
@@ -842,7 +841,7 @@ class WatermarkApp(Gtk.Window):
             # If this is a PDF file show list of files
             if self.all_images[0].lower().endswith('.pdf'):
                 warning_dialog = WarningDialog(
-                title=_("Success"),
+                    title=_("Success"),
                     message=_(f"Generated file(s):\n{self.all_images}"),
                 )
                 warning_dialog.show()
