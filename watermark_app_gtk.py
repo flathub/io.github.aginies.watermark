@@ -742,16 +742,12 @@ class WatermarkApp(Gtk.Window):
 
     def on_files_clicked(self, widget):
         """ Create a file chooser dialog with multiple selection option"""
-        dialog = Gtk.FileChooserDialog(
+        dialog = Gtk.FileChooserNative.new(
             title=_("Please choose files"),
             parent=self,
             action=Gtk.FileChooserAction.OPEN
         )
 
-        dialog.add_buttons(
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_OPEN, Gtk.ResponseType.OK
-        )
         dialog.set_select_multiple(True)
 
         # Add filters
@@ -765,7 +761,7 @@ class WatermarkApp(Gtk.Window):
 
         response = dialog.run()
 
-        if response == Gtk.ResponseType.OK:
+        if response == Gtk.ResponseType.ACCEPT:
             file_paths = dialog.get_files()
             self.selected_files_path = [file.get_path() for file in file_paths]
             self.update_file_button_text()
