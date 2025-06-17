@@ -6,9 +6,13 @@ This application is used to combat **identity theft by securing official documen
 **FR**: Application en Python pour ajouter un filigrane à une image ou des images. Un mode expert est disponible pour ajuster le filigrane. 
 Cette application est utilisée pour lutter contre l'usurpation d'identité en sécurisant des documents officiels avec un filigrane. Par exemple : vous devez envoyer votre passeport pour souscrire une assurance automobile, il vous suffit de sélectionner l'image de votre passeport, et d'ajouter le filigrane : "Assurance souscrite". L'application ajoutera le filigrane sur toute l'image en ajoutant aussi la date et l'heure. Si quelqu'un utilise ce document pour autre chose qu'une assurance, vous pouvez dire que ce document a été envoyé uniquement pour votre assurance.
 
+# LICENCE
+
+![GPL2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+
 # Limitation
 
-This tool can only used **Truetype font**, bitmap one ca not be selected or user.
+This tool can only used **Truetype font**, bitmap one can not be selected or user.
 If your system can not display the font in the **GtkChooserDialog preview** (it shows square), the tool will not be able to use that font to watermark your image.
 This tool do not show any preview if you export to PDF file.
 
@@ -16,7 +20,14 @@ This tool do not show any preview if you export to PDF file.
 
 [![Demo](https://img.youtube.com/vi/rNg0RGUvESI/0.jpg)](https://www.youtube.com/watch?v=rNg0RGUvESI)
 
+# Contribute
+
+* You can open ![issue](https://github.com/aginies/watermark/issues) or do ![PR](https://github.com/aginies/watermark/pulls)
+* You can help on language support
+
 # Python requirements
+
+This app is in Python GTK3, and is compatible with very old python3.6.
 
 * pillow
 * gobject
@@ -82,29 +93,33 @@ pyinstaller.exe --onefile --windowed watermark_app_gtk.py --name watermark --spl
 The **watermark.exe** file will be in the **dist** directory.
 To get a version with console debug, you need to remove the **--windowed** option from the **pyinstaller** command.
 
-## flathub app (TOFIX)
+## flathub app
 
-To build the current latest version tarballon github:
+NOT YET ONLINE!
+
+[![Flathub Version](https://flathub.org/apps/io.github.aginies.watermark)](https://flathub.org/apps/io.github.aginies.watermark)
+
+### Stable version from source
+
+To build the current latest version tarball on github:
 ```
 make build
 ```
+To run latest tarball version:
+```
+make run
+```
+
+### Devel version
 
 To build local files
 ```
 make localbuild
 ```
 
-To run latest tarball version:
-```
-make run
-```
-
 For more information: https://docs.flathub.org/docs/for-app-authors/submission#build-and-install
 
-# LICENCE
+# TODO
 
-GPL2
-
-# A FAIRE
-
-Sans doute plein de choses!
+* show pdf files generated
+* perhaps many more stuff....
