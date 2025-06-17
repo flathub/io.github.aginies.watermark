@@ -7,6 +7,7 @@ import gettext
 import platform
 import subprocess
 import gi
+import re
 if platform.system() == 'Windows':
     import winreg
     import pyi_splash
@@ -346,7 +347,7 @@ class WatermarkApp(Gtk.Window):
 
 	# Font Chooser
         font_chooser_hbox = Gtk.Box(spacing=3)
-        font_chooser_label = Gtk.Label(label=_("Font chooser"))
+        font_chooser_label = Gtk.Label(label=_("TTF Font chooser"))
         self.font_chooser_button = Gtk.Button()
         self.font_chooser_button.set_label(_("No font selected"))
         self.font_chooser_button.connect("clicked", self.on_font_selected)
@@ -504,6 +505,9 @@ class WatermarkApp(Gtk.Window):
         self.vbox.pack_start(self.watermarkb_hbox, False, False, 3)
 
         # Se default Font
+        if platform.system() != 'Windows':
+            print("populating ALL_LINUX_TTF_FONT_DATA")
+            self.ALL_LINUX_TTF_FONT_DATA = self.get_ttf_fonts()
         self.set_default_font()
 
         if platform.system() == 'Windows':
@@ -543,13 +547,14 @@ class WatermarkApp(Gtk.Window):
             self.font_chooser_button.set_label("Arial 20")
             print("Default font set to Arial on Windows.")
         else:
+            self.default_font_description = Pango.FontDescription("DejaVu Sans 20")
             font_desc = self.default_font_description.to_string()
-            font_path = self.find_font_file(font_desc)
-            if self.is_running_under_flatpak():
-                # Dont select default font in sanbox env, force user select one
-                print("Dont select default font in sanbox env, force user select one")
-                self.font_chooser_button.set_label(_("No font selected"))
-                return
+            font_path = self.find_font_file(self.default_font_description)
+            #if self.is_running_under_flatpak():
+            #    # Dont select default font in sanbox env, force user select one
+            #    print("Dont select default font in sanbox env, force user select one")
+            #    self.font_chooser_button.set_label(_("No font selected"))
+            #    return
 
             if font_path:
                 self.font_base_name = font_path.split('.ttf')[0] + '.ttf'
@@ -565,23 +570,87 @@ class WatermarkApp(Gtk.Window):
                     )
                 warning_dialog.show()
 
+    def get_style_string(self, style):
+        """ Return readable style"""
+        if style == Pango.Style.NORMAL:
+            return "Regular"
+        elif style == Pango.Style.ITALIC:
+            return "Italic"
+        elif style == Pango.Style.OBLIQUE:
+            return "Oblique"
+        else:
+            return "Unknown"
+
+    def get_ttf_fonts(self):
+        """ Scans the system for all TTF fonts using the 'fc-list' command-line tool."""
+        ttf_fonts_data = []
+        if not os.path.exists('/usr/bin/fc-list'):
+            print("Warning: 'fc-list' command not found. Font filtering will not work.")
+            print("Please install the 'fontconfig' package.")
+            return ttf_fonts_data
+
+        try:
+            # We ask fc-list for three fields for each font: file, family, and style.
+            # The style from fc-list (e.g., "Bold", "Italic") corresponds to Pango's face name.
+            command = ['fc-list', '-f', '%{file}|%{family}|%{style}\n']
+            output = subprocess.check_output(command).decode('utf-8')
+            for line in output.strip().split('\n'):
+                try:
+                    parts = line.split('|')
+                    #print(parts)
+                    if len(parts) == 3:
+                        filepath, family, style = parts
+
+                    if filepath.lower().endswith('.ttf'):
+                        cleaned_family = family.split(',')[0].strip()
+                        ttf_fonts_data.append({
+                            'file': filepath,
+                            'family': cleaned_family,
+                            'style': style.strip()
+                        })
+
+                except ValueError:
+                    continue
+
+        except (subprocess.CalledProcessError, FileNotFoundError) as err:
+            print(f"Error executing 'fc-list': {err}")
+
+        return ttf_fonts_data
+
+    def font_filter_func(self, family, face, data):
+        """ The filter function passed to the Gtk.FontChooser. """
+        family_name = family.get_name()
+        face_name = face.get_face_name()
+        for font_data in self.ALL_LINUX_TTF_FONT_DATA:
+            if font_data['family'] == family_name and font_data['style'] == face_name:
+                return True
+
+        return False
+
     def on_font_selected(self, widget):
-        dialog = Gtk.FontChooserDialog(title=_("Choose a Font"), transient_for=self, flags=0)
-        dialog.set_font_desc(self.default_font_description)
+        dialog = Gtk.FontChooserDialog(title=_("Choose a TTF Font"), transient_for=self, flags=0)
+        #dialog.set_font_desc(self.default_font_description)
+        if platform.system() != 'Windows':
+            if self.ALL_LINUX_TTF_FONT_DATA:
+                dialog.set_filter_func(self.font_filter_func, None)
+            else:
+                print("No TTF fonts found to filter by.")
 
         while True:
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
-                font_desc = dialog.get_font()
-                #font_description = Pango.FontDescription.from_string(font_desc)
+                font_desc = dialog.get_font_desc()
+                font_path = "File path not found in our list."
                 font_path = self.find_font_file(font_desc)
+                fsize = font_desc.get_size()
+                size = fsize / 1024
+                description = font_desc.to_string()
+                print(f"Selected Font is: {description}\nFile: {font_path}")
 
                 if font_path:
-                    self.font_base_name = font_path.split('.ttf')[0] + '.ttf'
-                    print(f"Font name: {self.font_base_name}")
-                    parts_desc = font_desc.split()
-                    self.font_size = int(parts_desc[-1]) if parts_desc else None
-                    self.font_chooser_button.set_label(font_desc)
+                    self.font_base_name = font_path
+                    self.font_size = size
+                    self.font_chooser_button.set_label(description)
                     dialog.destroy()
                     return self.font_base_name, self.font_size
                 else:
@@ -597,22 +666,22 @@ class WatermarkApp(Gtk.Window):
                 dialog.destroy()
                 return None
 
-    def find_font_file(self, font_description):
+    def find_font_file(self, font_desc):
         """
         Try to find the font file for a given Pango font description.
         Uses `fc-list` on Unix-like systems and Windows Registry on Windows.
         """
-        font_family = font_description.split()[0]
-
         if platform.system() == 'Windows':
-            return self.find_font_file_windows(font_family)
-        return self.find_font_file_unix(font_family)
+            return self.find_font_file_windows(font_desc)
+        return self.find_font_file_unix(font_desc)
 
-    def find_font_file_windows(self, font_family):
+    def find_font_file_windows(self, font_desc):
         """
         Try to find the font file for a given font family on Windows.
         Uses Windows Registry to find installed fonts.
         """
+        if font_desc:
+            font_family = font_desc.get_family()
         try:
             # Open the Windows Registry key for installed fonts
             registry_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts")
@@ -630,30 +699,67 @@ class WatermarkApp(Gtk.Window):
             print(f"Error finding font file on Windows: {err}")
             return None
 
-    def find_font_file_unix(self, font_description):
+    def find_font_file_unix(self, font_desc):
         """
         Try to find the font file for a given Pango font description.
         Uses `fc-list` command line tool from fontconfig package.
         """
-        try:
-            # Use fc-list to get all installed fonts and filter by family name
-            result = subprocess.run(
-                ['fc-list', ':family:' + font_description.split()[0]],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-                check=True
-            )
+        if font_desc:
+            family = font_desc.get_family()
+            style = font_desc.get_style()
+            style_str = self.get_style_string(style)
+            description = font_desc.to_string()
 
-            # Extract the file path from the output
-            for line in result.stdout.splitlines():
-                if font_description.split()[0] in line and '.ttf' in line:
-                    return line
+            # List of All font We want, at the end will select the first of the list (should be only one...)
+            list_all_font = []
+            def find_family(family):
+                """ Find all font with correct familly"""
+                all_font_family = []
+                for font_data in self.ALL_LINUX_TTF_FONT_DATA:
+                    if font_data['family'] == family:
+                        all_font_family.append(font_data)
+                return all_font_family
+     
+            # List all font font with correct family
+            all_font_family_selected = find_family(family)
+            list_all_font = all_font_family_selected
 
-            return None
+            def find_bold_in(list):
+                """ Find all font Bold from a list"""
+                bold_font_list = []
+                non_bold_font_list = []
+                for font_data in list:
+                    if re.search("Bold", font_data['style']):
+                        bold_font_list.append(font_data)
+                    else:
+                        non_bold_font_list.append(font_data)
+                return bold_font_list, non_bold_font_list
 
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            return None
+            def find_italic_in(list):
+                """ Find all font italic from a list"""
+                italic_font_list = []
+                non_italic_font_list = []
+                for font_data in list:
+                    if re.search("Italic", font_data['style']):
+                        italic_font_list.append(font_data)
+                    else:
+                        non_italic_font_list.append(font_data)
+                return italic_font_list, non_italic_font_list
+
+            bold_font_list, non_bold_font_list = find_bold_in(all_font_family_selected)
+            if re.search("Bold", description):
+                list_all_font = bold_font_list
+            else:
+                list_all_font = non_bold_font_list
+
+            italic_font_list, non_italic_font_list = find_italic_in(list_all_font)
+            if re.search("Italic", description):
+                list_all_font = italic_font_list
+            else:
+                list_all_font = non_italic_font_list
+
+            font_path = list_all_font[0]['file']
+            return font_path
 
     def on_resize_changed(self, combo):
         self.selected_resize = combo.get_active_text()
@@ -685,7 +791,7 @@ class WatermarkApp(Gtk.Window):
 
     def about_dialog(self, widget):
         """ Create a custom dialog window for the About section with a clickable link"""
-        about_window = Gtk.Window(title=_("Watermark App Version 3.5"))
+        about_window = Gtk.Window(title=_("Watermark App Version 4.0"))
         about_window.set_default_size(400, 200)
         about_window.set_position(Gtk.WindowPosition.CENTER)
 
