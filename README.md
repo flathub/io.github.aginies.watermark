@@ -97,7 +97,7 @@ To get a version with console debug, you need to remove the **--windowed** optio
 
 NOT YET ONLINE!
 
-[](https://img.shields.io/badge/watermark-4.0-blue)
+![Static Badge](https://img.shields.io/badge/watermark-4.0-blue)
 
 [![Flathub Version](https://flathub.org/apps/io.github.aginies.watermark)](https://flathub.org/apps/io.github.aginies.watermark)
 
