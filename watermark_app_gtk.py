@@ -518,6 +518,11 @@ class WatermarkApp(Gtk.Window):
 
     def on_pdf_toggled(self, button):
         if button.get_active():
+            warning_dialog = WarningDialog(
+                title="Info",
+                message=_("There is no view of the watermarked file in PDF format."),
+                )
+            warning_dialog.show()
             self.compression_scale.set_sensitive(False)
             self.compression_rate_label.set_sensitive(False)
             self.pdf_choosen = True
