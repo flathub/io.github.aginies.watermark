@@ -6,6 +6,12 @@ This application is used to combat **identity theft by securing official documen
 **FR**: Application en Python pour ajouter un filigrane à une image ou des images. Un mode expert est disponible pour ajuster le filigrane. 
 Cette application est utilisée pour lutter contre l'usurpation d'identité en sécurisant des documents officiels avec un filigrane. Par exemple : vous devez envoyer votre passeport pour souscrire une assurance automobile, il vous suffit de sélectionner l'image de votre passeport, et d'ajouter le filigrane : "Assurance souscrite". L'application ajoutera le filigrane sur toute l'image en ajoutant aussi la date et l'heure. Si quelqu'un utilise ce document pour autre chose qu'une assurance, vous pouvez dire que ce document a été envoyé uniquement pour votre assurance.
 
+# Limitation
+
+This tool can only used **Truetype font**, bitmap one ca not be selected or user.
+If your system can not display the font in the **GtkChooserDialog preview** (it shows square), the tool will not be able to use that font to watermark your image.
+This tool do not show any preview if you export to PDF file.
+
 ![image](https://raw.githubusercontent.com/aginies/watermark/refs/heads/main/images/example.jpg)
 
 [![Demo](https://img.youtube.com/vi/rNg0RGUvESI/0.jpg)](https://www.youtube.com/watch?v=rNg0RGUvESI)
