@@ -548,7 +548,6 @@ class WatermarkApp(Gtk.Window):
         if platform.system() == 'Windows':
             self.default_font_description = Pango.FontDescription("Arial 20")
             self.font_base_name = "arial.ttf"
-            self.font_size = 20
             self.font_chooser_button.set_label("Arial 20")
             print("Default font set to Arial on Windows.")
         else:
@@ -634,7 +633,7 @@ class WatermarkApp(Gtk.Window):
 
     def on_font_selected(self, widget):
         dialog = Gtk.FontChooserDialog(title=_("Choose a TTF Font"), transient_for=self, flags=0)
-        #dialog.set_font_desc(self.default_font_description)
+        dialog.set_font_desc(self.default_font_description)
         if platform.system() != 'Windows':
             if self.ALL_LINUX_TTF_FONT_DATA:
                 dialog.set_filter_func(self.font_filter_func, None)
