@@ -35,7 +35,7 @@
   </screenshot>
  </screenshots>
  <releases>
-  <release version="4.0" date="2025-06-17">
+  <release version="4.1" date="2025-06-17">
    <description>
     <p>Main features</p>
     <ul>
@@ -44,6 +44,7 @@
      <li>Expert mode: font selection, font color choice or random, font transparency,
      text angle, watermark density, optional Date + Hour, filename prefix, PDF or JPG output,
      JPG compression level, image resize</li>
+     <li>Supported languages: FR, EN, ES</li>
     </ul>
    </description>
   </release>
