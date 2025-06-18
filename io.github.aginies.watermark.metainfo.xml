@@ -2,7 +2,8 @@
 <component type="desktop-application">
  <id>io.github.aginies.watermark</id>
  <branding>
-  <color type="primary" scheme_preference="dark">#7f2c22</color>
+  <color type="primary" scheme_preference="light">#57e389</color>
+  <color type="primary" scheme_preference="dark">#613583</color>
 </branding>
  <metadata_license>CC0-1.0</metadata_license>
  <project_license>GPL-2.0+</project_license>
