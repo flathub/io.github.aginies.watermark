@@ -375,11 +375,14 @@ class WatermarkApp(Gtk.Window):
             self.vbox.pack_start(output_hbox, False, False, 3)
 
         # Expert options section
-        self.expert_options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         expert_text = _("Expert Options")
-        expert_title_label = Gtk.Label(label=expert_text)
-        expert_title_label.set_markup("<b>{}</b>".format(expert_text))
-        self.expert_options_box.pack_start(expert_title_label, False, False, 3)
+        self.expert_options_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.expert_options_frame = Gtk.Frame(label="<b> "+expert_text+"</b>")
+        self.expert_options_frame.get_label_widget().set_use_markup(True)
+        self.expert_options_frame.set_margin_start(12)
+        self.expert_options_frame.set_margin_end(12)
+        #self.expert_options_frame.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
+        self.expert_options_frame.add(self.expert_options_box)
 
         # Rotation angle
         rotation_hbox = Gtk.Box(spacing=3)
@@ -451,7 +454,7 @@ class WatermarkApp(Gtk.Window):
 
         # Filename Date option
         date_filename_hbox = Gtk.Box(spacing=3)
-        date_filename_label = Gtk.Label(label=_("Add Date + Hour"))
+        date_filename_label = Gtk.Label(label=_("Include Date + Hour"))
         self.date_filename_check = Gtk.CheckButton()
         self.date_filename_check.set_active(True)
         button_size_group.add_widget(self.date_filename_check)
@@ -460,7 +463,7 @@ class WatermarkApp(Gtk.Window):
         self.expert_options_box.pack_start(date_filename_hbox, False, False, 3)
 
         # Select the size for resize the image
-        resize_hbox = Gtk.Box(spacing=3)
+        self.resize_hbox = Gtk.Box(spacing=3)
         resize_label = Gtk.Label(label=_("Resize Image to"))
         self.list_size = Gtk.ComboBoxText()
         elements = ["None", "320", "640", "800", "1024", "1280", "1600", "2048",]
@@ -469,9 +472,9 @@ class WatermarkApp(Gtk.Window):
         self.list_size.set_active(0)
         self.list_size.connect("changed", self.on_resize_changed)
         button_size_group.add_widget(self.list_size)
-        resize_hbox.pack_start(resize_label, False, False, 12)
-        resize_hbox.pack_end(self.list_size, False, False, 12)
-        self.expert_options_box.pack_start(resize_hbox, False, False, 3)
+        self.resize_hbox.pack_start(resize_label, False, False, 12)
+        self.resize_hbox.pack_end(self.list_size, False, False, 12)
+        self.expert_options_box.pack_start(self.resize_hbox, False, False, 3)
 
 	# Output PDF or JPEG Compression level
         output_hbox = Gtk.Box(spacing=3)
@@ -500,8 +503,9 @@ class WatermarkApp(Gtk.Window):
         # Add watermark button horizontal box
         self.watermarkb_hbox = Gtk.Box(spacing=3)
         add_watermark_button = Gtk.Button(label=_("Add Watermark"))
+        add_watermark_button.set_hexpand(True)
         add_watermark_button.connect("clicked", self.on_add_watermark_clicked)
-        self.watermarkb_hbox.pack_start(add_watermark_button, False, False, 12)
+        self.watermarkb_hbox.pack_start(add_watermark_button, False, True, 12)
         self.vbox.pack_start(self.watermarkb_hbox, False, False, 3)
 
         # Se default Font
@@ -525,10 +529,12 @@ class WatermarkApp(Gtk.Window):
             warning_dialog.show()
             self.compression_scale.set_sensitive(False)
             self.compression_rate_label.set_sensitive(False)
+            self.resize_hbox.set_sensitive(False)
             self.pdf_choosen = True
         else:
             self.compression_scale.set_sensitive(True)
             self.compression_rate_label.set_sensitive(True)
+            self.resize_hbox.set_sensitive(True)
             self.pdf_choosen = False
 
     def on_random_color_toggled(self, button):
@@ -783,14 +789,15 @@ class WatermarkApp(Gtk.Window):
     def on_expert_toggle(self, checkmenuitem):
         if self.expert_options_check.get_active():
             self.vbox.remove(self.watermarkb_hbox)
-            self.vbox.pack_start(self.expert_options_box, False, False, 12)
+            self.vbox.pack_start(self.expert_options_frame, False, False, 12)
+            self.expert_options_frame.show()
             self.vbox.pack_start(self.watermarkb_hbox, False, False, 3)
             self.expert_options_box.show_all()
         else:
             if self.expert_options_box.get_parent() is not None:
-                self.expert_options_box.hide()
+                self.expert_options_frame.hide()
                 #self.vbox.pack_start(self.watermarkb_hbox, False, False, 3)
-                self.vbox.remove(self.expert_options_box)
+                self.vbox.remove(self.expert_options_frame)
                 self.resize(210, 110)
 
     def about_dialog(self, widget):
@@ -1083,6 +1090,6 @@ WIN = WatermarkApp()
 WIN.connect("destroy", Gtk.main_quit)
 WIN.show_all()
 # Hide expert option per default
-WIN.expert_options_box.hide()
+WIN.expert_options_frame.hide()
 WIN.files_selected_hbox.hide()
 Gtk.main()
