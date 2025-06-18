@@ -266,6 +266,8 @@ class WatermarkApp(Gtk.Window):
         self.font_color_choosen = False
         self.font_transparency = 35
         self.pdf_choosen = False
+        self.init_real_size = 20
+        self.real_fsize = None
 
         # Create main vertical box container
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
@@ -392,6 +394,7 @@ class WatermarkApp(Gtk.Window):
         self.rotation_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
                                         adjustment=adjustment_rotation)
         self.rotation_scale.set_digits(0)
+        self.rotation_scale.set_tooltip_text(_("Watermark Angle in the image (positive and negative)"))
         self.rotation_scale.connect("value-changed", self.on_rotation_angle_changed)
         button_size_group.add_widget(self.rotation_scale)
         rotation_hbox.pack_start(rotation_label, False, False, 12)
@@ -407,6 +410,7 @@ class WatermarkApp(Gtk.Window):
                                             adjustment=adjustment_transparency)
         self.transparency_scale.set_digits(0)
         self.transparency_scale.set_inverted(False)
+        self.transparency_scale.set_tooltip_markup(_("Watermark transparency in the image\n<b>* 0:</b> No transparency\n<b>* 100:</b> Invisible"))
         self.transparency_scale.connect("value-changed", self.on_transparency_changed)
         button_size_group.add_widget(self.transparency_scale)
         transparency_hbox.pack_start(transparency_label, False, False, 12)
@@ -421,6 +425,7 @@ class WatermarkApp(Gtk.Window):
         self.text_density_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
                                             adjustment=adjustment_density)
         self.text_density_scale.set_digits(0)
+        self.text_density_scale.set_tooltip_markup(_("How many watermark you want\n<b>* 0:</b> None\n<b>* 200:</b> Fill the image"))
         self.text_density_scale.set_inverted(False)
         self.text_density_scale.connect("value-changed", self.on_rotation_density_changed)
         button_size_group.add_widget(self.text_density_scale)
@@ -446,6 +451,7 @@ class WatermarkApp(Gtk.Window):
         prefix_text = _("Filename Prefix")
         prefix_filename_label = Gtk.Label(label=prefix_text)
         self.watermark_prefix = Gtk.Entry()
+        self.watermark_prefix.set_tooltip_markup(_("You can add an <b>Extra Prefix</b> to the final filename"))
         self.watermark_prefix.set_placeholder_text(prefix_text)
         button_size_group.add_widget(self.watermark_prefix)
         prefix_filename_hbox.pack_start(prefix_filename_label, False, False, 12)
@@ -457,6 +463,7 @@ class WatermarkApp(Gtk.Window):
         date_filename_label = Gtk.Label(label=_("Include Date + Hour"))
         self.date_filename_check = Gtk.CheckButton()
         self.date_filename_check.set_active(True)
+        self.date_filename_check.set_tooltip_text(_("Add the Date and the Hour in the watermark, include that into the filename"))
         button_size_group.add_widget(self.date_filename_check)
         date_filename_hbox.pack_start(date_filename_label, False, False, 12)
         date_filename_hbox.pack_end(self.date_filename_check, False, False, 12)
@@ -466,6 +473,7 @@ class WatermarkApp(Gtk.Window):
         self.resize_hbox = Gtk.Box(spacing=3)
         resize_label = Gtk.Label(label=_("Resize to"))
         self.list_size = Gtk.ComboBoxText()
+        self.list_size.set_tooltip_markup(_("You can <b>resize</b> the original image to another size.\n This option is not available if you choose PDF output format."))
         elements = ["None", "320", "640", "800", "1024", "1280", "1600", "2048",]
         for text in elements:
             self.list_size.append_text(text)
@@ -485,9 +493,11 @@ class WatermarkApp(Gtk.Window):
         self.compression_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
                                            adjustment=adjustment_compression)
         self.compression_scale.set_digits(0)
+        self.compression_scale.set_tooltip_markup(_("Compression ratio of the generated JPEG Image(s)\n<b>* 0:</b> None\n<b>* 100:</b> Full compression"))
         self.compression_scale.connect("value-changed", self.on_compression_changed)
         button_size_group.add_widget(self.compression_scale)
         self.pdf_check = Gtk.CheckButton(label=_("PDF"))
+        self.pdf_check.set_tooltip_markup(_("Save the image into a <b>PDF</b> format instead of JPEG.\nThere is no view of the watermarked file in PDF format."))
         self.pdf_check.connect("toggled", self.on_pdf_toggled)
         self.pdf_check.set_active(False)
         self.compression_scale.set_sensitive(True)
@@ -522,11 +532,6 @@ class WatermarkApp(Gtk.Window):
 
     def on_pdf_toggled(self, button):
         if button.get_active():
-            warning_dialog = WarningDialog(
-                title="Info",
-                message=_("There is no view of the watermarked file in PDF format."),
-                )
-            warning_dialog.show()
             self.compression_scale.set_sensitive(False)
             self.compression_rate_label.set_sensitive(False)
             self.resize_hbox.set_sensitive(False)
@@ -557,7 +562,7 @@ class WatermarkApp(Gtk.Window):
             self.font_chooser_button.set_label("Arial 20")
             print("Default font set to Arial on Windows.")
         else:
-            self.default_font_description = Pango.FontDescription("DejaVu Sans 20")
+            self.default_font_description = Pango.FontDescription("vtks Rude Metal shadow 12") #DejaVu Sans 20")
             font_desc_str = self.default_font_description.to_string()
             font_path = self.find_font_file(self.default_font_description)
             #if self.is_running_under_flatpak():
@@ -571,7 +576,15 @@ class WatermarkApp(Gtk.Window):
                 print(f"Font name: {self.font_base_name}")
                 parts_desc = font_desc_str.split()
                 self.font_size = int(parts_desc[-1]) if parts_desc else None
-                self.font_chooser_button.set_label(font_desc_str)
+                temp_font = self.default_font_description
+                temp_font.set_size(12* Pango.SCALE)
+                temp_font_desc_str = temp_font.to_string()
+                label = self.font_chooser_button.get_child()
+                label.set_text(font_desc_str)
+                label.override_font(temp_font)
+                # Force default font Size to 20
+                self.default_font_description.set_size(self.init_real_size * Pango.SCALE)
+                #self.font_chooser_button.set_label(font_desc_str)
             else:
                 print("Could not find the default font file.")
                 warning_dialog = WarningDialog(
@@ -639,6 +652,8 @@ class WatermarkApp(Gtk.Window):
 
     def on_font_selected(self, widget):
         dialog = Gtk.FontChooserDialog(title=_("Choose a TTF Font"), transient_for=self, flags=0)
+        if self.real_fsize is not None:
+            self.default_font_description.set_size(self.real_fsize)
         dialog.set_font_desc(self.default_font_description)
         if platform.system() != 'Windows':
             if self.ALL_LINUX_TTF_FONT_DATA:
@@ -650,17 +665,26 @@ class WatermarkApp(Gtk.Window):
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
                 font_desc = dialog.get_font_desc()
-                font_path = "File path not found in our list."
+                self.default_font_description = font_desc
+                path_desc = "File path not found in our list."
                 font_path = self.find_font_file(font_desc)
-                fsize = font_desc.get_size()
-                size = fsize / 1024
-                description = font_desc.to_string()
-                print(f"Selected Font is: {description}\nFile: {font_path}")
+                self.real_fsize = font_desc.get_size()
+                font_desc_str = font_desc.to_string()
+                self.font_size = int(font_desc.get_size()/1024)
+                print(f"Selected Font is: {font_desc_str}\nFile: {font_path}")
 
                 if font_path:
                     self.font_base_name = font_path
-                    self.font_size = size
-                    self.font_chooser_button.set_label(description)
+                    # Temp font to display the font in the button
+                    temp_font = font_desc
+                    # Temp font size will be the same with a smaller size set to 12
+                    temp_font.set_size(12* Pango.SCALE)
+                    label = self.font_chooser_button.get_child()
+                    # use the original font description string, so correct font size
+                    label.set_text(font_desc_str)
+                    # Display it using the temp font with lower font size (12)
+                    label.override_font(temp_font)
+                    print("Used for PIL: ", self.font_size)
                     dialog.destroy()
                     return self.font_base_name, self.font_size
                 else:
@@ -768,8 +792,11 @@ class WatermarkApp(Gtk.Window):
             else:
                 list_all_font = non_italic_font_list
 
-            font_path = list_all_font[0]['file']
-            return font_path
+            if list_all_font:
+                font_path = list_all_font[0]['file']
+                return font_path
+            else:
+                print("List empty... so it didnt find the font file!")
 
     def on_resize_changed(self, combo):
         self.selected_resize = combo.get_active_text()
@@ -802,7 +829,7 @@ class WatermarkApp(Gtk.Window):
 
     def about_dialog(self, widget):
         """ Create a custom dialog window for the About section with a clickable link"""
-        about_window = Gtk.Window(title=_("Watermark App Version 4.0"))
+        about_window = Gtk.Window(title=_("Watermark App Version 4.1"))
         about_window.set_default_size(400, 200)
         about_window.set_position(Gtk.WindowPosition.CENTER)
 
