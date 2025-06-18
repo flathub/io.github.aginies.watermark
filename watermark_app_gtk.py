@@ -386,7 +386,7 @@ class WatermarkApp(Gtk.Window):
 
         # Rotation angle
         rotation_hbox = Gtk.Box(spacing=3)
-        rotation_label = Gtk.Label(label=_("Text Angle (degrees)"))
+        rotation_label = Gtk.Label(label=_("Angle (degrees)"))
         adjustment_rotation = Gtk.Adjustment(value=self.rotation_angle,
                                              lower=0, upper=90, step_increment=1, page_increment=4)
         self.rotation_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
@@ -400,7 +400,7 @@ class WatermarkApp(Gtk.Window):
 
         # Font Transparency
         transparency_hbox = Gtk.Box(spacing=3)
-        transparency_label = Gtk.Label(label=_("Font Transparency"))
+        transparency_label = Gtk.Label(label=_("Transparency"))
         adjustment_transparency = Gtk.Adjustment(value=self.font_transparency, lower=0,
                                                  upper=100, step_increment=1, page_increment=10)
         self.transparency_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
@@ -415,7 +415,7 @@ class WatermarkApp(Gtk.Window):
 
         # Font density
         density_hbox = Gtk.Box(spacing=3)
-        density_label = Gtk.Label(label=_("Watermark Density"))
+        density_label = Gtk.Label(label=_("Density"))
         adjustment_density = Gtk.Adjustment(value=self.fili_density, lower=1,
                                             upper=200, step_increment=1, page_increment=10)
         self.text_density_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
@@ -464,7 +464,7 @@ class WatermarkApp(Gtk.Window):
 
         # Select the size for resize the image
         self.resize_hbox = Gtk.Box(spacing=3)
-        resize_label = Gtk.Label(label=_("Resize Image to"))
+        resize_label = Gtk.Label(label=_("Resize to"))
         self.list_size = Gtk.ComboBoxText()
         elements = ["None", "320", "640", "800", "1024", "1280", "1600", "2048",]
         for text in elements:
@@ -510,7 +510,7 @@ class WatermarkApp(Gtk.Window):
 
         # Se default Font
         if platform.system() != 'Windows':
-            print("populating ALL_LINUX_TTF_FONT_DATA")
+             #print("populating ALL_LINUX_TTF_FONT_DATA")
             self.ALL_LINUX_TTF_FONT_DATA = self.get_ttf_fonts()
         self.set_default_font()
 
@@ -558,7 +558,7 @@ class WatermarkApp(Gtk.Window):
             print("Default font set to Arial on Windows.")
         else:
             self.default_font_description = Pango.FontDescription("DejaVu Sans 20")
-            font_desc = self.default_font_description.to_string()
+            font_desc_str = self.default_font_description.to_string()
             font_path = self.find_font_file(self.default_font_description)
             #if self.is_running_under_flatpak():
             #    # Dont select default font in sanbox env, force user select one
@@ -569,9 +569,9 @@ class WatermarkApp(Gtk.Window):
             if font_path:
                 self.font_base_name = font_path.split('.ttf')[0] + '.ttf'
                 print(f"Font name: {self.font_base_name}")
-                parts_desc = font_desc.split()
+                parts_desc = font_desc_str.split()
                 self.font_size = int(parts_desc[-1]) if parts_desc else None
-                self.font_chooser_button.set_label(font_desc)
+                self.font_chooser_button.set_label(font_desc_str)
             else:
                 print("Could not find the default font file.")
                 warning_dialog = WarningDialog(
