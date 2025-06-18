@@ -8,7 +8,7 @@ Cette application est utilisée pour lutter contre l'usurpation d'identité en s
 
 # LICENCE
 
-![GPL2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[GPL2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
 # Limitation
 
