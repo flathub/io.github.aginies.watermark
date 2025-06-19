@@ -98,7 +98,7 @@ To get a version with console debug, you need to remove the **--windowed** optio
 
 ## flathub app
 
-[![Flathub Version](https://img.shields.io/badge/watermark-4.0-blue)](https://flathub.org/apps/io.github.aginies.watermark)
+[![Flathub Version](https://img.shields.io/badge/watermark-4.1-blue)](https://flathub.org/apps/io.github.aginies.watermark)
 
 ### Stable version from source
 
