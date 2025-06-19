@@ -40,6 +40,7 @@ Python GTK version.
 * List of selected images
 * Multiple Image viewer
 * Default save directory is that of the first image
+* Languages: EN, FR, ES
 * Expert mode: 
   * font selection
   * font color choice or random
@@ -57,6 +58,7 @@ Script en Python GTK.
 * Liste des images selectionnées
 * Visualiseur d'images
 * Répertoire de sauvegarde par défaut est celui de la première image
+* Langues: EN, FR, ES
 * Expert mode: 
   * séléction font
   * couleur font ou via le hasard
