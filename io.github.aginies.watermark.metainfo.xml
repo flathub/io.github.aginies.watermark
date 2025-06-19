@@ -22,15 +22,15 @@
  <launchable type="desktop-id">io.github.aginies.watermark.desktop</launchable>
  <screenshots>
   <screenshot type="default">
-   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.4/images/example.jpg</image>
+   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/4.1/images/example.jpg</image>
    <caption>Main application</caption>
   </screenshot>
   <screenshot>
-   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.4/images/font_chooser.jpg</image>
+   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/4.1/images/font_chooser.jpg</image>
    <caption>Font Chooser</caption>
   </screenshot>
   <screenshot>
-   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/3.4/images/color_chooser.jpg</image>
+   <image type="source">https://raw.githubusercontent.com/aginies/watermark/refs/tags/4.1/images/color_chooser.jpg</image>
    <caption>Color Chooser</caption>
   </screenshot>
  </screenshots>
